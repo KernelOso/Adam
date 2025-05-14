@@ -1,4 +1,4 @@
-package com.kerneloso.adam.ui
+package com.kerneloso.adam.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
