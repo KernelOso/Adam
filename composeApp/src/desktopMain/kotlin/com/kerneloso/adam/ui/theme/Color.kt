@@ -6,4 +6,6 @@ import androidx.compose.ui.graphics.Color
 val background = Color(0xFFCADCE6)
 val onBackground = Color(0xFF0A1F33)
 
+val purpleTest = Color(0xFF6650a4)
+
 

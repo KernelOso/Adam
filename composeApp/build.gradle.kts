@@ -22,6 +22,11 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.screen)
+
+            implementation(libs.constraint.layout)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

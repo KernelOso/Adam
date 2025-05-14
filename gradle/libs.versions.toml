@@ -6,6 +6,11 @@ junit = "4.13.2"
 kotlin = "2.1.21"
 kotlinx-coroutines = "1.10.2"
 
+
+voyager = "1.0.1"
+constraint = "0.5.1"
+
+
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
@@ -13,6 +18,10 @@ junit = { module = "junit:junit", version.ref = "junit" }
 androidx-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator" , version.ref = "voyager" }
+voyager-screen = { module = "cafe.adriel.voyager:voyager-screenmodel" , version.ref = "voyager" }
+constraint-layout = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform" , version.ref = "constraint" }
 
 [plugins]
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
