@@ -8,7 +8,8 @@ private val LightColorScheme = lightColorScheme(
     background = backgroundColor,
     onBackground = onBackgroundColor,
 
-    primary = primaryColor
+    primary = primaryColor,
+    onPrimary = onPrimaryColor
 )
 
 @Composable

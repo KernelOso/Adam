@@ -11,16 +11,17 @@ import java.awt.Toolkit
 object WindowStateHolder {
     val windowState: WindowState = WindowState()
 
-    fun ChangeWindowSize ( x: Dp , y: Dp) {
+    fun changeWindowSize(x: Dp, y: Dp) {
 
         val screenSize: Dimension = Toolkit.getDefaultToolkit().screenSize
         val screenWidth = screenSize.width
         val screenHeight = screenSize.height
 
-        windowState.size = DpSize( width = x , height = y )
-        windowState.position =  WindowPosition(
-                                                x = ( ( screenWidth /2 ).dp - (x/2) ) ,
-                                                y = ( ( screenHeight /2 ).dp - (y/2) ) ,
-                                              )
+        windowState.size = DpSize(width = x, height = y)
+        windowState.position = WindowPosition(
+            x = ((screenWidth / 2).dp - (x / 2)),
+            y = ((screenHeight / 2).dp - (y / 2)),
+        )
+
     }
 }

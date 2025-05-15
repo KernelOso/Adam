@@ -12,7 +12,7 @@ val windowHeight = 800.dp
 fun main() = application {
 
     val windowState = WindowStateHolder.windowState
-    WindowStateHolder.ChangeWindowSize( x = windowWidth , y = windowHeight )
+    WindowStateHolder.changeWindowSize( x = windowWidth , y = windowHeight )
 
     Window(
         undecorated = false,

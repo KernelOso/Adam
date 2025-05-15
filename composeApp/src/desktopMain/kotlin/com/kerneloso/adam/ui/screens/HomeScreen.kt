@@ -1,40 +1,30 @@
 package com.kerneloso.adam.ui.screens
 
 import adam.composeapp.generated.resources.Res
-import adam.composeapp.generated.resources.allDrawableResources
 import adam.composeapp.generated.resources.logo
-import adam.composeapp.generated.resources.test
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FormatListNumbered
-import androidx.compose.material.icons.filled.HourglassTop
-import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.ShoppingBasket
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Store
 import androidx.compose.material.icons.filled.SupervisorAccount
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.Navigator
+import com.kerneloso.adam.ui.components.viewWithNavigationBar
 import org.jetbrains.compose.resources.painterResource
 
 class HomeScreen : Screen {
@@ -43,15 +33,11 @@ class HomeScreen : Screen {
     @Composable
     override fun Content() {
 
-        Column {
 
-            // TODO : obtener el navbar a modo de un singletone
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-                    .background(MaterialTheme.colorScheme.primary)
-            )
+        //Todo : pasar el navigator como argumento
+        viewWithNavigationBar (
+
+        ) {
 
             ConstraintLayout (
                 modifier = Modifier
@@ -59,22 +45,18 @@ class HomeScreen : Screen {
                     .background(MaterialTheme.colorScheme.background)
             ) {
 
-
-
                 val ( dummy , navBar , logo ,  buttonSell , buttonGlassDB , buttonSellersDB , buttonRegistersDB ) = createRefs()
-
-
 
 
                 // Logo background
                 val colorMatrix = ColorMatrix().apply { setToSaturation(0f) }
                 Image(
-                    alpha = 0.2f,
+                    alpha = 0.1f,
                     painter = painterResource(Res.drawable.logo),
                     contentDescription = null,
                     colorFilter = ColorFilter.colorMatrix(colorMatrix),
                     modifier = Modifier
-                        .fillMaxSize()
+                        .size(800.dp)
                         .constrainAs(logo) {
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
@@ -104,7 +86,7 @@ class HomeScreen : Screen {
                         val ( icon , label ) = createRefs()
 
                         Icon(
-                            tint = MaterialTheme.colorScheme.onBackground,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             imageVector = Icons.Filled.Store,
                             contentDescription = "",
                             modifier = Modifier
@@ -119,6 +101,7 @@ class HomeScreen : Screen {
 
                         Text(
                             text = "Sell",
+                            color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier
                                 .constrainAs(label){
                                     top.linkTo(icon.bottom)
@@ -151,7 +134,7 @@ class HomeScreen : Screen {
                         val ( icon , label ) = createRefs()
 
                         Icon(
-                            tint = MaterialTheme.colorScheme.onBackground,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             imageVector = Icons.Filled.ShoppingBasket,
                             contentDescription = "",
                             modifier = Modifier
@@ -166,6 +149,7 @@ class HomeScreen : Screen {
 
                         Text(
                             text = "Glass DB",
+                            color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier
                                 .constrainAs(label){
                                     top.linkTo(icon.bottom)
@@ -198,7 +182,7 @@ class HomeScreen : Screen {
                         val ( icon , label ) = createRefs()
 
                         Icon(
-                            tint = MaterialTheme.colorScheme.onBackground,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             imageVector = Icons.Filled.SupervisorAccount,
                             contentDescription = "",
                             modifier = Modifier
@@ -213,6 +197,7 @@ class HomeScreen : Screen {
 
                         Text(
                             text = "Sellers DB",
+                            color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier
                                 .constrainAs(label){
                                     top.linkTo(icon.bottom)
@@ -245,7 +230,7 @@ class HomeScreen : Screen {
                         val ( icon , label ) = createRefs()
 
                         Icon(
-                            tint = MaterialTheme.colorScheme.onBackground,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             imageVector = Icons.Filled.FormatListNumbered,
                             contentDescription = "",
                             modifier = Modifier
@@ -260,6 +245,7 @@ class HomeScreen : Screen {
 
                         Text(
                             text = "Registers DB",
+                            color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier
                                 .constrainAs(label){
                                     top.linkTo(icon.bottom)
@@ -275,6 +261,8 @@ class HomeScreen : Screen {
             }
 
         }
+
+
 
 
 
