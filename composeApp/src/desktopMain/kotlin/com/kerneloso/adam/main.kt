@@ -15,10 +15,10 @@ val windowHeight = 800.dp
 fun main() = application {
 
     val windowState = WindowStateHolder.windowState
-    WindowStateHolder.changeWindowSize( x = windowWidth , y = windowHeight )
+    WindowStateHolder.changeWindowCenteredSize( x = windowWidth , y = windowHeight )
 
     Window(
-        undecorated = true,
+        undecorated = false,
         state = windowState,
         onCloseRequest = ::exitApplication,
         title = stringResource(Res.string.app_name),
