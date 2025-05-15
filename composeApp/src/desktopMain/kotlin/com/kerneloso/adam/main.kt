@@ -1,9 +1,12 @@
 package com.kerneloso.adam
 
+import adam.composeapp.generated.resources.Res
+import adam.composeapp.generated.resources.app_name
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.kerneloso.adam.ui.state.WindowStateHolder
+import org.jetbrains.compose.resources.stringResource
 
 //Set window Size
 val windowWidth = 1080.dp
@@ -15,10 +18,10 @@ fun main() = application {
     WindowStateHolder.changeWindowSize( x = windowWidth , y = windowHeight )
 
     Window(
-        undecorated = false,
+        undecorated = true,
         state = windowState,
         onCloseRequest = ::exitApplication,
-        title = "Adam",
+        title = stringResource(Res.string.app_name),
         resizable = true
     ) {
         App()

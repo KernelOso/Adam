@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Adam</string>
+
+    <string name="sell_label">Vender</string>
+    <string name="products_label">Productos</string>
+    <string name="vendors_label">Vendedores</string>
+    <string name="registers_label">Registros</string>
+</resources>

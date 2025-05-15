@@ -2,6 +2,10 @@ package com.kerneloso.adam.ui.screens
 
 import adam.composeapp.generated.resources.Res
 import adam.composeapp.generated.resources.logo
+import adam.composeapp.generated.resources.products_label
+import adam.composeapp.generated.resources.registers_label
+import adam.composeapp.generated.resources.sell_label
+import adam.composeapp.generated.resources.vendors_label
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,9 +27,9 @@ import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.Navigator
 import com.kerneloso.adam.ui.components.viewWithNavigationBar
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 class HomeScreen : Screen {
 
@@ -33,11 +37,7 @@ class HomeScreen : Screen {
     @Composable
     override fun Content() {
 
-
-        //Todo : pasar el navigator como argumento
-        viewWithNavigationBar (
-
-        ) {
+        viewWithNavigationBar {
 
             ConstraintLayout (
                 modifier = Modifier
@@ -100,7 +100,7 @@ class HomeScreen : Screen {
                         )
 
                         Text(
-                            text = "Sell",
+                            text = stringResource(Res.string.sell_label),
                             color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier
                                 .constrainAs(label){
@@ -148,7 +148,7 @@ class HomeScreen : Screen {
                         )
 
                         Text(
-                            text = "Glass DB",
+                            text = stringResource(Res.string.products_label),
                             color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier
                                 .constrainAs(label){
@@ -196,7 +196,7 @@ class HomeScreen : Screen {
                         )
 
                         Text(
-                            text = "Sellers DB",
+                            text = stringResource(Res.string.vendors_label),
                             color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier
                                 .constrainAs(label){
@@ -244,7 +244,7 @@ class HomeScreen : Screen {
                         )
 
                         Text(
-                            text = "Registers DB",
+                            text = stringResource(Res.string.registers_label),
                             color = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier
                                 .constrainAs(label){
