@@ -27,6 +27,8 @@ kotlin {
             implementation(libs.voyager.screen)
 
             implementation(libs.constraint.layout)
+
+            implementation(compose.materialIconsExtended)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

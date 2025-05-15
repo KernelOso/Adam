@@ -6,8 +6,8 @@ import androidx.compose.ui.window.application
 import com.kerneloso.adam.ui.state.WindowStateHolder
 
 //Set window Size
-val windowWidth = 800.dp
-val windowHeight = 600.dp
+val windowWidth = 1080.dp
+val windowHeight = 800.dp
 
 fun main() = application {
 

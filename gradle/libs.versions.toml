@@ -9,6 +9,7 @@ kotlinx-coroutines = "1.10.2"
 
 voyager = "1.0.1"
 constraint = "0.5.1"
+material = "1.7.8"
 
 
 [libraries]
@@ -22,6 +23,7 @@ kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-s
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator" , version.ref = "voyager" }
 voyager-screen = { module = "cafe.adriel.voyager:voyager-screenmodel" , version.ref = "voyager" }
 constraint-layout = { module = "tech.annexflow.compose:constraintlayout-compose-multiplatform" , version.ref = "constraint" }
+material-icons = { module = "androidx.compose.material:material-icons-core" , version.ref = "material" }
 
 [plugins]
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
