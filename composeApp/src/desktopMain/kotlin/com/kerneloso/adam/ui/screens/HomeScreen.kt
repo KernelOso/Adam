@@ -1,17 +1,18 @@
 package com.kerneloso.adam.ui.screens
 
 import adam.composeapp.generated.resources.Res
-import adam.composeapp.generated.resources.logo
+import adam.composeapp.generated.resources.Roboto_Bold
+import adam.composeapp.generated.resources.label_ClientInfo
 import adam.composeapp.generated.resources.products_label
 import adam.composeapp.generated.resources.registers_label
 import adam.composeapp.generated.resources.sell_label
 import adam.composeapp.generated.resources.vendors_label
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.onClick
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.ShoppingBasket
@@ -22,13 +23,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import cafe.adriel.voyager.core.screen.Screen
-import com.kerneloso.adam.ui.components.viewWithNavigationBar
-import org.jetbrains.compose.resources.painterResource
+import cafe.adriel.voyager.navigator.LocalNavigator
+import com.kerneloso.adam.ui.components.viewTemplateWithNavigationBar
+import com.kerneloso.adam.ui.state.WindowStateHolder
+import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 
 class HomeScreen : Screen {
@@ -36,49 +39,40 @@ class HomeScreen : Screen {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
+        WindowStateHolder.changeWindowCenteredSize( x = 600.dp , y = 600.dp )
 
-        viewWithNavigationBar {
+        val navigator = LocalNavigator.current
+
+        viewTemplateWithNavigationBar {
+
+            val ( container ) = createRefs()
 
             ConstraintLayout (
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
+                    .size(400.dp)
+                    .constrainAs(container) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
             ) {
 
-                val ( dummy , navBar , logo ,  buttonSell , buttonGlassDB , buttonSellersDB , buttonRegistersDB ) = createRefs()
-
-
-                // Logo background
-                val colorMatrix = ColorMatrix().apply { setToSaturation(0f) }
-                Image(
-                    alpha = 0.1f,
-                    painter = painterResource(Res.drawable.logo),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.colorMatrix(colorMatrix),
-                    modifier = Modifier
-                        .size(800.dp)
-                        .constrainAs(logo) {
-                            top.linkTo(parent.top)
-                            bottom.linkTo(parent.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
-                )
-
+                val ( buttonSell , buttonGlassDB , buttonSellersDB , buttonRegistersDB ) = createRefs()
 
                 //Button : Sell
                 Box(
                     modifier = Modifier
                         .size(180.dp)
                         .background(MaterialTheme.colorScheme.primary)
+                        .onClick {
+                            navigator?.push(SellScreen())
+                        }
                         .constrainAs(buttonSell) {
                             top.linkTo(parent.top)
-                            bottom.linkTo(parent.bottom)
                             start.linkTo(parent.start)
-                            end.linkTo(buttonGlassDB.start)
                         }
                 ) {
-
                     ConstraintLayout(
                         modifier = Modifier.fillMaxSize()
                     ) {
@@ -100,12 +94,14 @@ class HomeScreen : Screen {
                         )
 
                         Text(
-                            text = stringResource(Res.string.sell_label),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
                             color = MaterialTheme.colorScheme.onPrimary,
+                            text = stringResource(Res.string.sell_label),
                             modifier = Modifier
-                                .constrainAs(label){
+                                .constrainAs(label) {
                                     top.linkTo(icon.bottom)
-                                    bottom.linkTo(parent.bottom , margin = 20.dp)
+                                    bottom.linkTo(parent.bottom)
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
                                 }
@@ -115,16 +111,17 @@ class HomeScreen : Screen {
 
                 }
 
-                //Button : Glass DB
+                //Button : Products DB
                 Box(
                     modifier = Modifier
                         .size(180.dp)
+                        .onClick {
+                            navigator?.push(ProductsScreen())
+                        }
                         .background(MaterialTheme.colorScheme.primary)
                         .constrainAs(buttonGlassDB) {
                             top.linkTo(parent.top)
-                            bottom.linkTo(parent.bottom)
-                            start.linkTo(buttonSell.end)
-                            end.linkTo(buttonSellersDB.start)
+                            end.linkTo(parent.end)
                         }
                 ) {
                     ConstraintLayout(
@@ -148,12 +145,14 @@ class HomeScreen : Screen {
                         )
 
                         Text(
-                            text = stringResource(Res.string.products_label),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
                             color = MaterialTheme.colorScheme.onPrimary,
+                            text = stringResource(Res.string.products_label),
                             modifier = Modifier
-                                .constrainAs(label){
+                                .constrainAs(label) {
                                     top.linkTo(icon.bottom)
-                                    bottom.linkTo(parent.bottom , margin = 20.dp)
+                                    bottom.linkTo(parent.bottom)
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
                                 }
@@ -168,11 +167,8 @@ class HomeScreen : Screen {
                         .size(180.dp)
                         .background(MaterialTheme.colorScheme.primary)
                         .constrainAs(buttonSellersDB) {
-                            top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
-                            start.linkTo(buttonGlassDB.end)
-                            end.linkTo(buttonRegistersDB.end)
-
+                            start.linkTo(parent.start)
                         }
                 ) {
                     ConstraintLayout(
@@ -196,12 +192,14 @@ class HomeScreen : Screen {
                         )
 
                         Text(
-                            text = stringResource(Res.string.vendors_label),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
                             color = MaterialTheme.colorScheme.onPrimary,
+                            text = stringResource(Res.string.vendors_label),
                             modifier = Modifier
-                                .constrainAs(label){
+                                .constrainAs(label) {
                                     top.linkTo(icon.bottom)
-                                    bottom.linkTo(parent.bottom , margin = 20.dp)
+                                    bottom.linkTo(parent.bottom)
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
                                 }
@@ -216,11 +214,8 @@ class HomeScreen : Screen {
                         .size(180.dp)
                         .background(MaterialTheme.colorScheme.primary)
                         .constrainAs(buttonRegistersDB) {
-                            top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
-                            start.linkTo(buttonSellersDB.end)
                             end.linkTo(parent.end)
-
                         }
                 ) {
                     ConstraintLayout(
@@ -244,12 +239,14 @@ class HomeScreen : Screen {
                         )
 
                         Text(
-                            text = stringResource(Res.string.registers_label),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
                             color = MaterialTheme.colorScheme.onPrimary,
+                            text = stringResource(Res.string.registers_label),
                             modifier = Modifier
-                                .constrainAs(label){
+                                .constrainAs(label) {
                                     top.linkTo(icon.bottom)
-                                    bottom.linkTo(parent.bottom , margin = 20.dp)
+                                    bottom.linkTo(parent.bottom)
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
                                 }
@@ -260,11 +257,13 @@ class HomeScreen : Screen {
 
             }
 
+
+
+
+
+
+
         }
-
-
-
-
 
     }
 }
