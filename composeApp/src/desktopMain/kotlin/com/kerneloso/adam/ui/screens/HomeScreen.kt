@@ -1,38 +1,28 @@
 package com.kerneloso.adam.ui.screens
 
 import adam.composeapp.generated.resources.Res
-import adam.composeapp.generated.resources.Roboto_Bold
-import adam.composeapp.generated.resources.label_ClientInfo
 import adam.composeapp.generated.resources.products_label
 import adam.composeapp.generated.resources.registers_label
 import adam.composeapp.generated.resources.sell_label
 import adam.composeapp.generated.resources.vendors_label
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.onClick
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FormatListNumbered
 import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.material.icons.filled.Store
 import androidx.compose.material.icons.filled.SupervisorAccount
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.kerneloso.adam.ui.components.homeButton
 import com.kerneloso.adam.ui.components.viewTemplateWithNavigationBar
 import com.kerneloso.adam.ui.state.WindowStateHolder
-import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.stringResource
 
 class HomeScreen : Screen {
@@ -41,7 +31,6 @@ class HomeScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
-
         WindowStateHolder.changeWindowCenteredSize( x = 800.dp , y = 800.dp )
 
         viewTemplateWithNavigationBar {
@@ -57,215 +46,72 @@ class HomeScreen : Screen {
                         end.linkTo(parent.end)
                     }
             ) {
+                val ( crButtonSell , crButtonProducts , crButtonSellers , crButtonRegisters ) = createRefs()
 
-                val ( buttonSell , buttonGlassDB , buttonSellersDB , buttonRegistersDB ) = createRefs()
+
 
                 //Button : Sell
-                Box(
+                homeButton(
+                    screenDestiny = SellScreen(),
+                    icon = Icons.Filled.Store,
+                    label = stringResource(Res.string.sell_label),
                     modifier = Modifier
                         .size(180.dp)
                         .background(MaterialTheme.colorScheme.primary)
-                        .onClick {
-                            navigator?.push(SellScreen())
-                        }
-                        .constrainAs(buttonSell) {
+                        .constrainAs(crButtonSell) {
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
                         }
-                ) {
-                    ConstraintLayout(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
+                )
 
-                        val ( icon , label ) = createRefs()
 
-                        Icon(
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            imageVector = Icons.Filled.Store,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(80.dp)
-                                .constrainAs(icon){
-                                    top.linkTo(parent.top , margin = 20.dp)
-                                    bottom.linkTo(label.top)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                }
-                        )
-
-                        Text(
-                            style = MaterialTheme.typography.titleMedium,
-                            fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            text = stringResource(Res.string.sell_label),
-                            modifier = Modifier
-                                .constrainAs(label) {
-                                    top.linkTo(icon.bottom)
-                                    bottom.linkTo(parent.bottom)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                }
-                        )
-
-                    }
-
-                }
 
                 //Button : Products DB
-                Box(
+                homeButton(
+                    screenDestiny = SellScreen(),
+                    icon = Icons.Filled.ShoppingBasket,
+                    label = stringResource(Res.string.products_label),
                     modifier = Modifier
                         .size(180.dp)
-                        .onClick {
-                            navigator?.push(ProductsScreen())
-                        }
                         .background(MaterialTheme.colorScheme.primary)
-                        .constrainAs(buttonGlassDB) {
+                        .constrainAs(crButtonProducts) {
                             top.linkTo(parent.top)
                             end.linkTo(parent.end)
                         }
-                ) {
-                    ConstraintLayout(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
+                )
 
-                        val ( icon , label ) = createRefs()
 
-                        Icon(
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            imageVector = Icons.Filled.ShoppingBasket,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(80.dp)
-                                .constrainAs(icon){
-                                    top.linkTo(parent.top , margin = 20.dp)
-                                    bottom.linkTo(label.top)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                }
-                        )
-
-                        Text(
-                            style = MaterialTheme.typography.titleMedium,
-                            fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            text = stringResource(Res.string.products_label),
-                            modifier = Modifier
-                                .constrainAs(label) {
-                                    top.linkTo(icon.bottom)
-                                    bottom.linkTo(parent.bottom)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                }
-                        )
-
-                    }
-                }
 
                 //Button : Sellers DB
-                Box(
+                homeButton(
+                    screenDestiny = SellScreen(),
+                    icon = Icons.Filled.SupervisorAccount,
+                    label = stringResource(Res.string.vendors_label),
                     modifier = Modifier
                         .size(180.dp)
                         .background(MaterialTheme.colorScheme.primary)
-                        .constrainAs(buttonSellersDB) {
+                        .constrainAs(crButtonSellers) {
                             bottom.linkTo(parent.bottom)
                             start.linkTo(parent.start)
                         }
-                ) {
-                    ConstraintLayout(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
+                )
 
-                        val ( icon , label ) = createRefs()
 
-                        Icon(
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            imageVector = Icons.Filled.SupervisorAccount,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(80.dp)
-                                .constrainAs(icon){
-                                    top.linkTo(parent.top , margin = 20.dp)
-                                    bottom.linkTo(label.top)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                }
-                        )
-
-                        Text(
-                            style = MaterialTheme.typography.titleMedium,
-                            fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            text = stringResource(Res.string.vendors_label),
-                            modifier = Modifier
-                                .constrainAs(label) {
-                                    top.linkTo(icon.bottom)
-                                    bottom.linkTo(parent.bottom)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                }
-                        )
-
-                    }
-                }
 
                 //Button : Registers DB
-                Box(
+                homeButton(
+                    screenDestiny = SellScreen(),
+                    icon = Icons.Filled.FormatListNumbered,
+                    label = stringResource(Res.string.registers_label),
                     modifier = Modifier
                         .size(180.dp)
                         .background(MaterialTheme.colorScheme.primary)
-                        .constrainAs(buttonRegistersDB) {
+                        .constrainAs(crButtonRegisters) {
                             bottom.linkTo(parent.bottom)
                             end.linkTo(parent.end)
                         }
-                ) {
-                    ConstraintLayout(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-
-                        val ( icon , label ) = createRefs()
-
-                        Icon(
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            imageVector = Icons.Filled.FormatListNumbered,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(80.dp)
-                                .constrainAs(icon){
-                                    top.linkTo(parent.top , margin = 20.dp)
-                                    bottom.linkTo(label.top)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                }
-                        )
-
-                        Text(
-                            style = MaterialTheme.typography.titleMedium,
-                            fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            text = stringResource(Res.string.registers_label),
-                            modifier = Modifier
-                                .constrainAs(label) {
-                                    top.linkTo(icon.bottom)
-                                    bottom.linkTo(parent.bottom)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                }
-                        )
-
-                    }
-                }
-
+                )
             }
-
-
-
-
-
-
-
         }
-
-
-
     }
 }
