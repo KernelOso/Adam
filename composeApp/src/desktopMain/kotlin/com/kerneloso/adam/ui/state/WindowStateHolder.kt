@@ -20,8 +20,8 @@ object WindowStateHolder {
             y = y
         )
         changePosition(
-            x = ((screenWidth / 2).dp - (x / 2)),
-            y = ((screenHeight / 2).dp - (y / 2)),
+            x = ((screenWidth / 2).dp - (windowState.size.width / 2)),
+            y = ((screenHeight / 2).dp - (windowState.size.height / 2)),
         )
     }
 

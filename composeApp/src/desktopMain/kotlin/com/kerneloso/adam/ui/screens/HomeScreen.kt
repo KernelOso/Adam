@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -39,12 +40,11 @@ class HomeScreen : Screen {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
-        WindowStateHolder.changeWindowCenteredSize( x = 600.dp , y = 600.dp )
-
         val navigator = LocalNavigator.current
 
-        viewTemplateWithNavigationBar {
+        WindowStateHolder.changeWindowCenteredSize( x = 800.dp , y = 800.dp )
 
+        viewTemplateWithNavigationBar {
             val ( container ) = createRefs()
 
             ConstraintLayout (
@@ -264,6 +264,8 @@ class HomeScreen : Screen {
 
 
         }
+
+
 
     }
 }
