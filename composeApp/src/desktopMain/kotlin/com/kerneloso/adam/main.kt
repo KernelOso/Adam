@@ -9,8 +9,8 @@ import com.kerneloso.adam.ui.state.WindowStateHolder
 import org.jetbrains.compose.resources.stringResource
 
 //Set window Size
-val windowWidth = 1080.dp
-val windowHeight = 800.dp
+val windowWidth = 600.dp
+val windowHeight = 600.dp
 
 fun main() = application {
 

@@ -41,6 +41,7 @@ kotlin {
 }
 
 
+
 compose.desktop {
     application {
         mainClass = "com.kerneloso.adam.MainKt"

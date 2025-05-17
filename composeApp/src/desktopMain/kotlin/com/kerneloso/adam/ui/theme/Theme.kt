@@ -9,7 +9,12 @@ private val LightColorScheme = lightColorScheme(
     onBackground = onBackgroundColor,
 
     primary = primaryColor,
-    onPrimary = onPrimaryColor
+    onPrimary = onPrimaryColor,
+
+    secondary = secondaryColor,
+    onSecondary = onSecondaryColor,
+
+    tertiary = tertiaryColor
 )
 
 @Composable
