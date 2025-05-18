@@ -3,6 +3,7 @@ package com.kerneloso.adam.ui.components
 import adam.composeapp.generated.resources.Res
 import adam.composeapp.generated.resources.Roboto_Bold
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -23,6 +24,8 @@ import org.jetbrains.compose.resources.Font
 
 private var navigator: Navigator? = null
 
+
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun homeButton(
@@ -30,9 +33,7 @@ fun homeButton(
     icon: ImageVector,
     label: String,
     modifier: Modifier
-) {
-
-
+)  {
     //Navigator treatment
     if ( navigator == null ) {
         navigator = LocalNavigator.current
@@ -40,6 +41,8 @@ fun homeButton(
 
     Box(
         modifier = modifier
+            .size(180.dp)
+            .background(MaterialTheme.colorScheme.primary)
             .onClick {
                 navigator!!.push(screenDestiny)
             }
