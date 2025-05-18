@@ -1,10 +1,24 @@
 <resources>
     <string name="app_name">Adam</string>
 
-    <string name="sell_label">Vender</string>
-    <string name="products_label">Productos</string>
-    <string name="vendors_label">Vendedores</string>
-    <string name="registers_label">Registros</string>
+    <!--Modern-->
+
+    <!--HomeScreen-->
+    <string name="homeScreenButtonLabel_Sell">Vender</string>
+    <string name="homeScreenButtonLabel_Products">Productos</string>
+    <string name="homeScreenButtonLabel_Sellers">Vendedores</string>
+    <string name="homeScreenButtonLabel_Registers">Registros</string>
+
+    <!--ProductScreen-->
+    <string name="productScreen_tableHeader_id">ID</string>
+    <string name="productScreen_tableHeader_name">Nombre</string>
+    <string name="productScreen_tableHeader_type">Tipo</string>
+    <string name="productScreen_tableHeader_price">Precio</string>
+
+
+
+
+    <!--Legacy-->
 
     <!--Formulario Vender-->
     <string name="label_ClientInfo">Informacion del Cliente</string>
@@ -42,6 +56,22 @@
     <string name="label_MountPrice">Precio de la montura</string>
 
     <string name="label_SELL">Vender</string>
+
+    <!--Crud Productos-->
+    <string name="label_addProducts">Aniadir Producto</string>
+
+    <string name="label_crudProductName">Nombre</string>
+    <string name="label_crudProductType">Tipo</string>
+    <string name="label_crudProductPrice">Precio</string>
+
+    <!--Crud Empleados-->
+    <string name="label_addEmploy">Aniadir Emplado</string>
+    <string name="label_crudEmployName">Nombre</string>
+
+
+
+
+
 
 
 

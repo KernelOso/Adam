@@ -50,7 +50,7 @@ fun viewTemplateWithNavigationBar (
                 .height(40.dp)
                 .background(MaterialTheme.colorScheme.primary)
         ) {
-            val ( dummy , buttonSettings , buttonHome  ) = createRefs()
+            val ( buttonSettings , buttonHome  ) = createRefs()
 
             // HOME
             Icon(
