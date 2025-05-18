@@ -14,12 +14,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import com.kerneloso.adam.ui.ComposeWindowHolder
 import com.kerneloso.adam.ui.components.navigationButton
+import com.kerneloso.adam.ui.components.obfuscateView
 import com.kerneloso.adam.ui.components.primaryContainer
 import com.kerneloso.adam.ui.components.secondaryContainer
 import com.kerneloso.adam.ui.components.tableHeader
 import com.kerneloso.adam.ui.components.viewTemplateWithNavigationBar
-import com.kerneloso.adam.ui.state.WindowStateHolder
+import com.kerneloso.adam.ui.type.FormType
+import com.kerneloso.adam.ui.window.productFormWindow
+import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
 
 
@@ -29,8 +33,17 @@ class ProductScreen : Screen {
     @Composable
     override fun Content() {
 
+        var isThisViewObfuscated by remember { mutableStateOf(false) }
+
+        val window = ComposeWindowHolder.window
+        val winWidth = 1080
+        val windHeight = 800
         LaunchedEffect(Unit){
-            WindowStateHolder.changeWindowCenteredSize( x = 900.dp , y = 800.dp )
+            resizeAndCenterWindow(
+                window = window,
+                with = winWidth,
+                height = windHeight
+            )
         }
 
         viewTemplateWithNavigationBar {
@@ -61,6 +74,7 @@ class ProductScreen : Screen {
                         .fillMaxHeight(0.8f)
                         .constrainAs(list){
                             top.linkTo(parent.top)
+                            bottom.linkTo(button.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         }
@@ -122,22 +136,31 @@ class ProductScreen : Screen {
 
                 }
 
-                    navigationButton(
-                        text = stringResource(Res.string.label_extraProducts),
-                        modifier = Modifier
-                            .onClick {
-                                //OPEN NEW WINDOW
-                            }
-                            .constrainAs(button){
+                var openProductForm by remember { mutableStateOf(false) }
+                if (openProductForm){
+                    isThisViewObfuscated = true
+                    productFormWindow(
+                        onClose = { openProductForm = false ; isThisViewObfuscated = false} ,
+                        type = FormType.NEW
+                    )
+                }
+                navigationButton(
+                    text = stringResource(Res.string.label_extraProducts),
+                    modifier = Modifier
+                        .onClick {
+                            openProductForm = true
+                        }
+                        .constrainAs(button) {
                             top.linkTo(list.bottom)
                             bottom.linkTo(parent.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         }
-                    )
+                )
             }
-
         }
-
+        if (isThisViewObfuscated){
+            obfuscateView()
+        }
     }
 }

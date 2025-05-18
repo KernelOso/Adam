@@ -2,21 +2,20 @@ package com.kerneloso.adam
 
 import adam.composeapp.generated.resources.Res
 import adam.composeapp.generated.resources.app_name
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
-import com.kerneloso.adam.io.FileUtil
-import com.kerneloso.adam.ui.state.WindowStateHolder
+import androidx.compose.ui.window.rememberWindowState
+import com.kerneloso.adam.ui.ComposeWindowHolder
 import org.jetbrains.compose.resources.stringResource
 import java.awt.Dimension
 
-
 fun main() = application {
-
-    val windowState = WindowStateHolder.windowState
 
     Window(
         undecorated = false,
-        state = windowState,
+        state = WindowState(),
         onCloseRequest = ::exitApplication,
         title = stringResource(Res.string.app_name),
         resizable = true,
@@ -25,6 +24,7 @@ fun main() = application {
             600,
             600
         )
+        ComposeWindowHolder.window = window
         App()
     }
 

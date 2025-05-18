@@ -2,26 +2,37 @@ package com.kerneloso.adam.ui.screens
 
 import adam.composeapp.generated.resources.Res
 import adam.composeapp.generated.resources.*
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import cafe.adriel.voyager.core.screen.Screen
+import com.kerneloso.adam.ui.ComposeWindowHolder
 import com.kerneloso.adam.ui.components.homeButton
 import com.kerneloso.adam.ui.components.viewTemplateWithNavigationBar
-import com.kerneloso.adam.ui.state.WindowStateHolder
+import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
 
-class HomeScreen : Screen {
+class HomeScreen () : Screen {
 
     @Composable
     override fun Content() {
-        WindowStateHolder.changeWindowCenteredSize( x = 800.dp , y = 800.dp )
+
+        val window = ComposeWindowHolder.window
+        val winWidth = 600
+        val windHeight = 600
+        LaunchedEffect(Unit){
+            resizeAndCenterWindow(
+                window = window,
+                with = winWidth,
+                height = windHeight
+            )
+        }
+
 
         viewTemplateWithNavigationBar {
             val ( container ) = createRefs()
