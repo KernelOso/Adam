@@ -85,33 +85,7 @@ fun viewTemplateWithNavigationBar (
 
         }
 
-        ConstraintLayout (
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            val ( logo ) = createRefs()
-
-            // Logo background
-            val colorMatrix = ColorMatrix().apply { setToSaturation(0f) }
-            Image(
-                alpha = 0.1f,
-                painter = painterResource(Res.drawable.logo),
-                contentDescription = null,
-                colorFilter = ColorFilter.colorMatrix(colorMatrix),
-                modifier = Modifier
-                    .size(800.dp)
-                    .constrainAs(logo) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            )
-
-            this.content()
-
-        }
+        viewWhitLogoBackground { this.content() }
 
     }
 
