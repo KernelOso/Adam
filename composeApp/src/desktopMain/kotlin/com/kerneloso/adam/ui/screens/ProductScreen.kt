@@ -44,6 +44,8 @@ class ProductScreen : Screen {
 
         var isThisViewObfuscated by remember { mutableStateOf(false) }
 
+        val viewModel = remember { (ProductViewModel()) }
+
         val window = ComposeWindowHolder.window
         val winWidth = 1080
         val windHeight = 800
@@ -150,7 +152,7 @@ class ProductScreen : Screen {
                             }
                     ) {
 
-                        items(listOf( Product(productId = 1 , productName = "test" , productType = "Lente" , productPrice = 18000L) )) { product ->
+                        items(viewModel.productDB.value.products) { product ->
 
                             Row (
                                 verticalAlignment = Alignment.CenterVertically,
