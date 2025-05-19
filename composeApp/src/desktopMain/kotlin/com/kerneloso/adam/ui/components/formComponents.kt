@@ -1,13 +1,16 @@
 package com.kerneloso.adam.ui.components
 
-import adam.composeapp.generated.resources.Res
-import adam.composeapp.generated.resources.productFormWindow_form_productName
-import adam.composeapp.generated.resources.productFormWindow_form_productPrice
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.onClick
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.TextSelectionColors
+import androidx.compose.material.DropdownMenu
 import androidx.compose.material.Text
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextFieldDefaults
@@ -16,12 +19,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.kerneloso.adam.util.longToPrice
-import org.jetbrains.compose.resources.stringResource
+import kotlin.math.exp
 
 @Composable
 fun formTextField(
@@ -75,7 +80,7 @@ fun formPriceTextField(
     modifier: Modifier = Modifier,
     onPriceChange: (Long) -> Unit
 ) {
-    var textFieldValue by remember { mutableStateOf(TextFieldValue("0")) }
+    var textFieldValue by remember { mutableStateOf(TextFieldValue(longToPrice(initialValue))) }
     OutlinedTextField(
         value = textFieldValue,
         prefix = { Text("$ ") },
@@ -134,3 +139,55 @@ fun formPriceTextField(
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun formDropdownMenu(
+    prefix: String = "",
+    options: List<String>,
+    onOptionSelected: (String) -> Unit,
+    defaultOption: String,
+    modifier: Modifier,
+) {
+    var isMenuExpanded by remember { mutableStateOf(false) }
+    var dropdownWidth by remember { mutableStateOf(0.dp) }
+    var optionSelected by remember { mutableStateOf(defaultOption) }
+    onOptionSelected(defaultOption)
+    Box(
+        modifier = modifier
+            .border(
+                width = 2.dp,
+                color = MaterialTheme.colorScheme.secondary,
+                shape = RoundedCornerShape(4.dp)
+            )
+            .onClick {
+                isMenuExpanded = true
+            }
+            .onGloballyPositioned { layoutCoordinates ->
+                dropdownWidth = layoutCoordinates.size.width.dp
+            }
+    ) {
+
+        Text(
+            text = "${prefix}${optionSelected}",
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
+
+        DropdownMenu(
+            expanded = isMenuExpanded,
+            onDismissRequest = { isMenuExpanded = false },
+            modifier = Modifier.width(dropdownWidth)
+        ) {
+            options.forEach { option ->
+                DropdownMenuItem(
+                    text = { Text(option) },
+                    onClick = {
+                        optionSelected = option
+                        onOptionSelected(option)
+                        isMenuExpanded = false
+                    }
+                )
+            }
+        }
+    }
+}

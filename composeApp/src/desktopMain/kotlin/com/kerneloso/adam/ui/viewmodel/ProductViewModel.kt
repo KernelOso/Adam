@@ -33,9 +33,23 @@ class ProductViewModel : ViewModel() {
         ProductRepository.saveProducts(updatedProductDB)
     }
 
+    fun updateProduct(product: Product) {
+        val updatedProductDB = _productDB.value.copy(products =
+            _productDB.value.products.map {
+                if ( it.productId == product.productId ) {
+                    product
+                } else  {
+                    it
+                }
+            }
+        )
+        _productDB.value = updatedProductDB
+        ProductRepository.saveProducts(updatedProductDB)
+    }
+
     fun deleteProduct( product: Product ) {
         val updatedProductDB = _productDB.value.copy(
-            products = _productDB.value.products.filter { it != product }
+            products = _productDB.value.products.filter { it.productId != product.productId }
         )
         _productDB.value = updatedProductDB
         ProductRepository.saveProducts(updatedProductDB)

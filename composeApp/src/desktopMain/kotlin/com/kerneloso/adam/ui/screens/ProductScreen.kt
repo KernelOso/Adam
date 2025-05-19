@@ -7,16 +7,14 @@ import adam.composeapp.generated.resources.productScreen_tableHeader_name
 import adam.composeapp.generated.resources.productScreen_tableHeader_price
 import adam.composeapp.generated.resources.productScreen_tableHeader_type
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.onClick
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.kerneloso.adam.domain.model.Product
@@ -28,7 +26,6 @@ import com.kerneloso.adam.ui.components.secondaryContainer
 import com.kerneloso.adam.ui.components.tableHeader
 import com.kerneloso.adam.ui.components.tableItem
 import com.kerneloso.adam.ui.components.viewTemplateWithNavigationBar
-import com.kerneloso.adam.ui.type.FormType
 import com.kerneloso.adam.ui.viewmodel.ProductViewModel
 import com.kerneloso.adam.ui.window.productFormWindow
 import com.kerneloso.adam.util.longToPrice
@@ -41,11 +38,6 @@ class ProductScreen : Screen {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
-
-        var isThisViewObfuscated by remember { mutableStateOf(false) }
-
-        val viewModel = remember { (ProductViewModel()) }
-
         val window = ComposeWindowHolder.window
         val winWidth = 1080
         val windHeight = 800
@@ -56,6 +48,20 @@ class ProductScreen : Screen {
                 height = windHeight
             )
         }
+
+
+
+        val viewModel = remember { (ProductViewModel()) }
+
+
+
+        var isThisViewObfuscated by remember { mutableStateOf(false) }
+
+        var openEditProductForm by remember { mutableStateOf(false) }
+        var productArg by remember { mutableStateOf(Product()) }
+
+        var openNewProductForm by remember { mutableStateOf(false) }
+
 
         viewTemplateWithNavigationBar {
 
@@ -93,54 +99,13 @@ class ProductScreen : Screen {
 
                     val ( crHeaderContainer , crLazyColumn ) = createRefs()
 
-                    //Header
-                    Row (
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .constrainAs(crHeaderContainer){
-                                top.linkTo(parent.top)
-                                start.linkTo(parent.start)
-                                end.linkTo(parent.end)
-                            }
-                    ) {
-                        val headerHeight = 40.dp
-                        val headerTextStyle = MaterialTheme.typography.titleSmall
-
-                        tableHeader(
-                            textStyle = headerTextStyle,
-                            text = stringResource(Res.string.productScreen_tableHeader_id),
-                            modifier = Modifier
-                                .height(headerHeight)
-                                .weight(0.05f)
-                        )
-
-                        tableHeader(
-                            textStyle = headerTextStyle,
-                            text = stringResource(Res.string.productScreen_tableHeader_name),
-                            modifier = Modifier
-                                .height(headerHeight)
-                                .weight(0.45f)
-                        )
-
-                        tableHeader(
-                            textStyle = headerTextStyle,
-                            text = stringResource(Res.string.productScreen_tableHeader_type),
-                            modifier = Modifier
-                                .height(headerHeight)
-                                .weight(0.15f)
-                        )
-
-                        tableHeader(
-                            textStyle = headerTextStyle,
-                            text = stringResource(Res.string.productScreen_tableHeader_price),
-                            modifier = Modifier
-                                .height(headerHeight)
-                                .weight(0.35f)
-                        )
-
-
-                    }
+                    tableHeaderRow(
+                        modifier = Modifier.constrainAs(crHeaderContainer){
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                    )
 
 
                     LazyColumn (
@@ -151,71 +116,24 @@ class ProductScreen : Screen {
                                 top.linkTo(crHeaderContainer.bottom)
                             }
                     ) {
-
                         items(viewModel.productDB.value.products) { product ->
-
-                            Row (
-                                verticalAlignment = Alignment.CenterVertically,
+                            tableItemRow(
+                                product = product,
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-
-                                val headerHeight = 40.dp
-                                val headerTextStyle = MaterialTheme.typography.titleSmall
-
-                                //Id
-                                tableItem(
-                                    textStyle = headerTextStyle,
-                                    text = product.productId.toString(),
-                                    modifier = Modifier
-                                        .height(headerHeight)
-                                        .weight(0.05f)
-                                )
-
-                                //Name
-                                tableItem(
-                                    textStyle = headerTextStyle,
-                                    text = product.productName,
-                                    modifier = Modifier
-                                        .height(headerHeight)
-                                        .weight(0.45f)
-                                )
-
-                                //Type
-                                tableItem(
-                                    textStyle = headerTextStyle,
-                                    text = product.productType,
-                                    modifier = Modifier
-                                        .height(headerHeight)
-                                        .weight(0.15f)
-                                )
-
-                                //Price
-                                tableItem(
-                                    textStyle = headerTextStyle,
-                                    text = "$ ${longToPrice(product.productPrice)}",
-                                    modifier = Modifier
-                                        .height(headerHeight)
-                                        .weight(0.35f)
-                                )
-                            }
+                                    .clickable {
+                                        productArg = product
+                                        openEditProductForm = true
+                                    }
+                            )
                         }
                     }
                 }
 
-                var openProductForm by remember { mutableStateOf(false) }
-                if (openProductForm){
-                    isThisViewObfuscated = true
-                    productFormWindow(
-                        onClose = { openProductForm = false ; isThisViewObfuscated = false} ,
-                        type = FormType.NEW,
-                    )
-                }
                 simpleButton(
                     text = stringResource(Res.string.label_extraProducts),
                     modifier = Modifier
                         .onClick {
-                            openProductForm = true
+                            openNewProductForm = true
                         }
                         .constrainAs(button) {
                             top.linkTo(list.bottom)
@@ -229,5 +147,128 @@ class ProductScreen : Screen {
         if (isThisViewObfuscated){
             obfuscateView()
         }
+
+
+
+        //Edit product
+        if (openEditProductForm){
+            isThisViewObfuscated = true
+            productFormWindow(
+                onClose = { openEditProductForm = false ; isThisViewObfuscated = false} ,
+                viewmodel = viewModel,
+                product = productArg
+            )
+        }
+
+        //New Product
+        if (openNewProductForm){
+            isThisViewObfuscated = true
+            productFormWindow(
+                onClose = { openNewProductForm = false ; isThisViewObfuscated = false} ,
+                viewmodel = viewModel
+            )
+        }
     }
+}
+
+@Composable
+fun tableHeaderRow(
+    modifier: Modifier
+){
+    //Header
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+
+    ) {
+        val headerHeight = 40.dp
+        val headerTextStyle = MaterialTheme.typography.titleSmall
+
+        tableHeader(
+            textStyle = headerTextStyle,
+            text = stringResource(Res.string.productScreen_tableHeader_id),
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(0.05f)
+        )
+
+        tableHeader(
+            textStyle = headerTextStyle,
+            text = stringResource(Res.string.productScreen_tableHeader_name),
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(0.45f)
+        )
+
+        tableHeader(
+            textStyle = headerTextStyle,
+            text = stringResource(Res.string.productScreen_tableHeader_type),
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(0.15f)
+        )
+
+        tableHeader(
+            textStyle = headerTextStyle,
+            text = stringResource(Res.string.productScreen_tableHeader_price),
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(0.35f)
+        )
+    }
+}
+
+@Composable
+fun tableItemRow(
+    modifier: Modifier = Modifier,
+    product: Product
+) {
+
+    Row (
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+
+        val headerHeight = 40.dp
+        val headerTextStyle = MaterialTheme.typography.titleSmall
+
+        //Id
+        tableItem(
+            textStyle = headerTextStyle,
+            text = product.productId.toString(),
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(0.05f)
+        )
+
+        //Name
+        tableItem(
+            textStyle = headerTextStyle,
+            text = product.productName,
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(0.45f)
+        )
+
+        //Type
+        tableItem(
+            textStyle = headerTextStyle,
+            text = product.productType,
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(0.15f)
+        )
+
+        //Price
+        tableItem(
+            textStyle = headerTextStyle,
+            text = "$ ${longToPrice(product.productPrice)}",
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(0.35f)
+        )
+    }
+
 }

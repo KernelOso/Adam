@@ -1,10 +1,10 @@
 package com.kerneloso.adam.domain.model
 
 data class Product(
-    var productId: Long,
-    var productName: String,
-    var productType: String,
-    var productPrice: Long,
+    var productId: Long = 0,
+    var productName: String = "",
+    var productType: String = "",
+    var productPrice: Long = 0,
 )
 
 
