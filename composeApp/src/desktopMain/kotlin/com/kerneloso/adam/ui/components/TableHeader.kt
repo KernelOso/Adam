@@ -17,7 +17,6 @@ fun tableHeader(
     modifier: Modifier,
     textStyle: TextStyle = MaterialTheme.typography.titleLarge
 ) {
-
     Box(
         modifier = modifier
             .border(
@@ -32,5 +31,26 @@ fun tableHeader(
                 .align(Alignment.Center)
         )
     }
+}
 
+@Composable
+fun tableItem(
+    text: String,
+    modifier: Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.titleLarge
+) {
+    Box(
+        modifier = modifier
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.onPrimary,
+            )
+    ) {
+        Text(
+            style = textStyle,
+            text = text,
+            modifier = Modifier
+                .align(Alignment.Center)
+        )
+    }
 }

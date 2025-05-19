@@ -15,6 +15,15 @@
     <string name="productScreen_tableHeader_type">Tipo</string>
     <string name="productScreen_tableHeader_price">Precio</string>
 
+        <!--ProductFormWindow-->
+        <string name="productFormWindow_typeNew">Nuevo producto</string>
+        <string name="productFormWindow_typeEdit">Editar producto</string>
+
+            <!--Form-->
+            <string name="productFormWindow_form_productName">Nombre del producto :</string>
+            <string name="productFormWindow_form_productType">Tipo del producto :</string>
+            <string name="productFormWindow_form_productPrice">Precio del producto :</string>
+
 
 
 
