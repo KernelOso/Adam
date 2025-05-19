@@ -2,6 +2,7 @@ package com.kerneloso.adam.ui.screens
 
 import adam.composeapp.generated.resources.Res
 import adam.composeapp.generated.resources.label_extraProducts
+import adam.composeapp.generated.resources.productScreen_button_newProduct
 import adam.composeapp.generated.resources.productScreen_tableHeader_id
 import adam.composeapp.generated.resources.productScreen_tableHeader_name
 import adam.composeapp.generated.resources.productScreen_tableHeader_price
@@ -38,6 +39,7 @@ class ProductScreen : Screen {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
+        // Change size and position of the window
         val window = ComposeWindowHolder.window
         val winWidth = 1080
         val windHeight = 800
@@ -49,17 +51,17 @@ class ProductScreen : Screen {
             )
         }
 
-
-
+        //View Model
         val viewModel = remember { (ProductViewModel()) }
-
 
 
         var isThisViewObfuscated by remember { mutableStateOf(false) }
 
+        // Edit product
         var openEditProductForm by remember { mutableStateOf(false) }
         var productArg by remember { mutableStateOf(Product()) }
 
+        // New Product
         var openNewProductForm by remember { mutableStateOf(false) }
 
 
@@ -130,7 +132,7 @@ class ProductScreen : Screen {
                 }
 
                 simpleButton(
-                    text = stringResource(Res.string.label_extraProducts),
+                    text = stringResource(Res.string.productScreen_button_newProduct),
                     modifier = Modifier
                         .onClick {
                             openNewProductForm = true
@@ -148,9 +150,7 @@ class ProductScreen : Screen {
             obfuscateView()
         }
 
-
-
-        //Edit product
+        //Open Edit product Window
         if (openEditProductForm){
             isThisViewObfuscated = true
             productFormWindow(
@@ -160,7 +160,7 @@ class ProductScreen : Screen {
             )
         }
 
-        //New Product
+        //Open New product Window
         if (openNewProductForm){
             isThisViewObfuscated = true
             productFormWindow(
@@ -175,7 +175,6 @@ class ProductScreen : Screen {
 fun tableHeaderRow(
     modifier: Modifier
 ){
-    //Header
     Row (
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
