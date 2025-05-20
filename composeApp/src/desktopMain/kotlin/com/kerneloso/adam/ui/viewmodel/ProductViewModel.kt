@@ -25,17 +25,21 @@ class ProductViewModel : ViewModel() {
     }
 
     fun addProduct(product: Product) {
-        val updatedProductDB = _productDB.value.copy(
-            lastProductId = _productDB.value.lastProductId + 1,
-            products = _productDB.value.products + product
+        val current = _productDB.value
+        val updatedProductDB = current.copy(
+            lastProductId = current.lastProductId + 1,
+            products = current.products + product
         )
         _productDB.value = updatedProductDB
-        ProductRepository.saveProducts(updatedProductDB)
+        viewModelScope.launch {
+            ProductRepository.saveProducts(updatedProductDB)
+        }
     }
 
     fun updateProduct(product: Product) {
-        val updatedProductDB = _productDB.value.copy(products =
-            _productDB.value.products.map {
+        val current = _productDB.value
+        val updatedProductDB = current.copy(products =
+            current.products.map {
                 if ( it.productId == product.productId ) {
                     product
                 } else  {
@@ -44,15 +48,19 @@ class ProductViewModel : ViewModel() {
             }
         )
         _productDB.value = updatedProductDB
-        ProductRepository.saveProducts(updatedProductDB)
+        viewModelScope.launch {
+            ProductRepository.saveProducts(updatedProductDB)
+        }
     }
 
     fun deleteProduct( product: Product ) {
-        val updatedProductDB = _productDB.value.copy(
-            products = _productDB.value.products.filter { it.productId != product.productId }
+        val current = _productDB.value
+        val updatedProductDB = current.copy(
+            products = current.products.filter { it.productId != product.productId }
         )
         _productDB.value = updatedProductDB
-        ProductRepository.saveProducts(updatedProductDB)
+        viewModelScope.launch {
+            ProductRepository.saveProducts(updatedProductDB)
+        }
     }
-
 }

@@ -20,7 +20,6 @@ fun primaryContainer (
     modifier: Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     shapeRadius: Dp = 10.dp,
-    padding: Dp = 20.dp,
     content: @Composable ConstraintLayoutScope.() -> Unit
 ) {
     ConstraintLayout (
@@ -33,7 +32,6 @@ fun primaryContainer (
                 color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(shapeRadius)
             )
-            .padding(padding)
     ) {
         this.content()
     }
@@ -44,7 +42,6 @@ fun secondaryContainer (
     modifier: Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     shapeRadius: Dp = 10.dp,
-    padding: Dp = 20.dp,
     content: @Composable ConstraintLayoutScope.() -> Unit
 ) {
     ConstraintLayout (
@@ -57,7 +54,6 @@ fun secondaryContainer (
                 color = MaterialTheme.colorScheme.secondary,
                 shape = RoundedCornerShape(shapeRadius)
             )
-            .padding(padding)
     ) {
         this.content()
     }

@@ -232,7 +232,7 @@ fun productFormWindow(
         if (showPriceEmptyScreen){
             showWindowNotification(
                 title = "Price is 0",
-                text = "El nombre del producto no puede estar vacio",
+                text = "El precio del producto no puede ser 0",
                 onClose = { showPriceEmptyScreen = false }
             )
         }
@@ -240,7 +240,8 @@ fun productFormWindow(
         if (showNameEmptyScreen){
             showWindowNotification(
                 title = "Name is Empty",
-                text = "El precio del producto no puede ser 0",
+
+                text = "El nombre del producto no puede estar vacio",
                 onClose = { showNameEmptyScreen = false }
             )
         }

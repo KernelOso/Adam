@@ -1,17 +1,10 @@
 package com.kerneloso.adam.ui.screens
 
-import adam.composeapp.generated.resources.Res
-import adam.composeapp.generated.resources.label_extraProducts
-import adam.composeapp.generated.resources.productScreen_button_newProduct
-import adam.composeapp.generated.resources.productScreen_tableHeader_id
-import adam.composeapp.generated.resources.productScreen_tableHeader_name
-import adam.composeapp.generated.resources.productScreen_tableHeader_price
-import adam.composeapp.generated.resources.productScreen_tableHeader_type
+import adam.composeapp.generated.resources.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.onClick
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -20,17 +13,10 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.kerneloso.adam.domain.model.Product
 import com.kerneloso.adam.ui.ComposeWindowHolder
-import com.kerneloso.adam.ui.components.simpleButton
-import com.kerneloso.adam.ui.components.obfuscateView
-import com.kerneloso.adam.ui.components.primaryContainer
-import com.kerneloso.adam.ui.components.secondaryContainer
-import com.kerneloso.adam.ui.components.tableHeader
-import com.kerneloso.adam.ui.components.tableItem
-import com.kerneloso.adam.ui.components.viewTemplateWithNavigationBar
+import com.kerneloso.adam.ui.components.*
 import com.kerneloso.adam.ui.viewmodel.ProductViewModel
 import com.kerneloso.adam.ui.window.productFormWindow
-import com.kerneloso.adam.util.longToPrice
-import com.kerneloso.adam.util.resizeAndCenterWindow
+import com.kerneloso.adam.util.*
 import org.jetbrains.compose.resources.stringResource
 
 
@@ -51,9 +37,15 @@ class ProductScreen : Screen {
             )
         }
 
+        //SearchBar
+        var searchText by remember { mutableStateOf("") }
+
         //View Model
         val viewModel = remember { (ProductViewModel()) }
 
+        val productList = viewModel.productDB.value.products.filter {
+            it.productName.contains( searchText , ignoreCase = true )
+        }
 
         var isThisViewObfuscated by remember { mutableStateOf(false) }
 
@@ -70,10 +62,12 @@ class ProductScreen : Screen {
             val ( container ) = createRefs()
 
             primaryContainer(
-                padding = 10.dp,
+
                 shapeRadius = 0.dp,
                 modifier = Modifier
-                    .fillMaxHeight(0.9f)
+                    .padding(horizontal = 10.dp , vertical = 10.dp)
+                    .fillMaxHeight(0.96f)
+                    .fillMaxWidth()
                     .constrainAs(container){
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
@@ -82,18 +76,33 @@ class ProductScreen : Screen {
                     }
             ) {
 
-                val ( list , button ) = createRefs()
+                val ( crSearchBar , crList , crButton ) = createRefs()
+
+                //SearchBar
+                formTextField(
+                    value = searchText,
+                    onValueChange = { searchText = it },
+                    label = "Buscar Producto",
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .height(60.dp)
+                        .constrainAs(crSearchBar) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(crList.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        }
+                )
 
                 //ListContainer
                 secondaryContainer(
                     shapeRadius = 0.dp,
-                    padding = 2.dp,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.8f)
-                        .constrainAs(list){
-                            top.linkTo(parent.top)
-                            bottom.linkTo(button.top)
+                        .fillMaxWidth(0.9f)
+                        .fillMaxHeight(0.7f)
+                        .constrainAs(crList){
+                            top.linkTo(crSearchBar.bottom)
+                            bottom.linkTo(crButton.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         }
@@ -113,12 +122,12 @@ class ProductScreen : Screen {
                     LazyColumn (
                         modifier = Modifier
                             .fillMaxWidth()
-                            .fillMaxHeight()
+                            .fillMaxHeight(0.925f)
                             .constrainAs(crLazyColumn) {
                                 top.linkTo(crHeaderContainer.bottom)
                             }
                     ) {
-                        items(viewModel.productDB.value.products) { product ->
+                        items(productList) { product ->
                             tableItemRow(
                                 product = product,
                                 modifier = Modifier
@@ -134,11 +143,13 @@ class ProductScreen : Screen {
                 simpleButton(
                     text = stringResource(Res.string.productScreen_button_newProduct),
                     modifier = Modifier
+                        .fillMaxWidth(0.3f)
+                        .height(60.dp)
                         .onClick {
                             openNewProductForm = true
                         }
-                        .constrainAs(button) {
-                            top.linkTo(list.bottom)
+                        .constrainAs(crButton) {
+                            top.linkTo(crList.bottom)
                             bottom.linkTo(parent.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)

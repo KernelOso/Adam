@@ -29,8 +29,6 @@ fun simpleButton (
 
     Box(
         modifier = modifier
-            .fillMaxWidth(0.3f)
-            .height(60.dp)
             .background(color = backgroundColor , shape = RoundedCornerShape(shapeRadius))
     ) {
 

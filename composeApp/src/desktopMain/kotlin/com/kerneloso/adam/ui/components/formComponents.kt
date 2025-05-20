@@ -31,14 +31,16 @@ import kotlin.math.exp
 @Composable
 fun formTextField(
     value: String,
-    label: String,
+    label: String = "",
     prefix: @Composable() (() -> Unit)? = null,
+    placeholder: @Composable() (() -> Unit)? = null,
     modifier: Modifier,
     onValueChange: (String) -> Unit,
 ){
     OutlinedTextField(
         value = value,
         onValueChange = { onValueChange(it) },
+        placeholder = placeholder,
         label = {
             Text(
                 text = label,
