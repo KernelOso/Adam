@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -148,7 +149,7 @@ fun formDropdownMenu(
     options: List<String>,
     onOptionSelected: (String) -> Unit,
     defaultOption: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
     var dropdownWidth by remember { mutableStateOf(0.dp) }
@@ -169,11 +170,12 @@ fun formDropdownMenu(
             }
     ) {
 
-        Text(
-            text = "${prefix}${optionSelected}",
-            modifier = Modifier
-                .align(Alignment.Center)
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "${prefix}${optionSelected}")
+        }
 
         DropdownMenu(
             expanded = isMenuExpanded,

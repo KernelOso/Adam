@@ -132,7 +132,9 @@ fun productFormWindow(
                 formDropdownMenu(
                     prefix = stringResource(Res.string.productFormWindow_form_productType),
                     options = viewmodel.productDB.value.ProductsTypes,
-                    onOptionSelected = { productType = it },
+                    onOptionSelected = {
+                        productType = it
+                   },
                     defaultOption = productType,
                     modifier = Modifier
                         .fillMaxWidth()

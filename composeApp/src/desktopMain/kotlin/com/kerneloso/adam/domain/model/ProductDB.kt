@@ -13,6 +13,7 @@ data class ProductDB(
     var products: List<Product> = listOf(),
     var ProductsTypes: List<String> = listOf(
         "Lente",
-        "Extra"
+        "Extra",
+        "Montura"
     )
 )

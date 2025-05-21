@@ -24,6 +24,35 @@ class ProductViewModel : ViewModel() {
         }
     }
 
+    fun searchProducts(query: String , type: String = ""): List<Product> {
+        val normalizedQuery = query.lowercase().split(" ").filter {
+            it.isNotBlank()
+        }
+
+        val productsSearchedByName = _productDB.value.products.filter { product ->
+            val normalizedName = product.productName.lowercase()
+
+            val cleanedName = normalizedName.replace(Regex("[^a-z0-9\\s]") , "")
+
+            val nameWords = cleanedName.split(" ").filter { it.isNotBlank() }
+
+            normalizedQuery.all { searchWord ->
+                nameWords.any { nameWord ->
+                    nameWord.contains(searchWord)
+                }
+            }
+        }
+
+        if( _productDB.value.ProductsTypes.contains(type) ){
+            return productsSearchedByName.filter { product ->
+                product.productType == type
+            }
+        } else {
+            return productsSearchedByName
+        }
+
+    }
+
     fun addProduct(product: Product) {
         val current = _productDB.value
         val updatedProductDB = current.copy(

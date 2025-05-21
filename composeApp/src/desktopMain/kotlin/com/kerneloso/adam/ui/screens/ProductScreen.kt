@@ -2,6 +2,7 @@ package com.kerneloso.adam.ui.screens
 
 import adam.composeapp.generated.resources.*
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -9,6 +10,7 @@ import androidx.compose.foundation.onClick
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.kerneloso.adam.domain.model.Product
@@ -18,7 +20,6 @@ import com.kerneloso.adam.ui.viewmodel.ProductViewModel
 import com.kerneloso.adam.ui.window.productFormWindow
 import com.kerneloso.adam.util.*
 import org.jetbrains.compose.resources.stringResource
-
 
 class ProductScreen : Screen {
 
@@ -37,32 +38,35 @@ class ProductScreen : Screen {
             )
         }
 
-        //SearchBar
-        var searchText by remember { mutableStateOf("") }
-
         //View Model
         val viewModel = remember { (ProductViewModel()) }
 
-        val productList = viewModel.productDB.value.products.filter {
-            it.productName.contains( searchText , ignoreCase = true )
-        }
+        //SearchBar
+            //NameSearch
+            var searchText by remember { mutableStateOf("") }
 
+            //Product Type
+            var searchType by remember { mutableStateOf("All") }
+
+        //get Products
+        var productList: List<Product> = viewModel.searchProducts(searchText , searchType)
+
+        //View Obfuscated
         var isThisViewObfuscated by remember { mutableStateOf(false) }
 
-        // Edit product
-        var openEditProductForm by remember { mutableStateOf(false) }
-        var productArg by remember { mutableStateOf(Product()) }
+        //Views :
+            // Edit product View
+            var openEditProductForm by remember { mutableStateOf(false) }
+            var productArg by remember { mutableStateOf(Product()) }
 
-        // New Product
-        var openNewProductForm by remember { mutableStateOf(false) }
-
+            // New Product View
+            var openNewProductForm by remember { mutableStateOf(false) }
 
         viewTemplateWithNavigationBar {
 
             val ( container ) = createRefs()
 
             primaryContainer(
-
                 shapeRadius = 0.dp,
                 modifier = Modifier
                     .padding(horizontal = 10.dp , vertical = 10.dp)
@@ -78,21 +82,43 @@ class ProductScreen : Screen {
 
                 val ( crSearchBar , crList , crButton ) = createRefs()
 
-                //SearchBar
-                formTextField(
-                    value = searchText,
-                    onValueChange = { searchText = it },
-                    label = "Buscar Producto",
+                Row (
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .height(60.dp)
                         .constrainAs(crSearchBar) {
                             top.linkTo(parent.top)
                             bottom.linkTo(crList.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                        }
-                )
+                        },
+                ) {
+
+                    formTextField(
+                        value = searchText,
+                        onValueChange = { searchText = it },
+                        label = stringResource(Res.string.productScreen_search_searchByName),
+                        modifier = Modifier
+                            .weight(6f)
+                            .height(60.dp)
+                    )
+
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    formDropdownMenu(
+                        options = listOf("All") + viewModel.productDB.value.ProductsTypes,
+                        onOptionSelected = {
+                            println("type selected : $it")
+                            searchType = it
+                        },
+                        defaultOption = searchType,
+                        modifier = Modifier
+                            .padding(top = 10.dp)
+                            .weight(4f)
+                            .height(55.dp)
+                    )
+                }
+
 
                 //ListContainer
                 secondaryContainer(
@@ -117,7 +143,6 @@ class ProductScreen : Screen {
                             end.linkTo(parent.end)
                         }
                     )
-
 
                     LazyColumn (
                         modifier = Modifier
@@ -157,6 +182,7 @@ class ProductScreen : Screen {
                 )
             }
         }
+
         if (isThisViewObfuscated){
             obfuscateView()
         }
@@ -180,6 +206,19 @@ class ProductScreen : Screen {
             )
         }
     }
+}
+
+@Composable
+fun searchBar(
+    rowModifier: Modifier,
+    nameSearchValue: String,
+    onNameValueChange: (String) -> Unit,
+
+    typeMenuOptions: List<String>,
+    onTypeOptionSelected: (String) -> Unit,
+    typeDefaultOption: String
+){
+
 }
 
 @Composable
