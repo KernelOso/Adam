@@ -1,42 +1,18 @@
 package com.kerneloso.adam.ui.view.window
 
-import adam.composeapp.generated.resources.Res
-import adam.composeapp.generated.resources.productFormWindow_form_button_deleteProduct
-import adam.composeapp.generated.resources.productFormWindow_form_button_newProduct
-import adam.composeapp.generated.resources.productFormWindow_form_button_updateProduct
-import adam.composeapp.generated.resources.productFormWindow_form_productName
-import adam.composeapp.generated.resources.productFormWindow_form_productPrice
-import adam.composeapp.generated.resources.productFormWindow_form_productType
-import adam.composeapp.generated.resources.productFormWindow_typeEdit
-import adam.composeapp.generated.resources.productFormWindow_typeNew
+import adam.composeapp.generated.resources.*
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.onClick
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import com.kerneloso.adam.domain.model.Lens
-import com.kerneloso.adam.ui.component.formDropdownMenu
-import com.kerneloso.adam.ui.component.formPriceTextField
-import com.kerneloso.adam.ui.component.formTextField
-import com.kerneloso.adam.ui.component.showWindowNotification
-import com.kerneloso.adam.ui.component.simpleButton
-import com.kerneloso.adam.ui.component.viewWhitLogoBackground
+import com.kerneloso.adam.ui.component.*
 import com.kerneloso.adam.ui.viewmodel.LensViewModel
 import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
@@ -59,9 +35,9 @@ fun productFormWindow(
     //Set title and import object
     val title : String
     if (lens == null){
-        title = stringResource(Res.string.productFormWindow_typeNew)
+        title = stringResource(Res.string.lensFormWindow_windowTitle_New)
     } else {
-        title = stringResource(Res.string.productFormWindow_typeEdit)
+        title = stringResource(Res.string.lensFormWindow_windowTitle_Edit)
 
         lensID = lens.id
         lensName = lens.name
@@ -116,7 +92,7 @@ fun productFormWindow(
                 formTextField(
                     value = lensName,
                     onValueChange = { lensName = it },
-                    label = stringResource(Res.string.productFormWindow_form_productName),
+                    label = stringResource(Res.string.lensFormWindow_formField_lensName),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(80.dp)
@@ -127,7 +103,7 @@ fun productFormWindow(
                 // Text Field : Product Price
                 formPriceTextField(
                     initialValue = lensPrice,
-                    label = stringResource(Res.string.productFormWindow_form_productPrice),
+                    label = stringResource(Res.string.lensFormWindow_formField_lensPrice),
                     onPriceChange = { lensPrice = it },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -140,7 +116,7 @@ fun productFormWindow(
                     // =============================================================================
                     // Button : Update
                     simpleButton(
-                        text = stringResource(Res.string.productFormWindow_form_button_updateProduct),
+                        text = stringResource(Res.string.lensFormWindow_button_update),
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .height(60.dp)
@@ -170,7 +146,7 @@ fun productFormWindow(
                     // =============================================================================
                     // Button : Delete
                     simpleButton(
-                        text = stringResource(Res.string.productFormWindow_form_button_deleteProduct),
+                        text = stringResource(Res.string.lensFormWindow_button_delete),
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .height(60.dp)
@@ -186,7 +162,7 @@ fun productFormWindow(
                     // =============================================================================
                     // Button : Create
                     simpleButton(
-                        text = stringResource(Res.string.productFormWindow_form_button_newProduct),
+                        text = stringResource(Res.string.lensFormWindow_button_new),
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .height(60.dp)
@@ -216,25 +192,22 @@ fun productFormWindow(
         //Screen Verifications
         if (showPriceEmptyScreen){
             showWindowNotification(
-                title = "Price is 0",
-                text = "El precio del producto no puede ser 0",
+                title = stringResource(Res.string.lensFormWindow_notification_noPrice_title),
+                text = stringResource(Res.string.lensFormWindow_notification_noPrice_content),
                 onClose = { showPriceEmptyScreen = false }
             )
         }
 
         if (showNameEmptyScreen){
             showWindowNotification(
-                title = "Name is Empty",
-
-                text = "El nombre del producto no puede estar vacio",
+                title = stringResource(Res.string.lensFormWindow_notification_noName_title),
+                text = stringResource(Res.string.lensFormWindow_notification_noName_content),
                 onClose = { showNameEmptyScreen = false }
             )
         }
 
     }
 }
-
-
 
 fun verifyFormData (
     nameValue: String = "",
