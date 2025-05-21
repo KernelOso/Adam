@@ -1,4 +1,4 @@
-package com.kerneloso.adam.ui.components
+package com.kerneloso.adam.ui.component
 
 import adam.composeapp.generated.resources.Res
 import adam.composeapp.generated.resources.Roboto_Bold

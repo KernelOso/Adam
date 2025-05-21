@@ -1,4 +1,4 @@
-package com.kerneloso.adam.ui.components
+package com.kerneloso.adam.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

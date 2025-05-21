@@ -1,4 +1,4 @@
-package com.kerneloso.adam.ui.components
+package com.kerneloso.adam.ui.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -27,7 +27,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.kerneloso.adam.util.longToPrice
-import kotlin.math.exp
 
 @Composable
 fun formTextField(

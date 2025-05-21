@@ -1,13 +1,29 @@
 <resources>
     <string name="app_name">Adam</string>
 
-    <!--Modern-->
-
     <!--HomeScreen-->
+    <string name="homeScreen_button_sell">Vender</string>
+    <string name="homeScreen_button_sellers">Vendedores</string>
+    <string name="homeScreen_button_registers">Registros</string>
+    <string name="homeScreen_button_lens">Lentes</string>
+    <string name="homeScreen_button_frames">Monturas</string>
+    <string name="homeScreen_button_products">Productos</string>
+
     <string name="homeScreenButtonLabel_Sell">Vender</string>
-    <string name="homeScreenButtonLabel_Products">Productos</string>
+    <string name="homeScreenButtonLabel_Lens">Lentes</string>
     <string name="homeScreenButtonLabel_Sellers">Vendedores</string>
     <string name="homeScreenButtonLabel_Registers">Registros</string>
+
+    <!--LensScreen-->
+    <string name="lensScreen_searchBar_byName">Buscar por Nombre :</string>
+
+    <string name="lensScreen_tableHeader_id">ID</string>
+    <string name="lensScreen_tableHeader_name">Nombre</string>
+    <string name="lensScreen_tableHeader_price">Precio</string>
+
+    <string name="lensScreen_button_newLens">Nuevo Lente</string>
+
+
 
     <!--ProductScreen-->
         <!--Search Products-->

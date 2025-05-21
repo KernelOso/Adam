@@ -12,18 +12,18 @@ object FileUtil {
     val pdfDir: File by lazy { verifyDir(dataDir.resolve("pdf")) }
 
     //Files
-    val productsJsonFile: File by lazy { verifyJsonFile(dataDir.resolve("products.json")) }
-    val sellersJsonFile: File by lazy { verifyJsonFile(dataDir.resolve("sellers.json")) }
-    val registersJsonFile: File by lazy { verifyJsonFile(dataDir.resolve("registers.json")) }
+    val lensFileDB: File by lazy { verifyJsonFile(dataDir.resolve("lens.json")) }
+    val lensFramesFileDB: File by lazy { verifyJsonFile(dataDir.resolve("lensFrames.json")) }
+    val productsFileDB: File by lazy { verifyJsonFile(dataDir.resolve("products.json")) }
+    val sellersFileDB: File by lazy { verifyJsonFile(dataDir.resolve("sellers.json")) }
+    val registersFileDB: File by lazy { verifyJsonFile(dataDir.resolve("registers.json")) }
 
     private fun detectRootDir(): File {
-
         return try {
             File(FileUtil::class.java.protectionDomain.codeSource.location.toURI()).parentFile
         } catch (e: URISyntaxException) {
             throw RuntimeException("No se pudo determinar el directorio del ejecutable", e)
         }
-
     }
 
     private fun verifyDir(dir: File): File {

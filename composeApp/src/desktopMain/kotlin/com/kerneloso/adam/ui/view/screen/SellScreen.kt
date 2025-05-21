@@ -1,4 +1,4 @@
-package com.kerneloso.adam.ui.screens
+package com.kerneloso.adam.ui.view.screen
 
 
 import androidx.compose.runtime.Composable

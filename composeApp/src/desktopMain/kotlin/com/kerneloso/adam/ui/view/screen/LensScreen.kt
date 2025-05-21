@@ -1,36 +1,36 @@
-package com.kerneloso.adam.ui.screens
+package com.kerneloso.adam.ui.view.screen
 
 import adam.composeapp.generated.resources.*
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.onClick
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.kerneloso.adam.domain.model.Product
+import com.kerneloso.adam.domain.model.Lens
 import com.kerneloso.adam.ui.ComposeWindowHolder
-import com.kerneloso.adam.ui.components.*
-import com.kerneloso.adam.ui.viewmodel.ProductViewModel
-import com.kerneloso.adam.ui.window.productFormWindow
+import com.kerneloso.adam.ui.component.*
+import com.kerneloso.adam.ui.view.window.productFormWindow
+import com.kerneloso.adam.ui.viewmodel.LensViewModel
 import com.kerneloso.adam.util.*
 import org.jetbrains.compose.resources.stringResource
 
-class ProductScreen : Screen {
+class LensScreen : Screen {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
+
         // Change size and position of the window
         val window = ComposeWindowHolder.window
         val winWidth = 1080
         val windHeight = 800
-        LaunchedEffect(Unit){
+        LaunchedEffect(Unit) {
             resizeAndCenterWindow(
                 window = window,
                 with = winWidth,
@@ -39,40 +39,36 @@ class ProductScreen : Screen {
         }
 
         //View Model
-        val viewModel = remember { (ProductViewModel()) }
+        val viewModel = remember { (LensViewModel()) }
 
-        //SearchBar
-            //NameSearch
-            var searchText by remember { mutableStateOf("") }
+        //Search Bar
+        var searchText by remember { mutableStateOf("") }
 
-            //Product Type
-            var searchType by remember { mutableStateOf("All") }
+        //List of lens
+        var lensList: List<Lens> = viewModel.searchLens(searchText)
 
-        //get Products
-        var productList: List<Product> = viewModel.searchProducts(searchText , searchType)
+        //View Obfuscated State
+        var isViewObfuscated by remember { mutableStateOf(false) }
 
-        //View Obfuscated
-        var isThisViewObfuscated by remember { mutableStateOf(false) }
+        //Views triggers :
+        // Edit product View
+        var openEditLensForm by remember { mutableStateOf(false) }
+        var lensArg by remember { mutableStateOf(Lens()) }
 
-        //Views :
-            // Edit product View
-            var openEditProductForm by remember { mutableStateOf(false) }
-            var productArg by remember { mutableStateOf(Product()) }
-
-            // New Product View
-            var openNewProductForm by remember { mutableStateOf(false) }
+        // New Product View
+        var openNewLensForm by remember { mutableStateOf(false) }
 
         viewTemplateWithNavigationBar {
 
-            val ( container ) = createRefs()
+            val (container) = createRefs()
 
-            primaryContainer(
-                shapeRadius = 0.dp,
+            container(
+                shapeRadius = 4.dp,
+                backgroundColor = MaterialTheme.colorScheme.background,
                 modifier = Modifier
-                    .padding(horizontal = 10.dp , vertical = 10.dp)
-                    .fillMaxHeight(0.96f)
-                    .fillMaxWidth()
-                    .constrainAs(container){
+                    .padding(horizontal = 10.dp, vertical = 10.dp)
+                    .fillMaxSize(0.96f)
+                    .constrainAs(container) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                         start.linkTo(parent.start)
@@ -80,71 +76,45 @@ class ProductScreen : Screen {
                     }
             ) {
 
-                val ( crSearchBar , crList , crButton ) = createRefs()
+                val (crSearchBar, crList, crButton) = createRefs()
 
-                Row (
-                    verticalAlignment = Alignment.CenterVertically,
+                searchBar(
+                    searchNameValue = searchText,
+                    onSearchNameValueChange = { searchText = it },
                     modifier = Modifier
-                        .fillMaxWidth(0.9f)
                         .constrainAs(crSearchBar) {
                             top.linkTo(parent.top)
                             bottom.linkTo(crList.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         },
-                ) {
-
-                    formTextField(
-                        value = searchText,
-                        onValueChange = { searchText = it },
-                        label = stringResource(Res.string.productScreen_search_searchByName),
-                        modifier = Modifier
-                            .weight(6f)
-                            .height(60.dp)
-                    )
-
-                    Spacer(modifier = Modifier.width(10.dp))
-
-                    formDropdownMenu(
-                        options = listOf("All") + viewModel.productDB.value.ProductsTypes,
-                        onOptionSelected = {
-                            println("type selected : $it")
-                            searchType = it
-                        },
-                        defaultOption = searchType,
-                        modifier = Modifier
-                            .padding(top = 10.dp)
-                            .weight(4f)
-                            .height(55.dp)
-                    )
-                }
-
+                )
 
                 //ListContainer
-                secondaryContainer(
+                container(
                     shapeRadius = 0.dp,
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
                         .fillMaxHeight(0.7f)
-                        .constrainAs(crList){
+                        .constrainAs(crList) {
                             top.linkTo(crSearchBar.bottom)
                             bottom.linkTo(crButton.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         }
-                ){
+                ) {
 
-                    val ( crHeaderContainer , crLazyColumn ) = createRefs()
+                    val (crHeaderContainer, crLazyColumn) = createRefs()
 
                     tableHeaderRow(
-                        modifier = Modifier.constrainAs(crHeaderContainer){
+                        modifier = Modifier.constrainAs(crHeaderContainer) {
                             top.linkTo(parent.top)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         }
                     )
 
-                    LazyColumn (
+                    LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight(0.925f)
@@ -152,13 +122,13 @@ class ProductScreen : Screen {
                                 top.linkTo(crHeaderContainer.bottom)
                             }
                     ) {
-                        items(productList) { product ->
+                        items(lensList) { lens ->
                             tableItemRow(
-                                product = product,
+                                lens = lens,
                                 modifier = Modifier
                                     .clickable {
-                                        productArg = product
-                                        openEditProductForm = true
+                                        lensArg = lens
+                                        openEditLensForm = true
                                     }
                             )
                         }
@@ -166,12 +136,12 @@ class ProductScreen : Screen {
                 }
 
                 simpleButton(
-                    text = stringResource(Res.string.productScreen_button_newProduct),
+                    text = stringResource(Res.string.lensScreen_button_newLens),
                     modifier = Modifier
                         .fillMaxWidth(0.3f)
                         .height(60.dp)
                         .onClick {
-                            openNewProductForm = true
+                            openNewLensForm = true
                         }
                         .constrainAs(crButton) {
                             top.linkTo(crList.bottom)
@@ -183,49 +153,60 @@ class ProductScreen : Screen {
             }
         }
 
-        if (isThisViewObfuscated){
+        if (isViewObfuscated) {
             obfuscateView()
         }
 
-        //Open Edit product Window
-        if (openEditProductForm){
-            isThisViewObfuscated = true
+        //Open Edit Lens Window
+        if (openEditLensForm) {
+            isViewObfuscated = true
             productFormWindow(
-                onClose = { openEditProductForm = false ; isThisViewObfuscated = false} ,
+                onClose = { openEditLensForm = false; isViewObfuscated = false },
                 viewmodel = viewModel,
-                product = productArg
+                lens = lensArg
             )
         }
 
-        //Open New product Window
-        if (openNewProductForm){
-            isThisViewObfuscated = true
+        //Open New Lens Window
+        if (openNewLensForm) {
+            isViewObfuscated = true
             productFormWindow(
-                onClose = { openNewProductForm = false ; isThisViewObfuscated = false} ,
+                onClose = { openNewLensForm = false; isViewObfuscated = false },
                 viewmodel = viewModel
             )
         }
+
     }
 }
 
 @Composable
 fun searchBar(
-    rowModifier: Modifier,
-    nameSearchValue: String,
-    onNameValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 
-    typeMenuOptions: List<String>,
-    onTypeOptionSelected: (String) -> Unit,
-    typeDefaultOption: String
-){
-
+    searchNameValue: String = "",
+    onSearchNameValueChange : (String) -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth(0.9f)
+    ) {
+        formTextField(
+            value = searchNameValue,
+            onValueChange = { onSearchNameValueChange(it) },
+            label = stringResource(Res.string.lensScreen_searchBar_byName),
+            modifier = Modifier
+                .weight(6f)
+                .height(60.dp)
+        )
+    }
 }
 
 @Composable
 fun tableHeaderRow(
     modifier: Modifier
-){
-    Row (
+) {
+    Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
@@ -236,34 +217,26 @@ fun tableHeaderRow(
 
         tableHeader(
             textStyle = headerTextStyle,
-            text = stringResource(Res.string.productScreen_tableHeader_id),
+            text = stringResource(Res.string.lensScreen_tableHeader_id),
             modifier = Modifier
                 .height(headerHeight)
-                .weight(0.05f)
+                .weight(1f)
         )
 
         tableHeader(
             textStyle = headerTextStyle,
-            text = stringResource(Res.string.productScreen_tableHeader_name),
+            text = stringResource(Res.string.lensScreen_tableHeader_name),
             modifier = Modifier
                 .height(headerHeight)
-                .weight(0.45f)
+                .weight(5f)
         )
 
         tableHeader(
             textStyle = headerTextStyle,
-            text = stringResource(Res.string.productScreen_tableHeader_type),
+            text = stringResource(Res.string.lensScreen_tableHeader_price),
             modifier = Modifier
                 .height(headerHeight)
-                .weight(0.15f)
-        )
-
-        tableHeader(
-            textStyle = headerTextStyle,
-            text = stringResource(Res.string.productScreen_tableHeader_price),
-            modifier = Modifier
-                .height(headerHeight)
-                .weight(0.35f)
+                .weight(4f)
         )
     }
 }
@@ -271,10 +244,10 @@ fun tableHeaderRow(
 @Composable
 fun tableItemRow(
     modifier: Modifier = Modifier,
-    product: Product
+    lens: Lens
 ) {
 
-    Row (
+    Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
@@ -286,37 +259,28 @@ fun tableItemRow(
         //Id
         tableItem(
             textStyle = headerTextStyle,
-            text = product.productId.toString(),
+            text = lens.id.toString(),
             modifier = Modifier
                 .height(headerHeight)
-                .weight(0.05f)
+                .weight(1f)
         )
 
         //Name
         tableItem(
             textStyle = headerTextStyle,
-            text = product.productName,
+            text = lens.name,
             modifier = Modifier
                 .height(headerHeight)
-                .weight(0.45f)
-        )
-
-        //Type
-        tableItem(
-            textStyle = headerTextStyle,
-            text = product.productType,
-            modifier = Modifier
-                .height(headerHeight)
-                .weight(0.15f)
+                .weight(5f)
         )
 
         //Price
         tableItem(
             textStyle = headerTextStyle,
-            text = "$ ${longToPrice(product.productPrice)}",
+            text = "$ ${longToPrice(lens.price)}",
             modifier = Modifier
                 .height(headerHeight)
-                .weight(0.35f)
+                .weight(4f)
         )
     }
 
