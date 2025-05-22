@@ -25,8 +25,8 @@ fun container (
 ) {
     ConstraintLayout (
         modifier = modifier
-            .clip(RoundedCornerShape(shapeRadius))
             .background(color = backgroundColor , shape = RoundedCornerShape(shapeRadius))
+            .clip(RoundedCornerShape(shapeRadius))
             .border(
                 width = borderWidth,
                 color = borderColor,

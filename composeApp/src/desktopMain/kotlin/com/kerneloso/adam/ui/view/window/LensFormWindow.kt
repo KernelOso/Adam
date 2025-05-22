@@ -2,9 +2,11 @@ package com.kerneloso.adam.ui.view.window
 
 import adam.composeapp.generated.resources.*
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.onClick
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,7 +60,7 @@ fun productFormWindow(
         alwaysOnTop = true
     ) {
         val winWidth = 400
-        val windHeight = 600
+        val windHeight = 500
         LaunchedEffect(Unit){
             resizeAndCenterWindow(
                 window = window,
@@ -147,6 +149,7 @@ fun productFormWindow(
                     // Button : Delete
                     simpleButton(
                         text = stringResource(Res.string.lensFormWindow_button_delete),
+                        backgroundColor = MaterialTheme.colorScheme.error,
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .height(60.dp)

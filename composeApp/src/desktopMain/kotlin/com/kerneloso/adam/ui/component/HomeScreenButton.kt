@@ -3,11 +3,14 @@ package com.kerneloso.adam.ui.component
 import adam.composeapp.generated.resources.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import cafe.adriel.voyager.core.screen.Screen
@@ -20,14 +23,24 @@ fun homeButton(
     screenDestiny : Screen,
     icon: ImageVector,
     label: String,
+    shapeRadius: Dp = 8.dp,
     modifier: Modifier
 )  {
     val navigator = LocalNavigator.current
 
+    val buttonColor = MaterialTheme.colorScheme.primaryContainer
+    val onButtonColor = MaterialTheme.colorScheme.onPrimaryContainer
+
     Box(
         modifier = modifier
             .size(180.dp)
-            .background(MaterialTheme.colorScheme.primary)
+            .background(buttonColor , shape = RoundedCornerShape(shapeRadius))
+            .clip(RoundedCornerShape(shapeRadius))
+            .border(
+                width = 2.dp,
+                color = buttonColor,
+                shape = RoundedCornerShape(shapeRadius)
+            )
             .onClick {
                 navigator!!.push(screenDestiny)
             }
@@ -39,7 +52,7 @@ fun homeButton(
             val ( crIcon , crLabel ) = createRefs()
 
             Icon(
-                tint = MaterialTheme.colorScheme.onPrimary,
+                tint = onButtonColor,
                 imageVector = icon,
                 contentDescription = "",
                 modifier = Modifier
@@ -55,7 +68,7 @@ fun homeButton(
             Text(
                 style = MaterialTheme.typography.titleMedium,
                 fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = onButtonColor,
                 text = label,
                 modifier = Modifier
                     .constrainAs(crLabel) {

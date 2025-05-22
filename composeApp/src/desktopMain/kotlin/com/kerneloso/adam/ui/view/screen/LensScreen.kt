@@ -2,6 +2,7 @@ package com.kerneloso.adam.ui.view.screen
 
 import adam.composeapp.generated.resources.*
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -10,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.kerneloso.adam.domain.model.Lens
@@ -63,8 +65,9 @@ class LensScreen : Screen {
             val (container) = createRefs()
 
             container(
-                shapeRadius = 4.dp,
-                backgroundColor = MaterialTheme.colorScheme.background,
+                shapeRadius = 6.dp,
+                backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                borderColor = MaterialTheme.colorScheme.primaryContainer,
                 modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 10.dp)
                     .fillMaxSize(0.96f)
@@ -93,6 +96,8 @@ class LensScreen : Screen {
                 //ListContainer
                 container(
                     shapeRadius = 0.dp,
+                    borderColor = MaterialTheme.colorScheme.tertiary,
+                    backgroundColor = MaterialTheme.colorScheme.background,
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
                         .fillMaxHeight(0.7f)
@@ -103,40 +108,32 @@ class LensScreen : Screen {
                             end.linkTo(parent.end)
                         }
                 ) {
+                    Column {
+                        tableHeaderRow(
+                            modifier = Modifier
+                        )
 
-                    val (crHeaderContainer, crLazyColumn) = createRefs()
-
-                    tableHeaderRow(
-                        modifier = Modifier.constrainAs(crHeaderContainer) {
-                            top.linkTo(parent.top)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
-                    )
-
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(0.925f)
-                            .constrainAs(crLazyColumn) {
-                                top.linkTo(crHeaderContainer.bottom)
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            items(lensList) { lens ->
+                                tableItemRow(
+                                    lens = lens,
+                                    modifier = Modifier
+                                        .clickable {
+                                            lensArg = lens
+                                            openEditLensForm = true
+                                        }
+                                )
                             }
-                    ) {
-                        items(lensList) { lens ->
-                            tableItemRow(
-                                lens = lens,
-                                modifier = Modifier
-                                    .clickable {
-                                        lensArg = lens
-                                        openEditLensForm = true
-                                    }
-                            )
                         }
                     }
                 }
 
                 simpleButton(
                     text = stringResource(Res.string.lensScreen_button_newLens),
+                    backgroundColor = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .fillMaxWidth(0.3f)
                         .height(60.dp)
@@ -184,7 +181,7 @@ fun searchBar(
     modifier: Modifier = Modifier,
 
     searchNameValue: String = "",
-    onSearchNameValueChange : (String) -> Unit,
+    onSearchNameValueChange: (String) -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,

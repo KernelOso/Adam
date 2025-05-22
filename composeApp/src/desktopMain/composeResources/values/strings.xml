@@ -27,7 +27,7 @@
 
     <string name="lensFormWindow_button_new">Agregar Lente</string>
     <string name="lensFormWindow_button_update">Actualizar Lente</string>
-    <string name="lensFormWindow_button_delete">Agregar Lente</string>
+    <string name="lensFormWindow_button_delete">Eliminar Lente</string>
 
     <string name="lensFormWindow_notification_noPrice_title">No se ingreso un precio</string>
     <string name="lensFormWindow_notification_noPrice_content">El precio del producto no puede ser 0</string>

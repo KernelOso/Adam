@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.onClick
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowOutward
+import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -28,18 +31,38 @@ fun viewTemplateWithNavigationBar (
 
     val navigator = LocalNavigator.current
 
+    val color = MaterialTheme.colorScheme.primaryContainer
+    val onColor = MaterialTheme.colorScheme.onPrimaryContainer
+
     Column {
         ConstraintLayout (
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)
-                .background(MaterialTheme.colorScheme.primary)
+                .background(color)
         ) {
-            val ( buttonSettings , buttonHome  ) = createRefs()
+            val ( crButtonBack , crButtonHome  ) = createRefs()
+
+            //Back
+            Icon(
+                tint = onColor,
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "",
+                modifier = Modifier
+                    .size(34.dp)
+                    .onClick {
+                        navigator?.pop()
+                    }
+                    .constrainAs(crButtonBack) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start , margin = 10.dp)
+                    }
+            )
 
             // HOME
             Icon(
-                tint = MaterialTheme.colorScheme.onPrimary,
+                tint = onColor,
                 imageVector = Icons.Filled.Home,
                 contentDescription = "",
                 modifier = Modifier
@@ -47,26 +70,26 @@ fun viewTemplateWithNavigationBar (
                     .onClick {
                         navigator?.push(HomeScreen())
                     }
-                    .constrainAs(buttonHome) {
+                    .constrainAs(crButtonHome) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start , margin = 10.dp)
+                        end.linkTo(parent.end , margin = 10.dp)
                     }
             )
 
             // SETTINGS
-            Icon(
-                tint = MaterialTheme.colorScheme.onPrimary,
-                imageVector = Icons.Filled.Settings,
-                contentDescription = "",
-                modifier = Modifier
-                    .size(34.dp)
-                    .constrainAs(buttonSettings) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(buttonHome.end , margin = 10.dp)
-                    }
-            )
+//            Icon(
+//                tint = MaterialTheme.colorScheme.onPrimary,
+//                imageVector = Icons.Filled.Settings,
+//                contentDescription = "",
+//                modifier = Modifier
+//                    .size(34.dp)
+//                    .constrainAs(buttonSettings) {
+//                        top.linkTo(parent.top)
+//                        bottom.linkTo(parent.bottom)
+//                        start.linkTo(buttonHome.end , margin = 10.dp)
+//                    }
+//            )
 
         }
 
