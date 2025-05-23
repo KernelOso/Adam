@@ -2,6 +2,8 @@
     <string name="app_name">Adam</string>
 
     <!--HomeScreen-->
+    <string name="homeScreen_windowTitle">Inicio</string>
+
     <string name="homeScreen_button_sell">Vender</string>
     <string name="homeScreen_button_sellers">Vendedores</string>
     <string name="homeScreen_button_registers">Registros</string>
@@ -10,7 +12,9 @@
     <string name="homeScreen_button_products">Productos</string>
 
     <!--LensScreen-->
-    <string name="lensScreen_searchBar_byName">Buscar por Nombre :</string>
+    <string name="lensScreen_windowTitle">Lentes</string>
+
+    <string name="lensScreen_searchBar_byName">Buscar lente por nombre :</string>
 
     <string name="lensScreen_tableHeader_id">ID</string>
     <string name="lensScreen_tableHeader_name">Nombre</string>
@@ -20,7 +24,7 @@
 
     <!--Lens Form-->
     <string name="lensFormWindow_windowTitle_New">Nuevo Lente</string>
-    <string name="lensFormWindow_windowTitle_Edit">Nuevo Lente</string>
+    <string name="lensFormWindow_windowTitle_Edit">Editar Lente</string>
 
     <string name="lensFormWindow_formField_lensName">Nombre del Lente</string>
     <string name="lensFormWindow_formField_lensPrice">Precio del Lente</string>
@@ -30,9 +34,76 @@
     <string name="lensFormWindow_button_delete">Eliminar Lente</string>
 
     <string name="lensFormWindow_notification_noPrice_title">No se ingreso un precio</string>
-    <string name="lensFormWindow_notification_noPrice_content">El precio del producto no puede ser 0</string>
+    <string name="lensFormWindow_notification_noPrice_content">El precio del lente no puede ser 0</string>
 
     <string name="lensFormWindow_notification_noName_title">No se ingreso un nombre</string>
-    <string name="lensFormWindow_notification_noName_content">El nombre del producto no puede estar vacio</string>
+    <string name="lensFormWindow_notification_noName_content">El nombre del lente no puede estar vacio</string>
+
+    <!--=========================================================================================-->
+
+    <!--Frame Screen-->
+
+    <string name="framesScreen_windowTitle">Monturas</string>
+
+    <string name="framesScreen_searchBar_byName">Buscar montura por nombre :</string>
+
+    <string name="framesScreen_tableHeader_id">ID</string>
+    <string name="framesScreen_tableHeader_name">Nombre</string>
+    <string name="framesScreen_tableHeader_price">Precio</string>
+
+    <string name="framesScreen_button_newLens">Nueva Montura</string>
+
+    <!--Frame Form-->
+
+    <string name="frameFormWindow_windowTitle_New">Nueva Montura</string>
+    <string name="frameFormWindow_windowTitle_Edit">Editar Montura</string>
+
+    <string name="frameFormWindow_formField_frameName">Nombre de la montura</string>
+    <string name="frameFormWindow_formField_framePrice">Precio de la montura</string>
+
+    <string name="frameFormWindow_button_new">Agregar Montura</string>
+    <string name="frameFormWindow_button_update">Actualizar Montura</string>
+    <string name="frameFormWindow_button_delete">Eliminar Montura</string>
+
+    <string name="frameFormWindow_notification_noPrice_title">No se ingreso un precio</string>
+    <string name="frameFormWindow_notification_noPrice_content">El precio de la montura no puede ser 0</string>
+
+    <string name="frameFormWindow_notification_noName_title">No se ingreso un nombre</string>
+    <string name="frameFormWindow_notification_noName_content">El nombre de la montura no puede estar vacio</string>
+
+    <!--=========================================================================================-->
+
+    <!--Products Screen-->
+
+    <string name="productsScreen_windowTitle">Productos</string>
+
+    <string name="productsScreen_searchBar_byName">Buscar producto por nombre :</string>
+
+    <string name="productsScreen_tableHeader_id">ID</string>
+    <string name="productsScreen_tableHeader_name">Nombre</string>
+    <string name="productsScreen_tableHeader_price">Precio</string>
+
+    <string name="productsScreen_button_newLens">Nuevo Producto</string>
+
+    <!--Products Form-->
+
+    <string name="productsFormWindow_windowTitle_New">Nuevo Producto</string>
+    <string name="productsFormWindow_windowTitle_Edit">Editar Producto</string>
+
+    <string name="productsFormWindow_formField_frameName">Nombre del producto</string>
+    <string name="productsFormWindow_formField_framePrice">Precio del producto</string>
+
+    <string name="productsFormWindow_button_new">Agregar Producto</string>
+    <string name="productsFormWindow_button_update">Actualizar Producto</string>
+    <string name="productsFormWindow_button_delete">Eliminar Producto</string>
+
+    <string name="productsFormWindow_notification_noPrice_title">No se ingreso un precio</string>
+    <string name="productsFormWindow_notification_noPrice_content">El precio del producto no puede ser 0</string>
+
+    <string name="productsFormWindow_notification_noName_title">No se ingreso un nombre</string>
+    <string name="productsFormWindow_notification_noName_content">El nombre del producto no puede estar vacio</string>
+
+
+
 </resources>
 

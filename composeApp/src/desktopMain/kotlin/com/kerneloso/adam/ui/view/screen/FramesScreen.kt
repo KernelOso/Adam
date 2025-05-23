@@ -1,31 +1,59 @@
 package com.kerneloso.adam.ui.view.screen
 
-import adam.composeapp.generated.resources.*
+import adam.composeapp.generated.resources.Res
+import adam.composeapp.generated.resources.framesScreen_button_newLens
+import adam.composeapp.generated.resources.framesScreen_searchBar_byName
+import adam.composeapp.generated.resources.framesScreen_tableHeader_id
+import adam.composeapp.generated.resources.framesScreen_tableHeader_name
+import adam.composeapp.generated.resources.framesScreen_tableHeader_price
+import adam.composeapp.generated.resources.framesScreen_windowTitle
+import adam.composeapp.generated.resources.lensScreen_button_newLens
+import adam.composeapp.generated.resources.lensScreen_searchBar_byName
+import adam.composeapp.generated.resources.lensScreen_tableHeader_id
+import adam.composeapp.generated.resources.lensScreen_tableHeader_name
+import adam.composeapp.generated.resources.lensScreen_tableHeader_price
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.onClick
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.kerneloso.adam.domain.model.Lens
+import com.kerneloso.adam.domain.model.Frame
 import com.kerneloso.adam.ui.ComposeWindowHolder
-import com.kerneloso.adam.ui.component.*
-import com.kerneloso.adam.ui.view.window.lensFormWindow
-import com.kerneloso.adam.ui.viewmodel.LensViewModel
-import com.kerneloso.adam.util.*
+import com.kerneloso.adam.ui.component.formTextField
+import com.kerneloso.adam.ui.component.obfuscateView
+import com.kerneloso.adam.ui.component.simpleButton
+import com.kerneloso.adam.ui.component.tableHeader
+import com.kerneloso.adam.ui.component.tableItem
+import com.kerneloso.adam.ui.component.viewTemplateWithNavigationBar
+import com.kerneloso.adam.ui.view.window.frameFormWindow
+import com.kerneloso.adam.ui.viewmodel.FramesViewModel
+import com.kerneloso.adam.util.longToPrice
+import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
 
-class LensScreen : Screen {
+class FramesScreen : Screen {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
-
         // Change size and position of the window
         val window = ComposeWindowHolder.window
         val winWidth = 1080
@@ -37,33 +65,33 @@ class LensScreen : Screen {
                 height = windHeight
             )
         }
-        window.title = stringResource(Res.string.lensScreen_windowTitle)
+        window.title = stringResource(Res.string.framesScreen_windowTitle)
 
         //View Model
-        val viewModel = remember { (LensViewModel()) }
+        val viewModel = remember { (FramesViewModel()) }
 
         //Search Bar
         var searchText by remember { mutableStateOf("") }
 
         //List of lens
-        var lensList: List<Lens> = viewModel.searchLens(searchText)
+        var framesList: List<Frame> = viewModel.searchFrames(searchText)
 
         //View Obfuscated State
         var isViewObfuscated by remember { mutableStateOf(false) }
 
         //Views triggers :
         // Edit product View
-        var openEditLensForm by remember { mutableStateOf(false) }
-        var lensArg by remember { mutableStateOf(Lens()) }
+        var openEditFrameForm by remember { mutableStateOf(false) }
+        var frameArg by remember { mutableStateOf(Frame()) }
 
         // New Product View
-        var openNewLensForm by remember { mutableStateOf(false) }
+        var openNewFrameForm by remember { mutableStateOf(false) }
 
         viewTemplateWithNavigationBar {
 
             val (container) = createRefs()
 
-            container(
+            com.kerneloso.adam.ui.component.container(
                 shapeRadius = 6.dp,
                 backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 borderColor = MaterialTheme.colorScheme.primaryContainer,
@@ -93,7 +121,7 @@ class LensScreen : Screen {
                 )
 
                 //ListContainer
-                container(
+                com.kerneloso.adam.ui.component.container(
                     shapeRadius = 0.dp,
                     borderColor = MaterialTheme.colorScheme.tertiary,
                     backgroundColor = MaterialTheme.colorScheme.background,
@@ -116,13 +144,13 @@ class LensScreen : Screen {
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
-                            items(lensList) { lens ->
+                            items(framesList) { frame ->
                                 tableItemRow(
-                                    lens = lens,
+                                    frame = frame,
                                     modifier = Modifier
                                         .clickable {
-                                            lensArg = lens
-                                            openEditLensForm = true
+                                            frameArg = frame
+                                            openEditFrameForm = true
                                         }
                                 )
                             }
@@ -131,13 +159,13 @@ class LensScreen : Screen {
                 }
 
                 simpleButton(
-                    text = stringResource(Res.string.lensScreen_button_newLens),
+                    text = stringResource(Res.string.framesScreen_button_newLens),
                     backgroundColor = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .fillMaxWidth(0.3f)
                         .height(60.dp)
                         .onClick {
-                            openNewLensForm = true
+                            openNewFrameForm = true
                         }
                         .constrainAs(crButton) {
                             top.linkTo(crList.bottom)
@@ -154,24 +182,23 @@ class LensScreen : Screen {
         }
 
         //Open Edit Lens Window
-        if (openEditLensForm) {
+        if (openEditFrameForm) {
             isViewObfuscated = true
-            lensFormWindow(
-                onClose = { openEditLensForm = false; isViewObfuscated = false },
+            frameFormWindow(
+                onClose = { openEditFrameForm = false; isViewObfuscated = false },
                 viewmodel = viewModel,
-                lens = lensArg
+                frame = frameArg
             )
         }
 
         //Open New Lens Window
-        if (openNewLensForm) {
+        if (openNewFrameForm) {
             isViewObfuscated = true
-            lensFormWindow(
-                onClose = { openNewLensForm = false; isViewObfuscated = false },
-                viewmodel = viewModel
+            frameFormWindow(
+                onClose = { openNewFrameForm = false; isViewObfuscated = false },
+                viewmodel = viewModel,
             )
         }
-
     }
 }
 
@@ -190,7 +217,7 @@ private fun searchBar(
         formTextField(
             value = searchNameValue,
             onValueChange = { onSearchNameValueChange(it) },
-            label = stringResource(Res.string.lensScreen_searchBar_byName),
+            label = stringResource(Res.string.framesScreen_searchBar_byName),
             modifier = Modifier
                 .weight(6f)
                 .height(60.dp)
@@ -213,7 +240,7 @@ private fun tableHeaderRow(
 
         tableHeader(
             textStyle = headerTextStyle,
-            text = stringResource(Res.string.lensScreen_tableHeader_id),
+            text = stringResource(Res.string.framesScreen_tableHeader_id),
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
@@ -221,7 +248,7 @@ private fun tableHeaderRow(
 
         tableHeader(
             textStyle = headerTextStyle,
-            text = stringResource(Res.string.lensScreen_tableHeader_name),
+            text = stringResource(Res.string.framesScreen_tableHeader_name),
             modifier = Modifier
                 .height(headerHeight)
                 .weight(5f)
@@ -229,7 +256,7 @@ private fun tableHeaderRow(
 
         tableHeader(
             textStyle = headerTextStyle,
-            text = stringResource(Res.string.lensScreen_tableHeader_price),
+            text = stringResource(Res.string.framesScreen_tableHeader_price),
             modifier = Modifier
                 .height(headerHeight)
                 .weight(4f)
@@ -240,7 +267,7 @@ private fun tableHeaderRow(
 @Composable
 private fun tableItemRow(
     modifier: Modifier = Modifier,
-    lens: Lens
+    frame: Frame
 ) {
 
     Row(
@@ -255,7 +282,7 @@ private fun tableItemRow(
         //Id
         tableItem(
             textStyle = headerTextStyle,
-            text = lens.id.toString(),
+            text = frame.id.toString(),
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
@@ -264,7 +291,7 @@ private fun tableItemRow(
         //Name
         tableItem(
             textStyle = headerTextStyle,
-            text = lens.name,
+            text = frame.name,
             modifier = Modifier
                 .height(headerHeight)
                 .weight(5f)
@@ -273,7 +300,7 @@ private fun tableItemRow(
         //Price
         tableItem(
             textStyle = headerTextStyle,
-            text = "$ ${longToPrice(lens.price)}",
+            text = "$ ${longToPrice(frame.price)}",
             modifier = Modifier
                 .height(headerHeight)
                 .weight(4f)

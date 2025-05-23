@@ -6,43 +6,49 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.onClick
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
+import com.kerneloso.adam.domain.model.Frame
 import com.kerneloso.adam.domain.model.Lens
 import com.kerneloso.adam.ui.component.*
-import com.kerneloso.adam.ui.viewmodel.LensViewModel
+import com.kerneloso.adam.ui.viewmodel.FramesViewModel
 import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun lensFormWindow(
-    lens: Lens? = null,
+fun frameFormWindow(
+    frame: Frame? = null,
     onClose: () -> Unit,
-    viewmodel: LensViewModel
+    viewmodel: FramesViewModel
 ) {
     //Form Variables
-    var lensID by remember { mutableStateOf(0L) }
-    var lensName by remember { mutableStateOf("") }
-    var lensPrice by remember { mutableStateOf(0L) }
+    var frameID by remember { mutableStateOf(0L) }
+    var frameName by remember { mutableStateOf("") }
+    var framePrice by remember { mutableStateOf(0L) }
 
     //Form type trigger
     var showEditButtons by remember { mutableStateOf(false) }
 
     //Set title and import object
     val title : String
-    if (lens == null){
+    if (frame == null){
         title = stringResource(Res.string.lensFormWindow_windowTitle_New)
     } else {
         title = stringResource(Res.string.lensFormWindow_windowTitle_Edit)
 
-        lensID = lens.id
-        lensName = lens.name
-        lensPrice = lens.price
+        frameID = frame.id
+        frameName = frame.name
+        framePrice = frame.price
 
         showEditButtons = true
     }
@@ -67,7 +73,7 @@ fun lensFormWindow(
                 height = windHeight
             )
         }
-        
+
         viewWhitLogoBackground {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -79,7 +85,7 @@ fun lensFormWindow(
                 if ( showEditButtons ) {
                     Text(
                         modifier = Modifier.height(20.dp),
-                        text = "ID : $lensID",
+                        text = "ID : $frameID",
                     )
                 } else {
                     Box(
@@ -91,8 +97,8 @@ fun lensFormWindow(
                 // =================================================================================
                 // Text Field : Product Name
                 formTextField(
-                    value = lensName,
-                    onValueChange = { lensName = it },
+                    value = frameName,
+                    onValueChange = { frameName = it },
                     label = stringResource(Res.string.lensFormWindow_formField_lensName),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -103,9 +109,9 @@ fun lensFormWindow(
                 // =================================================================================
                 // Text Field : Product Price
                 formPriceTextField(
-                    initialValue = lensPrice,
+                    initialValue = framePrice,
                     label = stringResource(Res.string.lensFormWindow_formField_lensPrice),
-                    onPriceChange = { lensPrice = it },
+                    onPriceChange = { framePrice = it },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(80.dp)
@@ -122,18 +128,18 @@ fun lensFormWindow(
                             .fillMaxWidth(0.5f)
                             .height(60.dp)
                             .onClick {
-                                if (lens != null) {
+                                if (frame != null) {
                                     verifyFormData(
-                                        nameValue = lensName,
-                                        priceValue = lensPrice,
+                                        nameValue = frameName,
+                                        priceValue = framePrice,
                                         showNameEmptyView = {showNameEmptyScreen = it},
                                         showPriceEmptyView = { showPriceEmptyScreen = it },
                                         content = {
-                                            viewmodel.updateLens(
-                                                Lens(
-                                                    id = lensID,
-                                                    name = lensName,
-                                                    price = lensPrice
+                                            viewmodel.updateFrame(
+                                                Frame(
+                                                    id = frameID,
+                                                    name = frameName,
+                                                    price = framePrice
                                                 )
                                             )
                                         }
@@ -153,8 +159,8 @@ fun lensFormWindow(
                             .fillMaxWidth(0.5f)
                             .height(60.dp)
                             .onClick {
-                                if (lens != null) {
-                                    viewmodel.deleteLens(lens)
+                                if (frame != null) {
+                                    viewmodel.deleteFrame(frame)
                                 }
                                 onClose()
                             }
@@ -170,16 +176,16 @@ fun lensFormWindow(
                             .height(60.dp)
                             .onClick {
                                 verifyFormData(
-                                    nameValue = lensName,
-                                    priceValue = lensPrice,
+                                    nameValue = frameName,
+                                    priceValue = framePrice,
                                     showNameEmptyView = {showNameEmptyScreen = it},
                                     showPriceEmptyView = { showPriceEmptyScreen = it },
                                     content = {
-                                        viewmodel.addLens(
-                                            Lens(
-                                                id = viewmodel.lensDB.value.lastID + 1,
-                                                name = lensName,
-                                                price = lensPrice
+                                        viewmodel.addFrame(
+                                            Frame(
+                                                id = viewmodel.framesDB.value.lastID + 1,
+                                                name = frameName,
+                                                price = framePrice
                                             )
                                         )
                                         onClose()
@@ -224,7 +230,7 @@ private fun verifyFormData (
 
     // form some reason, if show both screen, it crash
     if ( nameIsEmpty && priceIsZero ){
-       priceIsZero = false
+        priceIsZero = false
     }
 
     //Show Screens

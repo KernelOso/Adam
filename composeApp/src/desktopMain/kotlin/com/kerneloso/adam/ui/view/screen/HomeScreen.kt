@@ -32,6 +32,8 @@ class HomeScreen () : Screen {
                 height = windHeight
             )
         }
+        window.title = stringResource(Res.string.homeScreen_windowTitle)
+
 
         viewTemplateWithNavigationBar {
             val ( container ) = createRefs()
@@ -104,7 +106,7 @@ class HomeScreen () : Screen {
 
                 //Button : Lens Frames DB DB
                 homeButton(
-                    screenDestiny = LensFramesScreen(),
+                    screenDestiny = FramesScreen(),
                     icon = Icons.Filled.RemoveRedEye,
                     label = stringResource(Res.string.homeScreen_button_frames),
                     modifier = Modifier.constrainAs(crButtonFrames) {
