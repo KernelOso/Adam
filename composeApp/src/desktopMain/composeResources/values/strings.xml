@@ -1,89 +1,38 @@
 <resources>
     <string name="app_name">Adam</string>
 
-    <!--Modern-->
-
     <!--HomeScreen-->
-    <string name="homeScreenButtonLabel_Sell">Vender</string>
-    <string name="homeScreenButtonLabel_Products">Productos</string>
-    <string name="homeScreenButtonLabel_Sellers">Vendedores</string>
-    <string name="homeScreenButtonLabel_Registers">Registros</string>
+    <string name="homeScreen_button_sell">Vender</string>
+    <string name="homeScreen_button_sellers">Vendedores</string>
+    <string name="homeScreen_button_registers">Registros</string>
+    <string name="homeScreen_button_lens">Lentes</string>
+    <string name="homeScreen_button_frames">Monturas</string>
+    <string name="homeScreen_button_products">Productos</string>
 
-    <!--ProductScreen-->
-    <string name="productScreen_tableHeader_id">ID</string>
-    <string name="productScreen_tableHeader_name">Nombre</string>
-    <string name="productScreen_tableHeader_type">Tipo</string>
-    <string name="productScreen_tableHeader_price">Precio</string>
+    <!--LensScreen-->
+    <string name="lensScreen_searchBar_byName">Buscar por Nombre :</string>
 
-        <!--ProductFormWindow-->
-        <string name="productFormWindow_typeNew">Nuevo producto</string>
-        <string name="productFormWindow_typeEdit">Editar producto</string>
+    <string name="lensScreen_tableHeader_id">ID</string>
+    <string name="lensScreen_tableHeader_name">Nombre</string>
+    <string name="lensScreen_tableHeader_price">Precio</string>
 
-            <!--Form-->
-            <string name="productFormWindow_form_productName">Nombre del producto :</string>
-            <string name="productFormWindow_form_productType">Tipo del producto :</string>
-            <string name="productFormWindow_form_productPrice">Precio del producto :</string>
+    <string name="lensScreen_button_newLens">Nuevo Lente</string>
 
+    <!--Lens Form-->
+    <string name="lensFormWindow_windowTitle_New">Nuevo Lente</string>
+    <string name="lensFormWindow_windowTitle_Edit">Nuevo Lente</string>
 
+    <string name="lensFormWindow_formField_lensName">Nombre del Lente</string>
+    <string name="lensFormWindow_formField_lensPrice">Precio del Lente</string>
 
+    <string name="lensFormWindow_button_new">Agregar Lente</string>
+    <string name="lensFormWindow_button_update">Actualizar Lente</string>
+    <string name="lensFormWindow_button_delete">Eliminar Lente</string>
 
-    <!--Legacy-->
+    <string name="lensFormWindow_notification_noPrice_title">No se ingreso un precio</string>
+    <string name="lensFormWindow_notification_noPrice_content">El precio del producto no puede ser 0</string>
 
-    <!--Formulario Vender-->
-    <string name="label_ClientInfo">Informacion del Cliente</string>
-    <string name="tf_label_ClientName">Nombre del Cliente</string>
-    <string name="tf_label_ClientNumber">Numero del Cliente</string>
-    <string name="tf_label_ClientID">Numero de Identificacion del Cliente</string>
-
-    <string name="label_GlassesInfo">Informacion de los Lentes</string>
-
-    <!--Opciones del menu de seleccion del metodo de especificacion de lentes-->
-    <string name="menuGlassMethodOption_NoLens">No se venderan lentes</string>
-    <string name="menuGlassMethodOption_bothGlassFromDB">Ambos lentes, mismo tipo</string>
-    <string name="menuGlassMethodOption_bothGlassFromDB_priceInput">Ambos lentes, mismo tipo, precio manual</string>
-    <string name="menuGlassMethodOption_singleGlassFromDB_priceInput">Lentes de tipos diferentes, precio manual</string>
-
-    <!--Forrmulario de los lentes-->
-    <string name="label_LeftEye">Lente Izquierdo</string>
-    <string name="label_RightEye">Lente Derecho</string>
-
-    <string name="label_ESF">ESF</string>
-    <string name="label_CIL">CIL</string>
-    <string name="label_EJE">EJE</string>
-    <string name="label_ADD">ADD</string>
-
-    <string name="label_extraProducts">Productos Extras</string>
-
-    <string name="label_extraInfo">Informacion Extra</string>
-
-
-    <string name="label_lensPrice">Precio del lente :</string>
-    <string name="label_totalLens">Total de los lentes : $</string>
-
-    <string name="label_COLOR">Color</string>
-    <string name="label_DP">DP</string>
-    <string name="label_MountPrice">Precio de la montura</string>
-
-    <string name="label_SELL">Vender</string>
-
-    <!--Crud Productos-->
-    <string name="label_addProducts">Aniadir Producto</string>
-
-    <string name="label_crudProductName">Nombre</string>
-    <string name="label_crudProductType">Tipo</string>
-    <string name="label_crudProductPrice">Precio</string>
-
-    <!--Crud Empleados-->
-    <string name="label_addEmploy">Aniadir Emplado</string>
-    <string name="label_crudEmployName">Nombre</string>
-
-
-
-
-
-
-
-
-
-
+    <string name="lensFormWindow_notification_noName_title">No se ingreso un nombre</string>
+    <string name="lensFormWindow_notification_noName_content">El nombre del producto no puede estar vacio</string>
 </resources>
+

@@ -29,6 +29,8 @@ kotlin {
             implementation(libs.constraint.layout)
 
             implementation(compose.materialIconsExtended)
+
+            implementation(libs.google.gson)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -40,16 +42,15 @@ kotlin {
     }
 }
 
-
-
 compose.desktop {
     application {
         mainClass = "com.kerneloso.adam.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.kerneloso.adam"
+            packageName = "adam"
             packageVersion = "1.0.0"
         }
+
     }
 }
