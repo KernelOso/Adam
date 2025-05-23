@@ -4,10 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kerneloso.adam.domain.model.Frame
 import com.kerneloso.adam.domain.model.Product
 import com.kerneloso.adam.domain.model.ProductsDB
-import com.kerneloso.adam.domain.repository.FramesRepository
 import com.kerneloso.adam.domain.repository.ProductsRepository
 import kotlinx.coroutines.launch
 
@@ -47,7 +45,7 @@ class ProductsViewModel : ViewModel() {
         }
     }
 
-    fun addProducts(product: Product) {
+    fun addProduct(product: Product) {
         val current = _productsDB.value
         val updatedProductsDB = current.copy(
             lastID = current.lastID + 1,
@@ -59,7 +57,7 @@ class ProductsViewModel : ViewModel() {
         }
     }
 
-    fun updateProducts(product: Product) {
+    fun updateProduct(product: Product) {
         val current = _productsDB.value
         val updatedProductsDB = current.copy(products =
             current.products.map {
@@ -76,7 +74,7 @@ class ProductsViewModel : ViewModel() {
         }
     }
 
-    fun deleteProducts(product: Product) {
+    fun deleteProduct(product: Product) {
         val current = _productsDB.value
         val updatedProductsDB = current.copy(
             products = current.products.filter { it.id != product.id }

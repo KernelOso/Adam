@@ -31,7 +31,7 @@ fun simpleButton (
     ) {
 
         Text(
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
             color = MaterialTheme.colorScheme.onPrimary,
             text = text,

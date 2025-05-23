@@ -83,15 +83,15 @@
     <string name="productsScreen_tableHeader_name">Nombre</string>
     <string name="productsScreen_tableHeader_price">Precio</string>
 
-    <string name="productsScreen_button_newLens">Nuevo Producto</string>
+    <string name="productsScreen_button_newProduct">Nuevo Producto</string>
 
     <!--Products Form-->
 
     <string name="productsFormWindow_windowTitle_New">Nuevo Producto</string>
     <string name="productsFormWindow_windowTitle_Edit">Editar Producto</string>
 
-    <string name="productsFormWindow_formField_frameName">Nombre del producto</string>
-    <string name="productsFormWindow_formField_framePrice">Precio del producto</string>
+    <string name="productsFormWindow_formField_productName">Nombre del producto</string>
+    <string name="productsFormWindow_formField_productPrice">Precio del producto</string>
 
     <string name="productsFormWindow_button_new">Agregar Producto</string>
     <string name="productsFormWindow_button_update">Actualizar Producto</string>
@@ -102,6 +102,33 @@
 
     <string name="productsFormWindow_notification_noName_title">No se ingreso un nombre</string>
     <string name="productsFormWindow_notification_noName_content">El nombre del producto no puede estar vacio</string>
+
+    <!--=========================================================================================-->
+
+    <!--Sellers Screen-->
+
+    <string name="sellersScreen_windowTitle">Vendedores</string>
+
+    <string name="sellersScreen_searchBar_byName">Buscar vendedor por nombre :</string>
+
+    <string name="sellersScreen_tableHeader_id">ID</string>
+    <string name="sellersScreen_tableHeader_name">Nombre</string>
+
+    <string name="sellersScreen_button_newProduct">Nuevo Vendedor</string>
+
+    <!--Products Form-->
+
+    <string name="sellersFormWindow_windowTitle_New">Nuevo Vendedor</string>
+    <string name="sellersFormWindow_windowTitle_Edit">Editar Vendedor</string>
+
+    <string name="sellersFormWindow_formField_productName">Nombre del vendedor</string>
+
+    <string name="sellersFormWindow_button_new">Agregar Vendedor</string>
+    <string name="sellersFormWindow_button_update">Actualizar Vendedor</string>
+    <string name="sellersFormWindow_button_delete">Eliminar Vendedor</string>
+
+    <string name="sellersFormWindow_notification_noName_title">No se ingreso un nombre</string>
+    <string name="sellersFormWindow_notification_noName_content">El nombre del vendedor no puede estar vacio</string>
 
 
 
