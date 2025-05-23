@@ -1,15 +1,17 @@
-package com.kerneloso.adam.ui.components
+package com.kerneloso.adam.ui.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -26,7 +28,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.kerneloso.adam.util.longToPrice
-import kotlin.math.exp
+
 
 @Composable
 fun formTextField(
@@ -37,6 +39,7 @@ fun formTextField(
     modifier: Modifier,
     onValueChange: (String) -> Unit,
 ){
+
     OutlinedTextField(
         value = value,
         onValueChange = { onValueChange(it) },
@@ -45,7 +48,6 @@ fun formTextField(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSecondary
             )
         },
         prefix = {
@@ -53,25 +55,31 @@ fun formTextField(
                 prefix()
             }
         },
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.background,
-            focusedContainerColor = MaterialTheme.colorScheme.background,
-
-            focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
-
-            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
-
-            cursorColor = MaterialTheme.colorScheme.onPrimary,
-
-            selectionColors = TextSelectionColors(
-                backgroundColor = MaterialTheme.colorScheme.primary,
-                handleColor = MaterialTheme.colorScheme.primary,
-            )
-        ),
+//        colors = TextFieldDefaults.colors(
+//
+//            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+//            focusedContainerColor = MaterialTheme.colorScheme.background,
+//
+//            focusedLabelColor = MaterialTheme.colorScheme.onPrimary,
+//            unfocusedLabelColor = MaterialTheme.colorScheme.onPrimary,
+//
+//            focusedSupportingTextColor = MaterialTheme.colorScheme.background,
+//            unfocusedSupportingTextColor = MaterialTheme.colorScheme.background,
+//
+//            focusedIndicatorColor = MaterialTheme.colorScheme.secondary,
+//            unfocusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
+//
+//            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+//
+//            cursorColor = MaterialTheme.colorScheme.onPrimary,
+//
+//            selectionColors = TextSelectionColors(
+//                backgroundColor = MaterialTheme.colorScheme.primary,
+//                handleColor = MaterialTheme.colorScheme.primary,
+//            )
+//        ),
         singleLine = true,
         modifier = modifier
-            .background(color = MaterialTheme.colorScheme.background)
     )
 }
 
@@ -90,7 +98,6 @@ fun formPriceTextField(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSecondary
             )
         },
         onValueChange = { newText ->
@@ -119,22 +126,29 @@ fun formPriceTextField(
                 onPriceChange( finalText.toLongOrNull() ?: 0 )
             }
         },
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.background,
-            focusedContainerColor = MaterialTheme.colorScheme.background,
-
-            focusedIndicatorColor = MaterialTheme.colorScheme.tertiary,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
-
-            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
-
-            cursorColor = MaterialTheme.colorScheme.onPrimary,
-
-            selectionColors = TextSelectionColors(
-                backgroundColor = MaterialTheme.colorScheme.primary,
-                handleColor = MaterialTheme.colorScheme.primary,
-            )
-        ),
+//        colors = TextFieldDefaults.colors(
+//
+//            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+//            focusedContainerColor = MaterialTheme.colorScheme.background,
+//
+//            focusedLabelColor = MaterialTheme.colorScheme.onPrimary,
+//            unfocusedLabelColor = MaterialTheme.colorScheme.onPrimary,
+//
+//            focusedSupportingTextColor = MaterialTheme.colorScheme.background,
+//            unfocusedSupportingTextColor = MaterialTheme.colorScheme.background,
+//
+//            focusedIndicatorColor = MaterialTheme.colorScheme.secondary,
+//            unfocusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
+//
+//            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+//
+//            cursorColor = MaterialTheme.colorScheme.onPrimary,
+//
+//            selectionColors = TextSelectionColors(
+//                backgroundColor = MaterialTheme.colorScheme.primary,
+//                handleColor = MaterialTheme.colorScheme.primary,
+//            )
+//        ),
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.background)
     )
@@ -148,7 +162,7 @@ fun formDropdownMenu(
     options: List<String>,
     onOptionSelected: (String) -> Unit,
     defaultOption: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
     var dropdownWidth by remember { mutableStateOf(0.dp) }
@@ -169,11 +183,12 @@ fun formDropdownMenu(
             }
     ) {
 
-        Text(
-            text = "${prefix}${optionSelected}",
-            modifier = Modifier
-                .align(Alignment.Center)
-        )
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "${prefix}${optionSelected}")
+        }
 
         DropdownMenu(
             expanded = isMenuExpanded,

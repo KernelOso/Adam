@@ -1,4 +1,4 @@
-package com.kerneloso.adam.ui.components
+package com.kerneloso.adam.ui.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -19,7 +19,7 @@ fun tableHeader(
     Box(
         modifier = modifier
             .border(
-                width = 2.dp,
+                width = 1.dp,
                 color = MaterialTheme.colorScheme.tertiary,
             )
     ) {
@@ -42,7 +42,7 @@ fun tableItem(
         modifier = modifier
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = MaterialTheme.colorScheme.secondary,
             )
     ) {
         Text(

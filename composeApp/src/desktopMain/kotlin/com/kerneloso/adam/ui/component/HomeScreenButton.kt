@@ -1,30 +1,21 @@
-package com.kerneloso.adam.ui.components
+package com.kerneloso.adam.ui.component
 
-import adam.composeapp.generated.resources.Res
-import adam.composeapp.generated.resources.Roboto_Bold
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.onClick
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import adam.composeapp.generated.resources.*
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.*
 import org.jetbrains.compose.resources.Font
-
-private var navigator: Navigator? = null
-
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -32,17 +23,24 @@ fun homeButton(
     screenDestiny : Screen,
     icon: ImageVector,
     label: String,
+    shapeRadius: Dp = 8.dp,
     modifier: Modifier
 )  {
-    //Navigator treatment
-    if ( navigator == null ) {
-        navigator = LocalNavigator.current
-    }
+    val navigator = LocalNavigator.current
+
+    val buttonColor = MaterialTheme.colorScheme.primaryContainer
+    val onButtonColor = MaterialTheme.colorScheme.onPrimaryContainer
 
     Box(
         modifier = modifier
             .size(180.dp)
-            .background(MaterialTheme.colorScheme.primary)
+            .background(buttonColor , shape = RoundedCornerShape(shapeRadius))
+            .clip(RoundedCornerShape(shapeRadius))
+            .border(
+                width = 2.dp,
+                color = buttonColor,
+                shape = RoundedCornerShape(shapeRadius)
+            )
             .onClick {
                 navigator!!.push(screenDestiny)
             }
@@ -54,7 +52,7 @@ fun homeButton(
             val ( crIcon , crLabel ) = createRefs()
 
             Icon(
-                tint = MaterialTheme.colorScheme.onPrimary,
+                tint = onButtonColor,
                 imageVector = icon,
                 contentDescription = "",
                 modifier = Modifier
@@ -70,7 +68,7 @@ fun homeButton(
             Text(
                 style = MaterialTheme.typography.titleMedium,
                 fontFamily = FontFamily(Font(Res.font.Roboto_Bold)),
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = onButtonColor,
                 text = label,
                 modifier = Modifier
                     .constrainAs(crLabel) {
