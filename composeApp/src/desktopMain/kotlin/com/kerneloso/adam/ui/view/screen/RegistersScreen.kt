@@ -1,9 +1,20 @@
 package com.kerneloso.adam.ui.view.screen
 
-import adam.composeapp.generated.resources.*
+import adam.composeapp.generated.resources.Res
+import adam.composeapp.generated.resources.lensScreen_button_newLens
+import adam.composeapp.generated.resources.lensScreen_tableHeader_id
+import adam.composeapp.generated.resources.lensScreen_tableHeader_name
+import adam.composeapp.generated.resources.lensScreen_tableHeader_price
+import adam.composeapp.generated.resources.lensScreen_windowTitle
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.onClick
@@ -19,17 +30,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.kerneloso.adam.domain.model.Lens
-import com.kerneloso.adam.domain.model.Seller
+import com.kerneloso.adam.domain.model.Register
 import com.kerneloso.adam.ui.ComposeWindowHolder
-import com.kerneloso.adam.ui.component.*
+import com.kerneloso.adam.ui.component.container
+import com.kerneloso.adam.ui.component.obfuscateView
+import com.kerneloso.adam.ui.component.simpleButton
+import com.kerneloso.adam.ui.component.tableHeader
+import com.kerneloso.adam.ui.component.tableItem
+import com.kerneloso.adam.ui.component.viewTemplateWithNavigationBar
 import com.kerneloso.adam.ui.view.window.lensFormWindow
-import com.kerneloso.adam.ui.view.window.sellersFormWindow
-import com.kerneloso.adam.ui.viewmodel.SellersViewModel
+import com.kerneloso.adam.ui.viewmodel.RegistersViewModel
 import com.kerneloso.adam.util.longToPrice
 import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
 
-class SellersScreen : Screen {
+class RegistersScreen : Screen {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
@@ -46,27 +61,26 @@ class SellersScreen : Screen {
                 height = windHeight
             )
         }
-        window.title = stringResource(Res.string.sellersScreen_windowTitle)
+        window.title = stringResource(Res.string.lensScreen_windowTitle)
 
         //View Model
-        val viewModel = remember { (SellersViewModel()) }
+        val viewModel = remember { (RegistersViewModel()) }
 
         //Search Bar
-        var searchText by remember { mutableStateOf("") }
+        // luego  var searchText by remember { mutableStateOf("") }
 
         //List of lens
-        var sellerList: List<Seller> = viewModel.searchSellers(searchText)
+        val registerDB by viewModel.registerDB
+        val registerList: List<Register> = registerDB.registers
 
         //View Obfuscated State
         var isViewObfuscated by remember { mutableStateOf(false) }
 
         //Views triggers :
         // Edit product View
-        var openEditSellerForm by remember { mutableStateOf(false) }
-        var sellerArg by remember { mutableStateOf(Seller()) }
+        var openEditRegisterForm by remember { mutableStateOf(false) }
+        var registerArg by remember { mutableStateOf(Register()) }
 
-        // New Product View
-        var openNewSellerForm by remember { mutableStateOf(false) }
 
         viewTemplateWithNavigationBar {
 
@@ -77,7 +91,6 @@ class SellersScreen : Screen {
                 backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 borderColor = MaterialTheme.colorScheme.primaryContainer,
                 modifier = Modifier
-                    .padding(horizontal = 10.dp, vertical = 10.dp)
                     .fillMaxSize(0.96f)
                     .constrainAs(container) {
                         top.linkTo(parent.top)
@@ -89,18 +102,6 @@ class SellersScreen : Screen {
 
                 val (crSearchBar, crList, crButton) = createRefs()
 
-                searchBar(
-                    searchNameValue = searchText,
-                    onSearchNameValueChange = { searchText = it },
-                    modifier = Modifier
-                        .constrainAs(crSearchBar) {
-                            top.linkTo(parent.top)
-                            bottom.linkTo(crList.top)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        },
-                )
-
                 //ListContainer
                 container(
                     shapeRadius = 0.dp,
@@ -108,10 +109,10 @@ class SellersScreen : Screen {
                     backgroundColor = MaterialTheme.colorScheme.background,
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
-                        .fillMaxHeight(0.7f)
+                        .fillMaxHeight(0.8f)
                         .constrainAs(crList) {
-                            top.linkTo(crSearchBar.bottom)
-                            bottom.linkTo(crButton.top)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         }
@@ -120,41 +121,24 @@ class SellersScreen : Screen {
                         tableHeaderRow(
                             modifier = Modifier
                         )
-
+                        println(registerList)
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
-                            items(sellerList) { seller ->
+                            items(registerList) { register ->
                                 tableItemRow(
-                                    seller = seller,
+                                    register = register,
                                     modifier = Modifier
                                         .clickable {
-                                            sellerArg = seller
-                                            openEditSellerForm = true
+                                            registerArg = register
+                                            openEditRegisterForm = true
                                         }
                                 )
                             }
                         }
                     }
                 }
-
-                simpleButton(
-                    text = stringResource(Res.string.sellersScreen_button_newSeller),
-                    backgroundColor = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .fillMaxWidth(0.3f)
-                        .height(60.dp)
-                        .onClick {
-                            openNewSellerForm = true
-                        }
-                        .constrainAs(crButton) {
-                            top.linkTo(crList.bottom)
-                            bottom.linkTo(parent.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        }
-                )
             }
         }
 
@@ -163,46 +147,14 @@ class SellersScreen : Screen {
         }
 
         //Open Edit Lens Window
-        if (openEditSellerForm) {
+        if (openEditRegisterForm) {
             isViewObfuscated = true
-            sellersFormWindow(
-                onClose = { openEditSellerForm = false; isViewObfuscated = false },
-                viewmodel = viewModel,
-                seller = sellerArg
-            )
+//            lensFormWindow(
+//                onClose = { openEditRegisterForm = false; isViewObfuscated = false },
+//                viewmodel = viewModel,
+//                lens = registerArg
+//            )
         }
-
-        //Open New Lens Window
-        if (openNewSellerForm) {
-            isViewObfuscated = true
-            sellersFormWindow(
-                onClose = { openNewSellerForm = false; isViewObfuscated = false },
-                viewmodel = viewModel
-            )
-        }
-    }
-}
-
-@Composable
-private fun searchBar(
-    modifier: Modifier = Modifier,
-
-    searchNameValue: String = "",
-    onSearchNameValueChange: (String) -> Unit,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth(0.9f)
-    ) {
-        formTextField(
-            value = searchNameValue,
-            onValueChange = { onSearchNameValueChange(it) },
-            label = stringResource(Res.string.sellersScreen_searchBar_byName),
-            modifier = Modifier
-                .weight(6f)
-                .height(60.dp)
-        )
     }
 }
 
@@ -221,7 +173,7 @@ private fun tableHeaderRow(
 
         tableHeader(
             textStyle = headerTextStyle,
-            text = stringResource(Res.string.sellersScreen_tableHeader_id),
+            text = "ID",
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
@@ -229,18 +181,43 @@ private fun tableHeaderRow(
 
         tableHeader(
             textStyle = headerTextStyle,
-            text = stringResource(Res.string.sellersScreen_tableHeader_name),
+            text = "Date",
             modifier = Modifier
                 .height(headerHeight)
-                .weight(9f)
+                .weight(1f)
         )
+
+        tableHeader(
+            textStyle = headerTextStyle,
+            text = "Client Name",
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(1f)
+        )
+
+        tableHeader(
+            textStyle = headerTextStyle,
+            text = "Client Id",
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(1f)
+        )
+
+        tableHeader(
+            textStyle = headerTextStyle,
+            text = "Total",
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(1f)
+        )
+
     }
 }
 
 @Composable
 private fun tableItemRow(
     modifier: Modifier = Modifier,
-    seller: Seller
+    register: Register
 ) {
 
     Row(
@@ -255,19 +232,46 @@ private fun tableItemRow(
         //Id
         tableItem(
             textStyle = headerTextStyle,
-            text = seller.id.toString(),
+            text = register.id.toString(),
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
         )
 
-        //Name
+        //Date
         tableItem(
             textStyle = headerTextStyle,
-            text = seller.name,
+            text = register.date,
             modifier = Modifier
                 .height(headerHeight)
-                .weight(9f)
+                .weight(1f)
+        )
+
+        //client Name
+        tableItem(
+            textStyle = headerTextStyle,
+            text = register.clientName,
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(1f)
+        )
+
+        //client Id
+        tableItem(
+            textStyle = headerTextStyle,
+            text = register.clientId.toString(),
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(1f)
+        )
+
+        //total :
+        tableItem(
+            textStyle = headerTextStyle,
+            text = longToPrice(register.total),
+            modifier = Modifier
+                .height(headerHeight)
+                .weight(1f)
         )
     }
 }

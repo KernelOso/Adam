@@ -109,12 +109,12 @@
 
     <string name="sellersScreen_windowTitle">Vendedores</string>
 
-    <string name="sellersScreen_searchBar_byName">Buscar vendedor por nombre :</string>
+    <string name="sellersScreen_searchBar_byName">Buscar vendedores por nombre :</string>
 
     <string name="sellersScreen_tableHeader_id">ID</string>
     <string name="sellersScreen_tableHeader_name">Nombre</string>
 
-    <string name="sellersScreen_button_newProduct">Nuevo Vendedor</string>
+    <string name="sellersScreen_button_newSeller">Nuevo Vendedor</string>
 
     <!--Products Form-->
 
@@ -130,6 +130,39 @@
     <string name="sellersFormWindow_notification_noName_title">No se ingreso un nombre</string>
     <string name="sellersFormWindow_notification_noName_content">El nombre del vendedor no puede estar vacio</string>
 
+    <!--=========================================================================================-->
+
+    <!--Sell Screen-->
+    <string name="sellScreen_windowTitle">Vender</string>
+
+    <string name="sellScreen_formField_clientName">Nombre del cliente :</string>
+    <string name="sellScreen_formField_clientNumber">Numero del cliente :</string>
+    <string name="sellScreen_formField_clientNumberId">ID (C.C) del cliente :</string>
+
+
+    <string name="sellScreen_formField_seller_title">Informacion del Vendedor</string>
+    <string name="sellScreen_formField_seller_prefix">Vendedor : </string>
+
+    <string name="sellScreen_formField_date_dayPrefix">Dia : </string>
+    <string name="sellScreen_formField_date_monthPrefix">Mes : </string>
+    <string name="sellScreen_formField_date_yearPrefix">A;o : </string>
+
+    <string name="sellScreen_formTitle_OI">Ojo Izquierdo</string>
+    <string name="sellScreen_formTitle_OD">Ojo Derecho</string>
+
+    <string name="sellScreen_formField_ESF">ESF :</string>
+    <string name="sellScreen_formField_CIL">CIL :</string>
+    <string name="sellScreen_formField_EJE">EJE :</string>
+    <string name="sellScreen_formField_ADD">ADD :</string>
+
+    <string name="sellScreen_button_addProduct">A;adir Producto</string>
+
+    <string name="sellScreen_formField_color">Color :</string>
+    <string name="sellScreen_formField_DP">DP :</string>
+
+
+
+    <string name="sellScreen_formField_Seller">Vendedor :</string>
 
 
 </resources>

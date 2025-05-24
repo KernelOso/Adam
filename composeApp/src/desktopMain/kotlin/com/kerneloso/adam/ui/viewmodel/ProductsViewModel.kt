@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 
 class ProductsViewModel : ViewModel() {
 
-
     private val _productsDB = mutableStateOf(ProductsDB())
     val productsDB: State<ProductsDB> get() = _productsDB
 

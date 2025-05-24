@@ -1,10 +1,10 @@
 package com.kerneloso.adam.domain.model
 
 data class Lens(
-    var id: Long = 0L,
-    var name: String = "",
+    override var id: Long = 0L,
+    override var name: String = "",
     var price: Long = 0L,
-)
+) : DatabaseItem
 
 data class LensDB(
     var lastID: Long = 0L,

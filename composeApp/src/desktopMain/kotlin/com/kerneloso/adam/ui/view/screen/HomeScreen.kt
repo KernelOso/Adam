@@ -71,7 +71,7 @@ class HomeScreen () : Screen {
 
                 //Button : Sellers DB
                 homeButton(
-                    screenDestiny = HomeScreen(),
+                    screenDestiny = SellersScreen(),
                     icon = Icons.Filled.SupervisorAccount,
                     label = stringResource(Res.string.homeScreen_button_sellers),
                     modifier = Modifier.constrainAs(crButtonSellers) {
@@ -83,7 +83,7 @@ class HomeScreen () : Screen {
 
                 //Button : Registers DB
                 homeButton(
-                    screenDestiny = HomeScreen(),
+                    screenDestiny = RegistersScreen(),
                     icon = Icons.Filled.FormatListNumbered,
                     label = stringResource(Res.string.homeScreen_button_registers),
                     modifier = Modifier.constrainAs(crButtonRegisters) {

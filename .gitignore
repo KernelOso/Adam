@@ -18,3 +18,4 @@ captures
 **/xcshareddata/WorkspaceSettings.xcsettings
 test/root/adam-linux-x64-1.0.0.jar
 /test/root/data
+/test

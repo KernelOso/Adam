@@ -279,5 +279,4 @@ private fun tableItemRow(
                 .weight(4f)
         )
     }
-
 }
