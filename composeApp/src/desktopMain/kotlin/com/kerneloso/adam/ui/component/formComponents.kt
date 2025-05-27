@@ -326,13 +326,31 @@ fun  formDropdownMenuGetButton(
 @Composable
 fun  formDayMenu(
     initialValue: Int,
-    options: List<Int> = listOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31),
+    month: Int = 12,
+    year: Int = 2024,
     prefix: String = "",
     onOptionSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
     var dropdownWidth by remember { mutableStateOf(0.dp) }
+
+    var options: List<Int> = listOf()
+
+    if ( month == 2 ){
+        options = listOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28)
+
+        if ( (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ) {
+            options += listOf<Int>(29)
+        }
+
+    } else {
+        options = when (month) {
+            1, 3, 5, 7, 8, 10, 12 -> listOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,31)
+            else -> listOf(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)
+        }
+    }
+
     Box(
         modifier = modifier
             .background(MaterialTheme.colorScheme.primary , shape = RoundedCornerShape(10.dp))

@@ -26,6 +26,7 @@ import com.kerneloso.adam.util.longToPrice
 import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
 import java.time.LocalDateTime
+import java.time.Year
 import java.time.format.DateTimeFormatter
 
 class SellScreen : Screen { // Screen () {}
@@ -72,6 +73,14 @@ class SellScreen : Screen { // Screen () {}
         var dateDay by remember { mutableStateOf(timeNow.dayOfMonth) }
         var dateMonth by remember { mutableStateOf(timeNow.monthValue) }
         var dateYear by remember { mutableStateOf(timeNow.year) }
+
+        if ( dateMonth == 2 && dateDay > 28  ){
+            if ( Year.isLeap(dateYear.toLong()) ){
+                dateDay = 29
+            } else {
+                dateDay = 28
+            }
+        }
 
         var dateHour by remember { mutableStateOf(timeNow.hour) }
         var dateMinute by remember { mutableStateOf(timeNow.minute) }
@@ -160,10 +169,11 @@ class SellScreen : Screen { // Screen () {}
                                 end.linkTo(parent.end)
                             }
                     ) {
-
                         formDayMenu(
                             initialValue = dateDay,
                             prefix = stringResource(Res.string.sellScreen_formField_date_dayPrefix),
+                            month = dateMonth,
+                            year = dateYear,
                             onOptionSelected = { dateDay = it },
                             modifier = Modifier
                                 .weight(3f)
@@ -961,6 +971,11 @@ class SellScreen : Screen { // Screen () {}
     }
 }
 
+private fun verifyFormData (
+
+) {
+
+}
 
 
 
