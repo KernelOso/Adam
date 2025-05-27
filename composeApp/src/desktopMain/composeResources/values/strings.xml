@@ -135,13 +135,16 @@
     <!--Sell Screen-->
     <string name="sellScreen_windowTitle">Vender</string>
 
-    <string name="sellScreen_formField_clientName">Nombre del cliente :</string>
+    <string name="sellScreen_formField_clientName">* Nombre del cliente :</string>
     <string name="sellScreen_formField_clientNumber">Numero del cliente :</string>
     <string name="sellScreen_formField_clientNumberId">ID (C.C) del cliente :</string>
 
 
     <string name="sellScreen_formField_seller_title">Informacion del Vendedor</string>
+    <string name="sellScreen_formField_Seller">* Vendedor :</string>
     <string name="sellScreen_formField_seller_prefix">Vendedor : </string>
+
+    <string name="sellScreen_formField_seller_nullOption">Selecciona un vendedor</string>
 
     <string name="sellScreen_formField_date_dayPrefix">Dia : </string>
     <string name="sellScreen_formField_date_monthPrefix">Mes : </string>
@@ -162,7 +165,7 @@
 
 
 
-    <string name="sellScreen_formField_Seller">Vendedor :</string>
+
 
 
 </resources>

@@ -58,7 +58,7 @@ class SellScreen : Screen { // Screen () {}
         val productViewModel = remember { (ProductsViewModel()) }
 
         //dropdown menu default options
-        val sellerNullOption = Seller(id = -1, name = "Vendedor no seleccionado")
+        val sellerNullOption = Seller(id = -1, name = stringResource(Res.string.sellScreen_formField_seller_nullOption))
         val lensNullOption = Lens(id = -1, name = "Lente no seleccionado")
         val frameNullOption = Frame(id = -1, name = "Montura no seleccionada")
 
@@ -89,7 +89,7 @@ class SellScreen : Screen { // Screen () {}
         print(formDate)
 
         var formClientName by remember { mutableStateOf("") }
-        var clientNumber by remember { mutableStateOf(0L) }
+        var formClientNumber by remember { mutableStateOf(0L) }
         var formClientId by remember { mutableStateOf(0L) }
 
         var formSeller by remember { mutableStateOf(sellerNullOption) }
@@ -122,8 +122,10 @@ class SellScreen : Screen { // Screen () {}
         var sellerNormalizedHeight by remember { mutableStateOf(0) }
         var flowRowWidth by remember { mutableStateOf(0) }
 
-        //force update
-        var changeTrigger by remember { mutableStateOf(0L) }
+        //form verifications
+        var errorEmptyClientName by remember { mutableStateOf(false) }
+        var errorEmptySeller by remember { mutableStateOf(false) }
+        var errorEmptyForm by remember { mutableStateOf(false) }
 
         //View
         viewTemplateWithNavigationBar {
@@ -253,8 +255,8 @@ class SellScreen : Screen { // Screen () {}
                             Spacer(modifier = Modifier.height(verticalSeparator))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             formCellNumberTextField(
-                                initialValue = clientNumber,
-                                onValueChange = { clientNumber = it },
+                                initialValue = formClientNumber,
+                                onValueChange = { formClientNumber = it },
                                 label = stringResource(Res.string.sellScreen_formField_clientNumber),
                                 modifier = Modifier
                                     .fillMaxWidth(0.9f)
@@ -929,41 +931,80 @@ class SellScreen : Screen { // Screen () {}
                 simpleButton(
                     text = "Vender",
                     modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(80.dp)
                         .onClick {
 
-                            // TODO : verificar campos importantes
-                            viewModel.addRegister(
-                                Register(
-                                    id = viewModel.registerDB.value.lastID + 1,
-                                    date = formDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")),
-                                    clientName = formClientName,
-                                    clientNumber = clientNumber,
-                                    clientId = formClientId,
-                                    seller = formSeller,
-                                    frame = formFrame,
-                                    lens = formLens,
-                                    odESF = odESF,
-                                    odCIL = odCIL,
-                                    odEJE = odEJE,
-                                    odADD = odADD,
-                                    oiESF = oiESF,
-                                    oiCIL = oiCIL,
-                                    oiEJE = oiEJE,
-                                    oiADD = oiADD,
-                                    products = formProducts,
-                                    color = formColor,
-                                    dp = formDP,
-                                    total = formTotal
-                                )
-                            )
+                            println("FUNCAS DESDE EL HPT BOTON!?")
 
-                            navigator!!.push(HomeScreen())
+                            verifyFormData (
+                                sellerValue = formSeller,
+                                showEmptySellerNotification = { errorEmptySeller = it },
+                                selleDefaultValue = sellerNullOption.name,
+
+                                clientNameValue = formClientName,
+                                showEmptyClientNameNotification = { errorEmptyClientName = it },
+
+                                totalValue = formTotal,
+                                showEmptyFormNotification = { errorEmptyForm = it }
+                            ) {
+                                viewModel.addRegister(
+                                    Register(
+                                        id = viewModel.registerDB.value.lastID + 1,
+                                        date = formDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")),
+                                        clientName = formClientName,
+                                        clientNumber = formClientNumber,
+                                        clientId = formClientId,
+                                        seller = formSeller,
+                                        frame = formFrame,
+                                        lens = formLens,
+                                        odESF = odESF,
+                                        odCIL = odCIL,
+                                        odEJE = odEJE,
+                                        odADD = odADD,
+                                        oiESF = oiESF,
+                                        oiCIL = oiCIL,
+                                        oiEJE = oiEJE,
+                                        oiADD = oiADD,
+                                        products = formProducts,
+                                        color = formColor,
+                                        dp = formDP,
+                                        total = formTotal
+                                    )
+                                )
+
+                                navigator !!. push (HomeScreen())
+                            }
                         }
                 )
 
                 //=================================================================================
                 Spacer(modifier = Modifier.height(verticalSeparator))
                 //=================================================================================
+
+                if (errorEmptySeller){
+                    showWindowNotification(
+                        title = "Vendendor no ingresado",
+                        text = "No se selecciono un vendedor",
+                        onClose = { errorEmptySeller = false }
+                    )
+                }
+
+                if (errorEmptyClientName){
+                    showWindowNotification(
+                        title = "Nombre no ingresado",
+                        text = "No se ingreso el nombre del cliente",
+                        onClose = { errorEmptyClientName = false }
+                    )
+                }
+
+                if (errorEmptyForm){
+                    showWindowNotification(
+                        title = "No se vende nada",
+                        text = "No se esta vendiendo nada",
+                        onClose = { errorEmptyForm = false }
+                    )
+                }
 
 
             }
@@ -972,9 +1013,47 @@ class SellScreen : Screen { // Screen () {}
 }
 
 private fun verifyFormData (
+    sellerValue: Seller = Seller(),
+    selleDefaultValue: String,
+    showEmptySellerNotification: (Boolean) -> Unit,
 
+    clientNameValue: String = "",
+    showEmptyClientNameNotification: (Boolean) -> Unit,
+
+    totalValue: Long = 0L,
+    showEmptyFormNotification: (Boolean) -> Unit,
+
+    content: () -> Unit,
 ) {
 
+    var clientNameIsEmpty = clientNameValue.isEmpty()
+    var sellerIsEmpty = sellerValue.name.equals(selleDefaultValue)
+    var totalIsEmpty = (totalValue == 0L)
+
+    // Creamos una lista de referencias usando lambdas para poder modificarlas luego
+    val boolRefs = listOf(
+        Pair({ clientNameIsEmpty }, { value: Boolean -> clientNameIsEmpty = value }),
+        Pair({ sellerIsEmpty }, { value: Boolean -> sellerIsEmpty = value }),
+        Pair({ totalIsEmpty }, { value: Boolean -> totalIsEmpty = value })
+    )
+
+    // Paso 2: Filtrar cuáles están actualmente en `true`
+    val trueRefs = boolRefs.filter { it.first() }
+
+    // Paso 3: Si hay más de uno en true, dejar uno aleatorio en true y los demás en false
+    if (trueRefs.size > 1) {
+        val keepTrue = trueRefs.shuffled().first()
+        for (ref in trueRefs) {
+            ref.second(ref == keepTrue)
+        }
+    }
+    showEmptySellerNotification(sellerIsEmpty)
+    showEmptyClientNameNotification(clientNameIsEmpty)
+    showEmptyFormNotification(totalIsEmpty)
+
+    if ( !clientNameIsEmpty && !sellerIsEmpty && !totalIsEmpty ) {
+        content()
+    }
 }
 
 
