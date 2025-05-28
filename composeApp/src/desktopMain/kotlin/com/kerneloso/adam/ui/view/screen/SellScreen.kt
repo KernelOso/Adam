@@ -61,8 +61,8 @@ class SellScreen : Screen { // Screen () {}
 
         //dropdown menu default options
         val sellerNullOption = Seller(id = -1, name = stringResource(Res.string.sellScreen_formField_seller_nullOption))
-        val lensNullOption = Lens(id = -1, name = "Lente no seleccionado")
-        val frameNullOption = Frame(id = -1, name = "Montura no seleccionada")
+        val lensNullOption = Lens(id = -1, name = stringResource(Res.string.sellScreen_formField_lens_nullOption))
+        val frameNullOption = Frame(id = -1, name = stringResource(Res.string.sellScreen_formField_frame_nullOption))
 
         //scroll state
         val scrollState = rememberScrollState()
@@ -383,14 +383,14 @@ class SellScreen : Screen { // Screen () {}
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             Spacer(modifier = Modifier.height(20.dp))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Text("Informacion del Lente")
+                            Text(stringResource(Res.string.sellScreen_formField_lens_title))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             Spacer(modifier = Modifier.height(20.dp))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             formDropdownMenu(
                                 options = listOf(lensNullOption , ) + lensViewModel.lensDB.value.lens,
                                 onOptionSelected = { formLens = it },
-                                prefix = "Lente : ",
+                                prefix = stringResource(Res.string.sellScreen_formField_lensPrefix),
                                 defaultOption = formLens,
                                 modifier = Modifier
                                     .fillMaxWidth(0.9f)
@@ -401,7 +401,7 @@ class SellScreen : Screen { // Screen () {}
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             formPriceTextField(
                                 initialValue =  formLensPrice,
-                                label = "Precio del lente :",
+                                label = stringResource(Res.string.sellScreen_formField_lensPrice),
                                 onPriceChange = { formLensPrice = it },
                                 modifier = Modifier
                                     .fillMaxWidth(0.9f)
@@ -433,14 +433,14 @@ class SellScreen : Screen { // Screen () {}
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             Spacer(modifier = Modifier.height(20.dp))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Text("Informacion de la montura")
+                            Text(stringResource(Res.string.sellScreen_formField_frame_title))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             Spacer(modifier = Modifier.height(20.dp))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             formDropdownMenu(
                                 options = listOf(frameNullOption) + frameViewModel.framesDB.value.frames,
                                 onOptionSelected = { formFrame = it },
-                                prefix = "Montura : ",
+                                prefix = stringResource(Res.string.sellScreen_formField_framePrefix),
                                 defaultOption = formFrame,
                                 modifier = Modifier
                                     .fillMaxWidth(0.9f)
@@ -451,7 +451,7 @@ class SellScreen : Screen { // Screen () {}
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             formPriceTextField(
                                 initialValue =  formFramePrice,
-                                label = "Precio de la montura :",
+                                label = stringResource(Res.string.sellScreen_formField_framePrice),
                                 onPriceChange = { formFramePrice = it },
                                 modifier = Modifier
                                     .fillMaxWidth(0.9f)
@@ -980,7 +980,7 @@ class SellScreen : Screen { // Screen () {}
 
                     formPriceTextField(
                         initialValue =  formAbono,
-                        label = "Abono :",
+                        label = stringResource(Res.string.sellScreen_formField_abono),
                         onPriceChange = { formAbono = it },
                         modifier = Modifier
                             .fillMaxWidth(0.4f)
@@ -995,7 +995,7 @@ class SellScreen : Screen { // Screen () {}
 
                     formSaldo = formTotal - formAbono
                     Text(
-                        text = "Saldo : $${longToPrice(formSaldo)}",
+                        text = "${stringResource(Res.string.sellScreen_formField_abono)}${longToPrice(formSaldo)}",
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier
                             .padding(40.dp)

@@ -143,8 +143,19 @@
     <string name="sellScreen_formField_seller_title">Informacion del Vendedor</string>
     <string name="sellScreen_formField_Seller">* Vendedor :</string>
     <string name="sellScreen_formField_seller_prefix">Vendedor : </string>
-
     <string name="sellScreen_formField_seller_nullOption">Selecciona un vendedor</string>
+
+
+    <string name="sellScreen_formField_lens_title">Informacion del lente</string>
+    <string name="sellScreen_formField_lensPrefix">Lente : </string>
+    <string name="sellScreen_formField_lensPrice">Precio del lente :</string>
+    <string name="sellScreen_formField_lens_nullOption">No se venderan lentes</string>
+
+    <string name="sellScreen_formField_frame_title">Informacion de la montura</string>
+    <string name="sellScreen_formField_framePrefix">Montura : </string>
+    <string name="sellScreen_formField_framePrice">Precio de la montura :</string>
+    <string name="sellScreen_formField_frame_nullOption">No se vendera una montura</string>
+
 
     <string name="sellScreen_formField_date_dayPrefix">Dia : </string>
     <string name="sellScreen_formField_date_monthPrefix">Mes : </string>
@@ -162,6 +173,10 @@
 
     <string name="sellScreen_formField_color">Color :</string>
     <string name="sellScreen_formField_DP">DP :</string>
+
+
+    <string name="sellScreen_formField_saldo">Saldo :</string>
+    <string name="sellScreen_formField_abono">Abono : $</string>
 
     <string name="sellScreen_button_sell">VENDER</string>
 
