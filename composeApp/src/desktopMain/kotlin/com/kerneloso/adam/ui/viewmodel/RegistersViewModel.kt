@@ -10,6 +10,7 @@ import com.kerneloso.adam.domain.repository.RegisterRepository
 import com.kerneloso.adam.io.FileUtil
 import kotlinx.coroutines.launch
 import org.xhtmlrenderer.pdf.ITextRenderer
+import java.awt.Desktop
 import java.io.File
 import java.io.FileOutputStream
 
@@ -64,7 +65,7 @@ class RegistersViewModel : ViewModel() {
         }
     }
 
-    fun generatePdf(bill: Bill ) {
+    fun generatePdf(bill: Bill) {
 
         val outputName = "${bill.id}.pdf"
 
@@ -92,6 +93,23 @@ class RegistersViewModel : ViewModel() {
         FileOutputStream( File( FileUtil.pdfDir , outputName ) ).use {
             renderer.createPDF(it)
         }
+    }
+
+    fun openPdf(bill: Bill) {
+
+        val pdfFile = File(FileUtil.pdfDir ,"${bill.id}.pdf" )
+
+        val desktop = Desktop.getDesktop()
+
+        if ( pdfFile.exists() ) {
+            //solo abrir
+            desktop.open(pdfFile)
+        } else {
+            //crear y abrir
+            generatePdf(bill)
+            desktop.open(pdfFile)
+        }
+
     }
 
     fun deleteRegister(bill: Bill) {

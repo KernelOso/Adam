@@ -143,7 +143,7 @@ class SellScreen : Screen { // Screen () {}
         var errorEmptySeller by remember { mutableStateOf(false) }
         var errorEmptyForm by remember { mutableStateOf(false) }
 
-        var showBillCreatedWindow by remember { mutableStateOf(false) }
+        var showBillCreatedWindow by remember { mutableStateOf(true) }
         var billArg by remember { mutableStateOf(Bill()) }
 
         var isViewObfuscated by remember { mutableStateOf(false) }
