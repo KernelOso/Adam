@@ -24,6 +24,7 @@ import com.kerneloso.adam.ui.component.*
 import com.kerneloso.adam.ui.view.window.billCreated
 import com.kerneloso.adam.ui.viewmodel.*
 import com.kerneloso.adam.util.longToPrice
+import com.kerneloso.adam.util.priceToLong
 import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
 import java.time.LocalDateTime
@@ -122,6 +123,9 @@ class SellScreen : Screen { // Screen () {}
 
         var formDP: String by remember { mutableStateOf("") }
         var formColor: String by remember { mutableStateOf("") }
+
+        var formAbono by remember { mutableStateOf(0L) }
+        var formSaldo by remember { mutableStateOf(0L) }
 
         var formTotal by remember { mutableStateOf(0L) }
 
@@ -960,8 +964,58 @@ class SellScreen : Screen { // Screen () {}
                 //=================================================================================
                 Spacer(modifier = Modifier.height(verticalSeparator))
                 //=================================================================================
+                container(
+                    shapeRadius = 6.dp,
+                    backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                    borderColor = MaterialTheme.colorScheme.primaryContainer,
+                    modifier = Modifier
+                        .width(flowRowWidth.dp)
+                        .height(100.dp)
+                ) {
+
+                    val (
+                        crSaldo,
+                        crAbono
+                    ) = createRefs()
+
+                    formPriceTextField(
+                        initialValue =  formAbono,
+                        label = "Abono :",
+                        onPriceChange = { formAbono = it },
+                        modifier = Modifier
+                            .fillMaxWidth(0.4f)
+                            .height(80.dp)
+                            .constrainAs(crAbono) {
+                                top.linkTo(parent.top)
+                                bottom.linkTo(parent.bottom)
+                                start.linkTo(parent.start)
+                                end.linkTo(crSaldo.start)
+                            }
+                    )
+
+                    formSaldo = formTotal - formAbono
+                    Text(
+                        text = "Saldo : $${longToPrice(formSaldo)}",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .padding(40.dp)
+                            .fillMaxWidth(0.4f)
+                            .constrainAs(crSaldo) {
+                                top.linkTo(parent.top)
+                                bottom.linkTo(parent.bottom)
+                                start.linkTo(crAbono.end)
+                                end.linkTo(parent.end)
+                            }
+                    )
+
+
+
+                }
+                //=================================================================================
+                Spacer(modifier = Modifier.height(verticalSeparator))
+                //=================================================================================
                 simpleButton(
-                    text = "Vender",
+                    text = stringResource(Res.string.sellScreen_button_sell),
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
                         .height(80.dp)
@@ -997,6 +1051,8 @@ class SellScreen : Screen { // Screen () {}
                                     products = formProducts,
                                     color = formColor,
                                     dp = formDP,
+                                    abono = formAbono,
+                                    saldo = formSaldo,
                                     total = formTotal
                                 )
 
@@ -1010,7 +1066,6 @@ class SellScreen : Screen { // Screen () {}
                             }
                         }
                 )
-
                 //=================================================================================
                 Spacer(modifier = Modifier.height(verticalSeparator))
                 //=================================================================================
@@ -1029,7 +1084,6 @@ class SellScreen : Screen { // Screen () {}
                 viewmodel = viewModel
             )
         }
-
 
         if (errorEmptySeller){
             isViewObfuscated = true
