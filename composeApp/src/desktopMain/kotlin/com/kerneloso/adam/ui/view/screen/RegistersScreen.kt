@@ -1,10 +1,6 @@
 package com.kerneloso.adam.ui.view.screen
 
 import adam.composeapp.generated.resources.Res
-import adam.composeapp.generated.resources.lensScreen_button_newLens
-import adam.composeapp.generated.resources.lensScreen_tableHeader_id
-import adam.composeapp.generated.resources.lensScreen_tableHeader_name
-import adam.composeapp.generated.resources.lensScreen_tableHeader_price
 import adam.composeapp.generated.resources.lensScreen_windowTitle
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -14,10 +10,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.onClick
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,16 +23,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.kerneloso.adam.domain.model.Lens
-import com.kerneloso.adam.domain.model.Register
+import com.kerneloso.adam.domain.model.Bill
 import com.kerneloso.adam.ui.ComposeWindowHolder
 import com.kerneloso.adam.ui.component.container
 import com.kerneloso.adam.ui.component.obfuscateView
-import com.kerneloso.adam.ui.component.simpleButton
 import com.kerneloso.adam.ui.component.tableHeader
 import com.kerneloso.adam.ui.component.tableItem
 import com.kerneloso.adam.ui.component.viewTemplateWithNavigationBar
-import com.kerneloso.adam.ui.view.window.lensFormWindow
 import com.kerneloso.adam.ui.viewmodel.RegistersViewModel
 import com.kerneloso.adam.util.longToPrice
 import com.kerneloso.adam.util.resizeAndCenterWindow
@@ -70,8 +61,8 @@ class RegistersScreen : Screen {
         // luego  var searchText by remember { mutableStateOf("") }
 
         //List of lens
-        val registerDB by viewModel.registerDB
-        val registerList: List<Register> = registerDB.registers
+        val registerDB by viewModel.billDB
+        val billList: List<Bill> = registerDB.bills
 
         //View Obfuscated State
         var isViewObfuscated by remember { mutableStateOf(false) }
@@ -79,7 +70,7 @@ class RegistersScreen : Screen {
         //Views triggers :
         // Edit product View
         var openEditRegisterForm by remember { mutableStateOf(false) }
-        var registerArg by remember { mutableStateOf(Register()) }
+        var billArg by remember { mutableStateOf(Bill()) }
 
 
         viewTemplateWithNavigationBar {
@@ -121,17 +112,17 @@ class RegistersScreen : Screen {
                         tableHeaderRow(
                             modifier = Modifier
                         )
-                        println(registerList)
+                        println(billList)
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
-                            items(registerList) { register ->
+                            items(billList) { register ->
                                 tableItemRow(
-                                    register = register,
+                                    bill = register,
                                     modifier = Modifier
                                         .clickable {
-                                            registerArg = register
+                                            billArg = register
                                             openEditRegisterForm = true
                                         }
                                 )
@@ -217,7 +208,7 @@ private fun tableHeaderRow(
 @Composable
 private fun tableItemRow(
     modifier: Modifier = Modifier,
-    register: Register
+    bill: Bill
 ) {
 
     Row(
@@ -232,7 +223,7 @@ private fun tableItemRow(
         //Id
         tableItem(
             textStyle = headerTextStyle,
-            text = register.id.toString(),
+            text = bill.id.toString(),
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
@@ -241,7 +232,7 @@ private fun tableItemRow(
         //Date
         tableItem(
             textStyle = headerTextStyle,
-            text = register.date,
+            text = bill.date,
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
@@ -250,7 +241,7 @@ private fun tableItemRow(
         //client Name
         tableItem(
             textStyle = headerTextStyle,
-            text = register.clientName,
+            text = bill.clientName,
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
@@ -259,7 +250,7 @@ private fun tableItemRow(
         //client Id
         tableItem(
             textStyle = headerTextStyle,
-            text = register.clientId.toString(),
+            text = bill.clientId.toString(),
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
@@ -268,7 +259,7 @@ private fun tableItemRow(
         //total :
         tableItem(
             textStyle = headerTextStyle,
-            text = longToPrice(register.total),
+            text = longToPrice(bill.total),
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)

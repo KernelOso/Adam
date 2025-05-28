@@ -21,6 +21,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.kerneloso.adam.domain.model.*
 import com.kerneloso.adam.ui.ComposeWindowHolder
 import com.kerneloso.adam.ui.component.*
+import com.kerneloso.adam.ui.view.window.billCreated
 import com.kerneloso.adam.ui.viewmodel.*
 import com.kerneloso.adam.util.longToPrice
 import com.kerneloso.adam.util.resizeAndCenterWindow
@@ -93,8 +94,19 @@ class SellScreen : Screen { // Screen () {}
         var formClientId by remember { mutableStateOf(0L) }
 
         var formSeller by remember { mutableStateOf(sellerNullOption) }
+
         var formFrame by remember { mutableStateOf(frameNullOption) }
+        var formFramePrice by remember { mutableStateOf(0L) }
+        LaunchedEffect(formFrame) {
+            formFramePrice = formFrame.price
+        }
+
         var formLens by remember { mutableStateOf(lensNullOption) }
+        var formLensPrice by remember { mutableStateOf(0L) }
+        LaunchedEffect(formLens) {
+            formLensPrice = formLens.price
+        }
+
 
         var odESF: String by remember { mutableStateOf("") }
         var odCIL: String by remember { mutableStateOf("") }
@@ -127,8 +139,15 @@ class SellScreen : Screen { // Screen () {}
         var errorEmptySeller by remember { mutableStateOf(false) }
         var errorEmptyForm by remember { mutableStateOf(false) }
 
+        var showBillCreatedWindow by remember { mutableStateOf(false) }
+        var billArg by remember { mutableStateOf(Bill()) }
+
+        var isViewObfuscated by remember { mutableStateOf(false) }
+
         //View
         viewTemplateWithNavigationBar {
+
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -336,7 +355,6 @@ class SellScreen : Screen { // Screen () {}
                 //| |    / _ \ '_ \/ __|  / _ \/\ |  _| '__/ _` | '_ ` _ \ / _ \
                 //| |___|  __/ | | \__ \ | (_>  < | | | | | (_| | | | | | |  __/
                 //\_____/\___|_| |_|___/  \___/\/ |_| |_|  \__,_|_| |_| |_|\___|
-                //TODO : add manual price
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(horizontalSeparator),
                     verticalArrangement = Arrangement.spacedBy(verticalSeparator)
@@ -366,7 +384,7 @@ class SellScreen : Screen { // Screen () {}
                             Spacer(modifier = Modifier.height(20.dp))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             formDropdownMenu(
-                                options = listOf(lensNullOption) + lensViewModel.lensDB.value.lens,
+                                options = listOf(lensNullOption , ) + lensViewModel.lensDB.value.lens,
                                 onOptionSelected = { formLens = it },
                                 prefix = "Lente : ",
                                 defaultOption = formLens,
@@ -377,7 +395,14 @@ class SellScreen : Screen { // Screen () {}
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             Spacer(modifier = Modifier.height(20.dp))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Text("Precio : $${longToPrice(formLens.price)}")
+                            formPriceTextField(
+                                initialValue =  formLensPrice,
+                                label = "Precio del lente :",
+                                onPriceChange = { formLensPrice = it },
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .height(80.dp)
+                            )
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             Spacer(modifier = Modifier.height(20.dp))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -420,7 +445,14 @@ class SellScreen : Screen { // Screen () {}
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             Spacer(modifier = Modifier.height(20.dp))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Text("Precio : $${longToPrice(formFrame.price)}")
+                            formPriceTextField(
+                                initialValue =  formFramePrice,
+                                label = "Precio de la montura :",
+                                onPriceChange = { formFramePrice = it },
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .height(80.dp)
+                            )
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             Spacer(modifier = Modifier.height(20.dp))
                             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -897,7 +929,7 @@ class SellScreen : Screen { // Screen () {}
                 //  \_/\___/ \__\__,_|_|
 
                 formTotal =
-                    (formLens.price + formFrame.price + formProducts.sumOf { it.product.price * it.quantity })
+                    (formLensPrice + formFramePrice + formProducts.sumOf { it.product.price * it.quantity })
 
                 container(
                     shapeRadius = 6.dp,
@@ -934,9 +966,6 @@ class SellScreen : Screen { // Screen () {}
                         .fillMaxWidth(0.5f)
                         .height(80.dp)
                         .onClick {
-
-                            println("FUNCAS DESDE EL HPT BOTON!?")
-
                             verifyFormData (
                                 sellerValue = formSeller,
                                 showEmptySellerNotification = { errorEmptySeller = it },
@@ -948,32 +977,36 @@ class SellScreen : Screen { // Screen () {}
                                 totalValue = formTotal,
                                 showEmptyFormNotification = { errorEmptyForm = it }
                             ) {
-                                viewModel.addRegister(
-                                    Register(
-                                        id = viewModel.registerDB.value.lastID + 1,
-                                        date = formDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")),
-                                        clientName = formClientName,
-                                        clientNumber = formClientNumber,
-                                        clientId = formClientId,
-                                        seller = formSeller,
-                                        frame = formFrame,
-                                        lens = formLens,
-                                        odESF = odESF,
-                                        odCIL = odCIL,
-                                        odEJE = odEJE,
-                                        odADD = odADD,
-                                        oiESF = oiESF,
-                                        oiCIL = oiCIL,
-                                        oiEJE = oiEJE,
-                                        oiADD = oiADD,
-                                        products = formProducts,
-                                        color = formColor,
-                                        dp = formDP,
-                                        total = formTotal
-                                    )
+                                val newBill = Bill(
+                                    id = viewModel.billDB.value.lastID + 1,
+                                    date = formDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")),
+                                    clientName = formClientName,
+                                    clientNumber = formClientNumber,
+                                    clientId = formClientId,
+                                    seller = formSeller,
+                                    frame = formFrame,
+                                    lens = formLens,
+                                    odESF = odESF,
+                                    odCIL = odCIL,
+                                    odEJE = odEJE,
+                                    odADD = odADD,
+                                    oiESF = oiESF,
+                                    oiCIL = oiCIL,
+                                    oiEJE = oiEJE,
+                                    oiADD = oiADD,
+                                    products = formProducts,
+                                    color = formColor,
+                                    dp = formDP,
+                                    total = formTotal
                                 )
 
-                                navigator !!. push (HomeScreen())
+                                billArg = newBill
+                                showBillCreatedWindow = true
+                                print( "Hola!?" )
+
+                                viewModel.addRegister(
+                                    newBill
+                                )
                             }
                         }
                 )
@@ -981,36 +1014,56 @@ class SellScreen : Screen { // Screen () {}
                 //=================================================================================
                 Spacer(modifier = Modifier.height(verticalSeparator))
                 //=================================================================================
-
-                if (errorEmptySeller){
-                    showWindowNotification(
-                        title = "Vendendor no ingresado",
-                        text = "No se selecciono un vendedor",
-                        onClose = { errorEmptySeller = false }
-                    )
-                }
-
-                if (errorEmptyClientName){
-                    showWindowNotification(
-                        title = "Nombre no ingresado",
-                        text = "No se ingreso el nombre del cliente",
-                        onClose = { errorEmptyClientName = false }
-                    )
-                }
-
-                if (errorEmptyForm){
-                    showWindowNotification(
-                        title = "No se vende nada",
-                        text = "No se esta vendiendo nada",
-                        onClose = { errorEmptyForm = false }
-                    )
-                }
-
-
             }
+
+
+
+
+        }
+
+        if (showBillCreatedWindow){
+            isViewObfuscated = true
+            billCreated(
+                bill = billArg,
+                onClose = { showBillCreatedWindow = false ; isViewObfuscated = false ; navigator !!. push (HomeScreen())  },
+                viewmodel = viewModel
+            )
+        }
+
+
+        if (errorEmptySeller){
+            isViewObfuscated = true
+            showWindowNotification(
+                title = "Vendendor no ingresado",
+                text = "No se selecciono un vendedor",
+                onClose = { errorEmptySeller = false ; isViewObfuscated = false }
+            )
+        }
+
+        if (errorEmptyClientName){
+            isViewObfuscated = true
+            showWindowNotification(
+                title = "Nombre no ingresado",
+                text = "No se ingreso el nombre del cliente",
+                onClose = { errorEmptyClientName = false ; isViewObfuscated = false }
+            )
+        }
+
+        if (errorEmptyForm){
+            isViewObfuscated = true
+            showWindowNotification(
+                title = "No se vende nada",
+                text = "No se esta vendiendo nada",
+                onClose = { errorEmptyForm = false  ; isViewObfuscated = false}
+            )
+        }
+
+        if (isViewObfuscated) {
+            obfuscateView()
         }
     }
 }
+
 
 private fun verifyFormData (
     sellerValue: Seller = Seller(),

@@ -12,6 +12,7 @@ object FileUtil {
     val pdfDir: File by lazy { verifyDir(dataDir.resolve("pdf")) }
 
     //Files
+
     val lensFileDB: File by lazy { verifyJsonFile(dataDir.resolve("lens.json")) }
     val lensFramesFileDB: File by lazy { verifyJsonFile(dataDir.resolve("lensFrames.json")) }
     val productsFileDB: File by lazy { verifyJsonFile(dataDir.resolve("products.json")) }

@@ -2,7 +2,9 @@ package com.kerneloso.adam.ui.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -17,11 +19,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintLayoutScope
 import cafe.adriel.voyager.navigator.LocalNavigator
+import com.kerneloso.adam.io.FileUtil
 import com.kerneloso.adam.ui.view.screen.HomeScreen
+import org.xhtmlrenderer.pdf.ITextRenderer
+import java.io.File
+import java.io.FileOutputStream
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,7 +48,7 @@ fun viewTemplateWithNavigationBar (
                 .height(40.dp)
                 .background(color)
         ) {
-            val ( crButtonBack , crButtonHome  ) = createRefs()
+            val ( crButtonBack , crButtonHome ,crTest  ) = createRefs()
 
             //Back
             Icon(

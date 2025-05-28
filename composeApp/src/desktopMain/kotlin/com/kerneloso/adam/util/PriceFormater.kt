@@ -16,6 +16,9 @@ fun longToPrice(value: Long): String {
 
 fun priceToLong(value: String): Long {
     val cleaned = value.filter { it.isDigit() || it == '$' || it == '.' }
-    val numeric = cleaned.replace("$", "").replace(".", "")
+    var numeric = cleaned.replace("$", "").replace(".", "")
+    if (numeric == ""){
+        numeric = "0"
+    }
     return numeric.toLong()
 }

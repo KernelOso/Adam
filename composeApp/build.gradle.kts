@@ -31,6 +31,10 @@ kotlin {
             implementation(compose.materialIconsExtended)
 
             implementation(libs.google.gson)
+
+            implementation(libs.fliying.saucer)
+
+            implementation(libs.itext)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

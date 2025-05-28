@@ -1,7 +1,7 @@
 package com.kerneloso.adam.domain.repository
 
 import com.google.gson.Gson
-import com.kerneloso.adam.domain.model.RegisterDB
+import com.kerneloso.adam.domain.model.BillDB
 import com.kerneloso.adam.io.FileUtil
 
 object RegisterRepository {
@@ -9,16 +9,16 @@ object RegisterRepository {
     private val dbFile = FileUtil.registersFileDB
     private val gson = Gson()
 
-    fun loadRegisters(): RegisterDB {
+    fun loadRegisters(): BillDB {
         if (!dbFile.exists()) {
-            return RegisterDB()
+            return BillDB()
         } else {
-            val result = gson.fromJson(dbFile.readText() , RegisterDB::class.java)
+            val result = gson.fromJson(dbFile.readText() , BillDB::class.java)
             return result
         }
     }
 
-    fun saveRegisters(db: RegisterDB) {
+    fun saveRegisters(db: BillDB) {
         dbFile.writeText(gson.toJson(db))
     }
 

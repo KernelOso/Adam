@@ -1,6 +1,6 @@
 package com.kerneloso.adam.domain.model
 
-data class Register(
+data class Bill(
     var id: Long = 0L,
     var date: String = "",
     var clientName: String = "",
@@ -26,10 +26,13 @@ data class Register(
     var color: String = "",
     var dp : String = "",
 
+    var abono: Long = 0L,
+    var saldo: Long = 0L,
+
     var total: Long = 0L
 )
 
-data class RegisterDB(
+data class BillDB(
     var lastID: Long = 0L,
-    var registers: List<Register> = listOf(),
+    var bills: List<Bill> = listOf(),
 )

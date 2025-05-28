@@ -136,12 +136,19 @@ fun formCellNumberTextField(
 
 @Composable
 fun formPriceTextField(
-    initialValue: Long = 0,
+    initialValue: Long,
     label: String,
     modifier: Modifier = Modifier,
     onPriceChange: (Long) -> Unit
 ) {
-    var textFieldValue by remember { mutableStateOf(TextFieldValue(longToPrice(initialValue))) }
+    var textFieldValue by remember(initialValue) {
+        mutableStateOf(
+            TextFieldValue(
+                text = longToPrice(initialValue),
+                selection = TextRange(longToPrice(initialValue).length)
+            )
+        )
+    }
     OutlinedTextField(
         value = textFieldValue,
         prefix = { Text("$ ") },
@@ -167,11 +174,14 @@ fun formPriceTextField(
                 }
 
                 // formatear en formato de precio
-                val outputTF = longToPrice(finalText.toLong())
-                textFieldValue = TextFieldValue(
-                    text = outputTF,
-                    selection = TextRange(longToPrice(finalText.toLong()).length)
-                )
+                val formatted = longToPrice(finalText.toLong())
+                if (formatted != textFieldValue.text) {
+                    textFieldValue = TextFieldValue(
+                        text = formatted,
+                        selection = TextRange(formatted.length)
+                    )
+                    onPriceChange(finalText.toLong())
+                }
 
                 //Retornar el valor
                 onPriceChange( finalText.toLongOrNull() ?: 0 )
