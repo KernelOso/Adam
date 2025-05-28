@@ -92,7 +92,7 @@ fun billCreated(
                         .fillMaxWidth(0.5f)
                         .height(60.dp)
                         .onClick {
-
+                            //TODO
                         }
                 )
             }

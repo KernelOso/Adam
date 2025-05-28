@@ -13,6 +13,9 @@ import org.xhtmlrenderer.pdf.ITextRenderer
 import java.awt.Desktop
 import java.io.File
 import java.io.FileOutputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 class RegistersViewModel : ViewModel() {
 
@@ -27,6 +30,75 @@ class RegistersViewModel : ViewModel() {
         viewModelScope.launch {
             _billDB.value = RegisterRepository.loadRegisters()
         }
+    }
+
+    fun searchRegisters(id: String = "" , date: String = "" , clientName: String = ""): List<Bill> {
+
+        val normalizedId = if (id.all { it.isDigit() }) id else ""
+        val normalizedDate = date.trim()
+        val searchWords = clientName.lowercase().split(" ").filter { it.isNotBlank() }
+
+        val searchById = if (normalizedId.isNotEmpty()) {
+            _billDB.value.bills.filter { bill ->
+                bill.id.toString() == id
+            }
+        } else {
+            _billDB.value.bills
+        }
+
+        val formatterFull = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
+        val searchByDate = if (normalizedDate.isNotEmpty()) {
+            searchById.filter { bill ->
+                try {
+                    val billDate = LocalDateTime.parse(bill.date, formatterFull)
+
+                    when {
+                        // Solo año
+                        Regex("^\\d{4}$").matches(normalizedDate) -> {
+                            billDate.year.toString() == normalizedDate
+                        }
+
+                        // Fecha con hora exacta
+                        Regex("^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}$").matches(normalizedDate) -> {
+                            val inputDate = LocalDateTime.parse(normalizedDate, formatterFull)
+                            billDate == inputDate
+                        }
+
+                        // Solo día
+                        Regex("^\\d{2}-\\d{2}-\\d{4}$").matches(normalizedDate) -> {
+                            val inputDate = LocalDateTime.parse("$normalizedDate 00:00", formatterFull)
+                            billDate.toLocalDate() == inputDate.toLocalDate()
+                        }
+
+                        else -> true // Si el formato es inválido, no se filtra
+                    }
+
+                } catch (e: DateTimeParseException) {
+                    true // Si no se puede parsear, no se filtra
+                }
+            }
+        } else {
+            searchById
+        }
+
+        val searchByName = if (searchWords.isNotEmpty()) {
+            searchByDate.filter { bill ->
+                val normalizedBillName = bill.clientName.lowercase()
+                val cleanedName = normalizedBillName.replace(Regex("[^a-z0-9\\s]"), "")
+                val nameWords = cleanedName.split(" ").filter { it.isNotBlank() }
+
+                searchWords.all { searchWord ->
+                    nameWords.any { nameWord ->
+                        nameWord.contains(searchWord)
+                    }
+                }
+            }
+        } else {
+            searchByDate
+        }
+
+
+        return  searchByName
     }
 
 //    fun searchRegisters(query: String): List<Register> {

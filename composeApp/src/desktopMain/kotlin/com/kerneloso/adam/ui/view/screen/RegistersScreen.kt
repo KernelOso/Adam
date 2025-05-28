@@ -3,16 +3,20 @@ package com.kerneloso.adam.ui.view.screen
 import adam.composeapp.generated.resources.Res
 import adam.composeapp.generated.resources.lensScreen_windowTitle
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,11 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.kerneloso.adam.domain.model.Bill
 import com.kerneloso.adam.ui.ComposeWindowHolder
 import com.kerneloso.adam.ui.component.container
+import com.kerneloso.adam.ui.component.formTextField
 import com.kerneloso.adam.ui.component.obfuscateView
 import com.kerneloso.adam.ui.component.tableHeader
 import com.kerneloso.adam.ui.component.tableItem
@@ -57,12 +63,15 @@ class RegistersScreen : Screen {
         //View Model
         val viewModel = remember { (RegistersViewModel()) }
 
+
         //Search Bar
-        // luego  var searchText by remember { mutableStateOf("") }
+        var searchDate by remember { mutableStateOf("") }
+        var searchClientName by remember { mutableStateOf("") }
+        var searchBillId by remember { mutableStateOf("") }
 
         //List of lens
         val registerDB by viewModel.billDB
-        val billList: List<Bill> = registerDB.bills
+        val billList: List<Bill> = viewModel.searchRegisters(searchBillId , searchDate , searchClientName)
 
         //View Obfuscated State
         var isViewObfuscated by remember { mutableStateOf(false) }
@@ -93,6 +102,28 @@ class RegistersScreen : Screen {
 
                 val (crSearchBar, crList, crButton) = createRefs()
 
+                searchBar(
+                    searchIdValue = searchBillId,
+                    onSearchIdValue = { searchBillId = it },
+
+                    searchDateValue = searchDate,
+                    onSearchDateValue = { searchDate = it },
+
+                    searchClientNameValue = searchClientName,
+                    onSearchClientNameValue = { searchClientName = it },
+
+
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .height(80.dp)
+                        .constrainAs(crSearchBar) {
+                            top.linkTo(parent.top)
+                            bottom.linkTo(crList.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        },
+                )
+
                 //ListContainer
                 container(
                     shapeRadius = 0.dp,
@@ -102,7 +133,7 @@ class RegistersScreen : Screen {
                         .fillMaxWidth(0.9f)
                         .fillMaxHeight(0.8f)
                         .constrainAs(crList) {
-                            top.linkTo(parent.top)
+                            top.linkTo(crSearchBar.bottom)
                             bottom.linkTo(parent.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
@@ -117,12 +148,12 @@ class RegistersScreen : Screen {
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
-                            items(billList) { register ->
+                            items(billList) { bill ->
                                 tableItemRow(
-                                    bill = register,
+                                    bill = bill,
                                     modifier = Modifier
                                         .clickable {
-                                            billArg = register
+                                            billArg = bill
                                             openEditRegisterForm = true
                                         }
                                 )
@@ -146,6 +177,66 @@ class RegistersScreen : Screen {
 //                lens = registerArg
 //            )
         }
+    }
+}
+
+@Composable
+private fun searchBar(
+    modifier: Modifier = Modifier,
+
+    searchIdValue: String = "",
+    onSearchIdValue: (String) -> Unit,
+
+
+    searchDateValue: String = "",
+    onSearchDateValue: (String) -> Unit,
+
+    searchClientNameValue: String = "",
+    onSearchClientNameValue: (String) -> Unit,
+
+    ) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+
+        formTextField(
+            value = searchIdValue,
+            onValueChange = { onSearchIdValue(it) },
+            label = "ID :",
+            modifier = Modifier
+                .weight(2f)
+                .height(60.dp)
+        )
+
+        Spacer(modifier=Modifier.width(20.dp))
+
+        formTextField(
+            value = searchDateValue,
+            onValueChange = { onSearchDateValue(it) },
+            label = "Fecha :",
+            placeholder = {
+                Text(
+                    text = "DD-MM-YYYY",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            },
+            modifier = Modifier
+                .weight(2f)
+                .height(60.dp)
+        )
+
+        Spacer(modifier=Modifier.width(20.dp))
+
+        formTextField(
+            value = searchClientNameValue,
+            onValueChange = { onSearchClientNameValue(it) },
+            label = "Nombre del cliente :",
+            modifier = Modifier
+                .weight(6f)
+                .height(60.dp)
+        )
     }
 }
 
@@ -188,7 +279,7 @@ private fun tableHeaderRow(
 
         tableHeader(
             textStyle = headerTextStyle,
-            text = "Client Id",
+            text = "Abono",
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
@@ -250,7 +341,7 @@ private fun tableItemRow(
         //client Id
         tableItem(
             textStyle = headerTextStyle,
-            text = bill.clientId.toString(),
+            text = bill.abono.toString(),
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
