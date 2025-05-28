@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kerneloso.adam.domain.model.Bill
 import com.kerneloso.adam.domain.model.BillDB
+import com.kerneloso.adam.domain.repository.LensRepository
 import com.kerneloso.adam.domain.repository.RegisterRepository
 import com.kerneloso.adam.io.FileUtil
 import kotlinx.coroutines.launch
@@ -101,27 +102,6 @@ class RegistersViewModel : ViewModel() {
         return  searchByName
     }
 
-//    fun searchRegisters(query: String): List<Register> {
-//        val normalizedQuery = query.lowercase().split(" ").filter {
-//            it.isNotBlank()
-//        }
-//
-//        // TODO :  filtrar por nombre del cliente, fecha, cedula
-//
-////        return _sellersDB.value.sellers.filter { product ->
-////            val normalizedName = product.name.lowercase()
-////
-////            val cleanedName = normalizedName.replace(Regex("[^a-z0-9\\s]") , "")
-////
-////            val nameWords = cleanedName.split(" ").filter { it.isNotBlank() }
-////
-////            normalizedQuery.all { searchWord ->
-////                nameWords.any { nameWord ->
-////                    nameWord.contains(searchWord)
-////                }
-////            }
-////        }
-//    }
 
     fun addRegister(bill: Bill) {
         val current = _billDB.value
@@ -141,23 +121,135 @@ class RegistersViewModel : ViewModel() {
 
         val outputName = "${bill.id}.pdf"
 
-        //Crear plantilla
+        val logo = "https://raw.githubusercontent.com/KernelOso/Adam/refs/heads/main/composeApp/src/desktopMain/composeResources/drawable/logo.png"
+
         val template = """
-                            <!DOCTYPE html>
-                            <html xmlns="http://www.w3.org/1999/xhtml">
-                            <head>
-                                <title>Documento</title>
-                                <style>
-                                    body { font-family: sans-serif; }
-                                    h1 { color: navy; }
-                                </style>
-                            </head>
-                            <body>
-                                <h1>Hola, ${bill.clientName}</h1>
-                                <p>Este PDF fue generado dinámicamente.</p>
-                            </body>
-                            </html>
-                        """.trimIndent()
+    <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Documento</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                position: relative;
+                margin: 0;
+                padding: 20px;
+                min-height: 100vh;
+                background: url('$logo') no-repeat center center;
+                background-size: 300px 300px;
+                opacity: 0.1;
+            }
+            .content {
+                position: relative;
+                opacity: 1;
+            }
+            h1 {
+                color: navy;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="content">
+            <h1>Hola, ${bill.clientName}</h1>
+            <p>Este PDF fue generado dinámicamente.</p>
+
+            <h2>Información del Cliente</h2>
+            <ul>
+                <li><b>ID:</b> ${bill.id}</li>
+                <li><b>Fecha:</b> ${bill.date}</li>
+                <li><b>Cliente:</b> ${bill.clientName}</li>
+                <li><b>Número Cliente:</b> ${bill.clientNumber}</li>
+                <li><b>ID Cliente:</b> ${bill.clientId}</li>
+            </ul>
+
+            <h2>Vendedor</h2>
+            <ul>
+                <li><b>Nombre:</b> ${bill.seller.name}</li>
+            </ul>
+
+            <h2>Armazón</h2>
+            <ul>
+                <li><b>Modelo:</b> ${bill.frame.name}</li>
+                <li><b>Precio:</b> ${bill.frame.price}</li>
+                <!-- Más propiedades Frame -->
+            </ul>
+
+            <h2>Lentes</h2>
+            <ul>
+                <li><b>Tipo:</b> ${bill.lens.name}</li>
+                <li><b>Tipo:</b> ${bill.lens.price}</li>
+                <!-- Más propiedades Lens -->
+            </ul>
+
+            <h2>Medidas OD</h2>
+            <ul>
+                <li><b>ESF:</b> ${bill.odESF}</li>
+                <li><b>CIL:</b> ${bill.odCIL}</li>
+                <li><b>EJE:</b> ${bill.odEJE}</li>
+                <li><b>ADD:</b> ${bill.odADD}</li>
+            </ul>
+
+            <h2>Medidas OI</h2>
+            <ul>
+                <li><b>ESF:</b> ${bill.oiESF}</li>
+                <li><b>CIL:</b> ${bill.oiCIL}</li>
+                <li><b>EJE:</b> ${bill.oiEJE}</li>
+                <li><b>ADD:</b> ${bill.oiADD}</li>
+            </ul>
+
+            <h2>Productos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${
+            bill.products.joinToString(separator = "") { product ->
+                """
+                            <tr>
+                                <td>${product.product.name}</td>
+                                <td>${product.quantity}</td>
+                                <td>${product.product.price}</td>
+                            </tr>
+                            """
+            }
+        }
+                </tbody>
+            </table>
+
+            <h2>Datos Adicionales</h2>
+            <ul>
+                <li><b>Color:</b> ${bill.color}</li>
+                <li><b>DP:</b> ${bill.dp}</li>
+            </ul>
+
+            <h2>Finanzas</h2>
+            <ul>
+                <li><b>Abono:</b> ${bill.abono}</li>
+                <li><b>Saldo:</b> ${bill.saldo}</li>
+                <li><b>Total:</b> ${bill.total}</li>
+            </ul>
+        </div>
+    </body>
+    </html>
+""".trimIndent()
+
 
         val renderer = ITextRenderer()
         renderer.setDocumentFromString(template)
@@ -182,6 +274,23 @@ class RegistersViewModel : ViewModel() {
             desktop.open(pdfFile)
         }
 
+    }
+
+    fun updateBill(bill: Bill) {
+        val current = _billDB.value
+        val updatedBillDB = current.copy(bills =
+            current.bills.map {
+                if ( it.id == bill.id ) {
+                    bill
+                } else  {
+                    it
+                }
+            }
+        )
+        _billDB.value = updatedBillDB
+        viewModelScope.launch {
+            RegisterRepository.saveRegisters(updatedBillDB)
+        }
     }
 
     fun deleteRegister(bill: Bill) {

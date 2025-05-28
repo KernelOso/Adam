@@ -36,6 +36,7 @@ import com.kerneloso.adam.ui.component.obfuscateView
 import com.kerneloso.adam.ui.component.tableHeader
 import com.kerneloso.adam.ui.component.tableItem
 import com.kerneloso.adam.ui.component.viewTemplateWithNavigationBar
+import com.kerneloso.adam.ui.view.window.billFormWindow
 import com.kerneloso.adam.ui.viewmodel.RegistersViewModel
 import com.kerneloso.adam.util.longToPrice
 import com.kerneloso.adam.util.resizeAndCenterWindow
@@ -171,11 +172,11 @@ class RegistersScreen : Screen {
         //Open Edit Lens Window
         if (openEditRegisterForm) {
             isViewObfuscated = true
-//            lensFormWindow(
-//                onClose = { openEditRegisterForm = false; isViewObfuscated = false },
-//                viewmodel = viewModel,
-//                lens = registerArg
-//            )
+            billFormWindow(
+                onClose = { openEditRegisterForm = false; isViewObfuscated = false },
+                viewmodel = viewModel,
+                bill = billArg
+            )
         }
     }
 }
