@@ -14,180 +14,164 @@
     <!--LensScreen-->
     <string name="lensScreen_windowTitle">Lentes</string>
 
-    <string name="lensScreen_searchBar_byName">Buscar lente por nombre :</string>
+    <string name="lensScreen_searchBar_byName">Buscar lente por nombre:</string>
 
     <string name="lensScreen_tableHeader_id">ID</string>
     <string name="lensScreen_tableHeader_name">Nombre</string>
     <string name="lensScreen_tableHeader_price">Precio</string>
 
-    <string name="lensScreen_button_newLens">Nuevo Lente</string>
+    <string name="lensScreen_button_newLens">Nuevo lente</string>
 
     <!--Lens Form-->
-    <string name="lensFormWindow_windowTitle_New">Nuevo Lente</string>
-    <string name="lensFormWindow_windowTitle_Edit">Editar Lente</string>
+    <string name="lensFormWindow_windowTitle_New">Nuevo lente</string>
+    <string name="lensFormWindow_windowTitle_Edit">Editar lente</string>
 
-    <string name="lensFormWindow_formField_lensName">Nombre del Lente</string>
-    <string name="lensFormWindow_formField_lensPrice">Precio del Lente</string>
+    <string name="lensFormWindow_formField_lensName">Nombre del lente</string>
+    <string name="lensFormWindow_formField_lensPrice">Precio del lente</string>
 
-    <string name="lensFormWindow_button_new">Agregar Lente</string>
-    <string name="lensFormWindow_button_update">Actualizar Lente</string>
-    <string name="lensFormWindow_button_delete">Eliminar Lente</string>
+    <string name="lensFormWindow_button_new">Agregar lente</string>
+    <string name="lensFormWindow_button_update">Actualizar lente</string>
+    <string name="lensFormWindow_button_delete">Eliminar lente</string>
 
-    <string name="lensFormWindow_notification_noPrice_title">No se ingreso un precio</string>
+    <string name="lensFormWindow_notification_noPrice_title">No se ingresó un precio</string>
     <string name="lensFormWindow_notification_noPrice_content">El precio del lente no puede ser 0</string>
 
-    <string name="lensFormWindow_notification_noName_title">No se ingreso un nombre</string>
-    <string name="lensFormWindow_notification_noName_content">El nombre del lente no puede estar vacio</string>
+    <string name="lensFormWindow_notification_noName_title">No se ingresó un nombre</string>
+    <string name="lensFormWindow_notification_noName_content">El nombre del lente no puede estar vacío</string>
 
     <!--=========================================================================================-->
 
     <!--Frame Screen-->
-
     <string name="framesScreen_windowTitle">Monturas</string>
 
-    <string name="framesScreen_searchBar_byName">Buscar montura por nombre :</string>
+    <string name="framesScreen_searchBar_byName">Buscar montura por nombre:</string>
 
     <string name="framesScreen_tableHeader_id">ID</string>
     <string name="framesScreen_tableHeader_name">Nombre</string>
     <string name="framesScreen_tableHeader_price">Precio</string>
 
-    <string name="framesScreen_button_newLens">Nueva Montura</string>
+    <string name="framesScreen_button_newLens">Nueva montura</string>
 
     <!--Frame Form-->
-
-    <string name="frameFormWindow_windowTitle_New">Nueva Montura</string>
-    <string name="frameFormWindow_windowTitle_Edit">Editar Montura</string>
+    <string name="frameFormWindow_windowTitle_New">Nueva montura</string>
+    <string name="frameFormWindow_windowTitle_Edit">Editar montura</string>
 
     <string name="frameFormWindow_formField_frameName">Nombre de la montura</string>
     <string name="frameFormWindow_formField_framePrice">Precio de la montura</string>
 
-    <string name="frameFormWindow_button_new">Agregar Montura</string>
-    <string name="frameFormWindow_button_update">Actualizar Montura</string>
-    <string name="frameFormWindow_button_delete">Eliminar Montura</string>
+    <string name="frameFormWindow_button_new">Agregar montura</string>
+    <string name="frameFormWindow_button_update">Actualizar montura</string>
+    <string name="frameFormWindow_button_delete">Eliminar montura</string>
 
-    <string name="frameFormWindow_notification_noPrice_title">No se ingreso un precio</string>
+    <string name="frameFormWindow_notification_noPrice_title">No se ingresó un precio</string>
     <string name="frameFormWindow_notification_noPrice_content">El precio de la montura no puede ser 0</string>
 
-    <string name="frameFormWindow_notification_noName_title">No se ingreso un nombre</string>
-    <string name="frameFormWindow_notification_noName_content">El nombre de la montura no puede estar vacio</string>
+    <string name="frameFormWindow_notification_noName_title">No se ingresó un nombre</string>
+    <string name="frameFormWindow_notification_noName_content">El nombre de la montura no puede estar vacío</string>
 
     <!--=========================================================================================-->
 
     <!--Products Screen-->
-
     <string name="productsScreen_windowTitle">Productos</string>
 
-    <string name="productsScreen_searchBar_byName">Buscar producto por nombre :</string>
+    <string name="productsScreen_searchBar_byName">Buscar producto por nombre:</string>
 
     <string name="productsScreen_tableHeader_id">ID</string>
     <string name="productsScreen_tableHeader_name">Nombre</string>
     <string name="productsScreen_tableHeader_price">Precio</string>
 
-    <string name="productsScreen_button_newProduct">Nuevo Producto</string>
+    <string name="productsScreen_button_newProduct">Nuevo producto</string>
 
     <!--Products Form-->
-
-    <string name="productsFormWindow_windowTitle_New">Nuevo Producto</string>
-    <string name="productsFormWindow_windowTitle_Edit">Editar Producto</string>
+    <string name="productsFormWindow_windowTitle_New">Nuevo producto</string>
+    <string name="productsFormWindow_windowTitle_Edit">Editar producto</string>
 
     <string name="productsFormWindow_formField_productName">Nombre del producto</string>
     <string name="productsFormWindow_formField_productPrice">Precio del producto</string>
 
-    <string name="productsFormWindow_button_new">Agregar Producto</string>
-    <string name="productsFormWindow_button_update">Actualizar Producto</string>
-    <string name="productsFormWindow_button_delete">Eliminar Producto</string>
+    <string name="productsFormWindow_button_new">Agregar producto</string>
+    <string name="productsFormWindow_button_update">Actualizar producto</string>
+    <string name="productsFormWindow_button_delete">Eliminar producto</string>
 
-    <string name="productsFormWindow_notification_noPrice_title">No se ingreso un precio</string>
+    <string name="productsFormWindow_notification_noPrice_title">No se ingresó un precio</string>
     <string name="productsFormWindow_notification_noPrice_content">El precio del producto no puede ser 0</string>
 
-    <string name="productsFormWindow_notification_noName_title">No se ingreso un nombre</string>
-    <string name="productsFormWindow_notification_noName_content">El nombre del producto no puede estar vacio</string>
+    <string name="productsFormWindow_notification_noName_title">No se ingresó un nombre</string>
+    <string name="productsFormWindow_notification_noName_content">El nombre del producto no puede estar vacío</string>
 
     <!--=========================================================================================-->
 
     <!--Sellers Screen-->
-
     <string name="sellersScreen_windowTitle">Vendedores</string>
 
-    <string name="sellersScreen_searchBar_byName">Buscar vendedores por nombre :</string>
+    <string name="sellersScreen_searchBar_byName">Buscar vendedores por nombre:</string>
 
     <string name="sellersScreen_tableHeader_id">ID</string>
     <string name="sellersScreen_tableHeader_name">Nombre</string>
 
-    <string name="sellersScreen_button_newSeller">Nuevo Vendedor</string>
+    <string name="sellersScreen_button_newSeller">Nuevo vendedor</string>
 
-    <!--Products Form-->
-
-    <string name="sellersFormWindow_windowTitle_New">Nuevo Vendedor</string>
-    <string name="sellersFormWindow_windowTitle_Edit">Editar Vendedor</string>
+    <!--Sellers Form-->
+    <string name="sellersFormWindow_windowTitle_New">Nuevo vendedor</string>
+    <string name="sellersFormWindow_windowTitle_Edit">Editar vendedor</string>
 
     <string name="sellersFormWindow_formField_productName">Nombre del vendedor</string>
 
-    <string name="sellersFormWindow_button_new">Agregar Vendedor</string>
-    <string name="sellersFormWindow_button_update">Actualizar Vendedor</string>
-    <string name="sellersFormWindow_button_delete">Eliminar Vendedor</string>
+    <string name="sellersFormWindow_button_new">Agregar vendedor</string>
+    <string name="sellersFormWindow_button_update">Actualizar vendedor</string>
+    <string name="sellersFormWindow_button_delete">Eliminar vendedor</string>
 
-    <string name="sellersFormWindow_notification_noName_title">No se ingreso un nombre</string>
-    <string name="sellersFormWindow_notification_noName_content">El nombre del vendedor no puede estar vacio</string>
+    <string name="sellersFormWindow_notification_noName_title">No se ingresó un nombre</string>
+    <string name="sellersFormWindow_notification_noName_content">El nombre del vendedor no puede estar vacío</string>
 
     <!--=========================================================================================-->
 
     <!--Sell Screen-->
     <string name="sellScreen_windowTitle">Vender</string>
 
-    <string name="sellScreen_formField_clientName">* Nombre del cliente :</string>
-    <string name="sellScreen_formField_clientNumber">Numero del cliente :</string>
-    <string name="sellScreen_formField_clientNumberId">ID (C.C) del cliente :</string>
+    <string name="sellScreen_formField_clientName">* Nombre del cliente:</string>
+    <string name="sellScreen_formField_clientNumber">Número del cliente:</string>
+    <string name="sellScreen_formField_clientNumberId">ID (C.C.) del cliente:</string>
 
-
-    <string name="sellScreen_formField_seller_title">Informacion del Vendedor</string>
-    <string name="sellScreen_formField_Seller">* Vendedor :</string>
-    <string name="sellScreen_formField_seller_prefix">Vendedor : </string>
+    <string name="sellScreen_formField_seller_title">Información del vendedor</string>
+    <string name="sellScreen_formField_Seller">* Vendedor:</string>
+    <string name="sellScreen_formField_seller_prefix">Vendedor:</string>
     <string name="sellScreen_formField_seller_nullOption">Selecciona un vendedor</string>
 
+    <string name="sellScreen_formField_lens_title">Información del lente</string>
+    <string name="sellScreen_formField_lensPrefix">Lente:</string>
+    <string name="sellScreen_formField_lensPrice">Precio del lente:</string>
+    <string name="sellScreen_formField_lens_nullOption">No se venderán lentes</string>
 
-    <string name="sellScreen_formField_lens_title">Informacion del lente</string>
-    <string name="sellScreen_formField_lensPrefix">Lente : </string>
-    <string name="sellScreen_formField_lensPrice">Precio del lente :</string>
-    <string name="sellScreen_formField_lens_nullOption">No se venderan lentes</string>
+    <string name="sellScreen_formField_frame_title">Información de la montura</string>
+    <string name="sellScreen_formField_framePrefix">Montura:</string>
+    <string name="sellScreen_formField_framePrice">Precio de la montura:</string>
+    <string name="sellScreen_formField_frame_nullOption">No se venderá una montura</string>
 
-    <string name="sellScreen_formField_frame_title">Informacion de la montura</string>
-    <string name="sellScreen_formField_framePrefix">Montura : </string>
-    <string name="sellScreen_formField_framePrice">Precio de la montura :</string>
-    <string name="sellScreen_formField_frame_nullOption">No se vendera una montura</string>
-
-
-    <string name="sellScreen_formField_date_dayPrefix">Dia : </string>
+    <string name="sellScreen_formField_date_dayPrefix">Día : </string>
     <string name="sellScreen_formField_date_monthPrefix">Mes : </string>
-    <string name="sellScreen_formField_date_yearPrefix">A;o : </string>
+    <string name="sellScreen_formField_date_yearPrefix">Año : </string>
 
-    <string name="sellScreen_formTitle_OI">Ojo Izquierdo</string>
-    <string name="sellScreen_formTitle_OD">Ojo Derecho</string>
+    <string name="sellScreen_formTitle_OI">Ojo izquierdo</string>
+    <string name="sellScreen_formTitle_OD">Ojo derecho</string>
 
-    <string name="sellScreen_formField_ESF">ESF :</string>
-    <string name="sellScreen_formField_CIL">CIL :</string>
-    <string name="sellScreen_formField_EJE">EJE :</string>
-    <string name="sellScreen_formField_ADD">ADD :</string>
+    <string name="sellScreen_formField_ESF">ESF:</string>
+    <string name="sellScreen_formField_CIL">CIL:</string>
+    <string name="sellScreen_formField_EJE">EJE:</string>
+    <string name="sellScreen_formField_ADD">ADD:</string>
 
-    <string name="sellScreen_button_addProduct">A;adir Producto</string>
+    <string name="sellScreen_button_addProduct">Añadir producto</string>
 
-    <string name="sellScreen_formField_color">Color :</string>
-    <string name="sellScreen_formField_DP">DP :</string>
+    <string name="sellScreen_formField_color">Color:</string>
+    <string name="sellScreen_formField_DP">DP:</string>
 
-
-    <string name="sellScreen_formField_saldo">Saldo :</string>
-    <string name="sellScreen_formField_abono">Abono : $</string>
+    <string name="sellScreen_formField_saldo">Saldo:</string>
+    <string name="sellScreen_formField_abono">Abono: $</string>
 
     <string name="sellScreen_button_sell">VENDER</string>
 
     <!--BillEdit-->
-
-    <string name="billWindow_button_update">Actualizar Factura</string>
-    <string name="billWindow_button_print">Imprimir Factura</string>
-    <string name="billWindow_button_open">Abrir Factura PDF</string>
-
-
-
-
+    <string name="billWindow_button_update">Actualizar factura</string>
+    <string name="billWindow_button_print">Imprimir factura</string>
+    <string name="billWindow_button_open">Abrir factura PDF</string>
 </resources>
-
