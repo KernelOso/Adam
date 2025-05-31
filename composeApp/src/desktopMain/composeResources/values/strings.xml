@@ -6,7 +6,7 @@
 
     <string name="homeScreen_button_sell">Vender</string>
     <string name="homeScreen_button_sellers">Vendedores</string>
-    <string name="homeScreen_button_registers">Registros</string>
+    <string name="homeScreen_button_registers">Facturas</string>
     <string name="homeScreen_button_lens">Lentes</string>
     <string name="homeScreen_button_frames">Monturas</string>
     <string name="homeScreen_button_products">Productos</string>

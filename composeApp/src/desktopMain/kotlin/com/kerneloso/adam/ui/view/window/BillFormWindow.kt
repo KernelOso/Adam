@@ -133,7 +133,13 @@ fun billFormWindow(
                     formPriceTextField(
                         initialValue =  tfAbono,
                         label = stringResource(Res.string.sellScreen_formField_abono),
-                        onPriceChange = { tfAbono = it },
+                        onPriceChange = {
+                            if (tfAbono > bill.total) {
+                                tfAbono = bill.total
+                            } else {
+                                tfAbono = it
+                            }
+                        },
                         modifier = Modifier.weight(1f)
                     )
                     Spacer(modifier = Modifier.width(20.dp))
@@ -189,9 +195,6 @@ fun billFormWindow(
                         }
                 )
             }
-
-
-
         }
     }
 }

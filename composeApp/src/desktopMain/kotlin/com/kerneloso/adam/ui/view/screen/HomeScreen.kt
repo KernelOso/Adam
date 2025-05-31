@@ -83,7 +83,7 @@ class HomeScreen () : Screen {
 
                 //Button : Registers DB
                 homeButton(
-                    screenDestiny = RegistersScreen(),
+                    screenDestiny = BillsScreen(),
                     icon = Icons.Filled.FormatListNumbered,
                     label = stringResource(Res.string.homeScreen_button_registers),
                     modifier = Modifier.constrainAs(crButtonRegisters) {

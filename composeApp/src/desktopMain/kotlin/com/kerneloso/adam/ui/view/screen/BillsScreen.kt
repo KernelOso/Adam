@@ -3,7 +3,6 @@ package com.kerneloso.adam.ui.view.screen
 import adam.composeapp.generated.resources.Res
 import adam.composeapp.generated.resources.lensScreen_windowTitle
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import com.kerneloso.adam.domain.model.Bill
@@ -42,7 +40,7 @@ import com.kerneloso.adam.util.longToPrice
 import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
 
-class RegistersScreen : Screen {
+class BillsScreen : Screen {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
@@ -61,7 +59,6 @@ class RegistersScreen : Screen {
         }
         window.title = stringResource(Res.string.lensScreen_windowTitle)
 
-        //View Model
         val viewModel = remember { (RegistersViewModel()) }
 
 
@@ -71,7 +68,6 @@ class RegistersScreen : Screen {
         var searchBillId by remember { mutableStateOf("") }
 
         //List of lens
-        val registerDB by viewModel.billDB
         val billList: List<Bill> = viewModel.searchRegisters(searchBillId , searchDate , searchClientName)
 
         //View Obfuscated State
@@ -339,10 +335,10 @@ private fun tableItemRow(
                 .weight(1f)
         )
 
-        //client Id
+        //abono
         tableItem(
             textStyle = headerTextStyle,
-            text = bill.abono.toString(),
+            text = "$ ${longToPrice(bill.abono)}",
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
@@ -351,7 +347,7 @@ private fun tableItemRow(
         //total :
         tableItem(
             textStyle = headerTextStyle,
-            text = longToPrice(bill.total),
+            text = "$ ${longToPrice(bill.total)}",
             modifier = Modifier
                 .height(headerHeight)
                 .weight(1f)
