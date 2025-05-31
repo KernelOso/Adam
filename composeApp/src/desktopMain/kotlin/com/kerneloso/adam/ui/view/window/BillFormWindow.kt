@@ -70,189 +70,56 @@ fun billFormWindow(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .verticalScroll(scrollState)
-                        .fillMaxWidth(0.5f)
+                        .fillMaxWidth(0.8f)
                         .padding(20.dp)
                         .weight(9f)
                 ) {
                     // =================================================================================
                     Spacer(modifier = Modifier.height(20.dp))
                     // =================================================================================
-                    Text(
-                        text = "=== === Info Basica === ===",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "ID : ${bill.id}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "Fecha : ${bill.date}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "=== === Info Cliente === ===",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "Nombre del cliente : ${bill.clientName}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "ID del cliente : ${bill.clientId}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "Telefono del cliente : ${bill.clientNumber}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "=== === === === === ===",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "Vendedor : ${bill.seller.name}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "=== === Info Lentes === ===",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "Tipo de lente : ${bill.lens.name}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "    - Precio : ${longToPrice(bill.lens.price)}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "Montura : ${bill.frame.name}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "    - Precio : ${longToPrice(bill.frame.price)}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "=== === Ojo Izquierdo === ===",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "ESF : ${bill.oiESF}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "CIL : ${bill.oiCIL}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "ADD : ${bill.oiADD}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "EJE : ${bill.oiEJE}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "=== === Ojo Derecho === ===",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "ESF : ${bill.odESF}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "CIL : ${bill.odCIL}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "ADD : ${bill.odADD}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "EJE : ${bill.odEJE}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "=== === Productos === ===",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    Line("OPTICA MCA")
+                    Line("=== === === === === ===")
+                    Line("Fecha : ${bill.date}")
+                    Line("Factura #${bill.id}")
+                    Line("=== === === === === ===")
+                    Line("Cliente : ${bill.clientName}")
+                    Line("Cel : ${bill.clientNumber}")
+                    Line("C.C : ${bill.clientId}")
+                    Line("=== === === === === ===")
+                    Line("Vendendor : ${bill.seller.name}")
+                    Line("=== === === === === ===")
+                    Line("Ojo Derecho :")
+                    Line("ESF : ${bill.odESF}")
+                    Line("CIL : ${bill.odCIL}")
+                    Line("EJE : ${bill.odEJE}")
+                    Line("ADD : ${bill.odADD}")
+                    Line("")
+                    Line("Ojo Izquierdo :")
+                    Line("ESF : ${bill.oiESF}")
+                    Line("CIL : ${bill.oiCIL}")
+                    Line("EJE : ${bill.oiEJE}")
+                    Line("ADD : ${bill.oiADD}")
+                    Line("=== === === === === ===")
+                    Line("Lente : ${bill.lens.name}")
+                    Line("Precio : ${bill.lens.price}")
+                    Line("=== === === === === ===")
+                    Line("Montura : ${bill.frame.name}")
+                    Line("Precio : ${bill.frame.price}")
+                    Line("=== === === === === ===")
                     bill.products.forEach { product ->
-
-                        Text(
-                            text = "    Nombre : ${product.product.name}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        Text(
-                            text = "    Precio UND : ${product.product.price}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        Text(
-                            text = "        Cantidad : ${product.quantity}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        Text(
-                            text = "    Precio total : ${product.quantity * product.product.price}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        // =================================================================================
-                        Spacer(modifier = Modifier.height(10.dp))
-                        // =================================================================================
+                        Line("- | ${product.quantity} | ${product.product.name}")
+                        Line("    - UND : ${longToPrice(product.product.price)}")
+                        Line("    - ${longToPrice(product.quantity * product.product.price)}")
+                        Line("")
                     }
-                    Text(
-                        text = "=== === Info Extra === ===",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "Color : ${bill.color}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "DP : ${bill.dp}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "=== === Total === ===",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(
-                        text = "TOTAL : ${bill.total}",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                    Line("=== === === === === ===")
+                    Line("DP : ${bill.dp}")
+                    Line("Color : ${bill.color}")
+                    Line("=== === === === === ===")
+                    Line("TOTAL : ${bill.total}")
+                    Line("")
+                    Line("Abono : ${bill.abono}")
+                    Line("Saldo : ${bill.saldo}")
 
 
                 }
@@ -283,7 +150,7 @@ fun billFormWindow(
                 Spacer(modifier = Modifier.height(20.dp))
                 // =================================================================================
                 simpleButton(
-                    text = stringResource(Res.string.lensFormWindow_button_update),
+                    text = stringResource(Res.string.billWindow_button_update),
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
                         .height(60.dp)
@@ -301,12 +168,24 @@ fun billFormWindow(
                 Spacer(modifier = Modifier.height(20.dp))
                 // =================================================================================
                 simpleButton(
-                    text = "abrir pdf",
+                    text = stringResource(Res.string.billWindow_button_open),
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
                         .height(60.dp)
                         .onClick {
                             viewmodel.openPdf(bill)
+                        }
+                )
+                // =================================================================================
+                Spacer(modifier = Modifier.height(20.dp))
+                // =================================================================================
+                simpleButton(
+                    text = stringResource(Res.string.billWindow_button_print),
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(60.dp)
+                        .onClick {
+                            viewmodel.printBill(bill)
                         }
                 )
             }
@@ -315,4 +194,13 @@ fun billFormWindow(
 
         }
     }
+}
+
+@Composable
+private fun Line(text: String = "") {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = Modifier.fillMaxWidth()
+    )
 }

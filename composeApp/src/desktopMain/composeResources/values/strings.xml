@@ -180,7 +180,11 @@
 
     <string name="sellScreen_button_sell">VENDER</string>
 
+    <!--BillEdit-->
 
+    <string name="billWindow_button_update">Actualizar Factura</string>
+    <string name="billWindow_button_print">Imprimir Factura</string>
+    <string name="billWindow_button_open">Abrir Factura PDF</string>
 
 
 

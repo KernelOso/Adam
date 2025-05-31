@@ -9,6 +9,7 @@ import com.kerneloso.adam.domain.model.BillDB
 import com.kerneloso.adam.domain.repository.LensRepository
 import com.kerneloso.adam.domain.repository.RegisterRepository
 import com.kerneloso.adam.io.FileUtil
+import com.kerneloso.adam.util.longToPrice
 import kotlinx.coroutines.launch
 import org.xhtmlrenderer.pdf.ITextRenderer
 import java.awt.Desktop
@@ -17,6 +18,10 @@ import java.io.FileOutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import javax.print.DocFlavor
+import javax.print.PrintService
+import javax.print.PrintServiceLookup
+import javax.print.SimpleDoc
 
 class RegistersViewModel : ViewModel() {
 
@@ -33,7 +38,7 @@ class RegistersViewModel : ViewModel() {
         }
     }
 
-    fun searchRegisters(id: String = "" , date: String = "" , clientName: String = ""): List<Bill> {
+    fun searchRegisters(id: String = "", date: String = "", clientName: String = ""): List<Bill> {
 
         val normalizedId = if (id.all { it.isDigit() }) id else ""
         val normalizedDate = date.trim()
@@ -99,7 +104,7 @@ class RegistersViewModel : ViewModel() {
         }
 
 
-        return  searchByName
+        return searchByName
     }
 
 
@@ -113,159 +118,124 @@ class RegistersViewModel : ViewModel() {
         viewModelScope.launch {
             RegisterRepository.saveRegisters(updatedRegisterDB)
 
-            generatePdf( bill )
+            generatePdf(bill)
         }
     }
 
     fun generatePdf(bill: Bill) {
 
-        val outputName = "${bill.id}.pdf"
+        //TODO
 
-        val logo = "https://raw.githubusercontent.com/KernelOso/Adam/refs/heads/main/composeApp/src/desktopMain/composeResources/drawable/logo.png"
+//
+//          Hmtl ...
+//
+//        val renderer = ITextRenderer()
+//        renderer.setDocumentFromString(template)
+//        renderer.layout()
+//        FileOutputStream( File( FileUtil.pdfDir , outputName ) ).use {
+//            renderer.createPDF(it)
+//        }
+    }
 
-        val template = """
-    <!DOCTYPE html>
-    <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>Documento</title>
-        <style>
-            body {
-                font-family: sans-serif;
-                position: relative;
-                margin: 0;
-                padding: 20px;
-                min-height: 100vh;
-                background: url('$logo') no-repeat center center;
-                background-size: 300px 300px;
-                opacity: 0.1;
-            }
-            .content {
-                position: relative;
-                opacity: 1;
-            }
-            h1 {
-                color: navy;
-            }
-            table {
-                border-collapse: collapse;
-                width: 100%;
-            }
-            th, td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
-            th {
-                background-color: #f2f2f2;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="content">
-            <h1>Hola, ${bill.clientName}</h1>
-            <p>Este PDF fue generado dinámicamente.</p>
+    fun printBill(bill: Bill) {
 
-            <h2>Información del Cliente</h2>
-            <ul>
-                <li><b>ID:</b> ${bill.id}</li>
-                <li><b>Fecha:</b> ${bill.date}</li>
-                <li><b>Cliente:</b> ${bill.clientName}</li>
-                <li><b>Número Cliente:</b> ${bill.clientNumber}</li>
-                <li><b>ID Cliente:</b> ${bill.clientId}</li>
-            </ul>
 
-            <h2>Vendedor</h2>
-            <ul>
-                <li><b>Nombre:</b> ${bill.seller.name}</li>
-            </ul>
 
-            <h2>Armazón</h2>
-            <ul>
-                <li><b>Modelo:</b> ${bill.frame.name}</li>
-                <li><b>Precio:</b> ${bill.frame.price}</li>
-                <!-- Más propiedades Frame -->
-            </ul>
+        val textToPrint = """
+            
+OPTICA MCA
+=== === === === === ===
+Carrera 12 No. 50-12 B
 
-            <h2>Lentes</h2>
-            <ul>
-                <li><b>Tipo:</b> ${bill.lens.name}</li>
-                <li><b>Tipo:</b> ${bill.lens.price}</li>
-                <!-- Más propiedades Lens -->
-            </ul>
+Tel : 302 297 1601
+Tel : 321 776 1886
 
-            <h2>Medidas OD</h2>
-            <ul>
-                <li><b>ESF:</b> ${bill.odESF}</li>
-                <li><b>CIL:</b> ${bill.odCIL}</li>
-                <li><b>EJE:</b> ${bill.odEJE}</li>
-                <li><b>ADD:</b> ${bill.odADD}</li>
-            </ul>
+IG / FB @optica_mca
+=== === === === === ===
+Fecha : ${bill.date}
+Factura #${bill.id}
+=== === === === === ===
+Cliente : ${bill.clientName}
+Cel : ${bill.clientNumber}
+C.C : ${bill.clientId}
+=== === === === === ===
+Vendendor : ${bill.seller.name}
+=== === === === === ===
+Ojo Izquierdo :
+ESF : ${bill.oiESF}
+CIL : ${bill.oiCIL}
+EJE : ${bill.oiEJE}
+ADD : ${bill.oiADD}
+ 
+Ojo Derecho :
+ESF : ${bill.odESF}
+CIL : ${bill.odCIL}
+EJE : ${bill.odEJE}
+ADD : ${bill.odADD}
 
-            <h2>Medidas OI</h2>
-            <ul>
-                <li><b>ESF:</b> ${bill.oiESF}</li>
-                <li><b>CIL:</b> ${bill.oiCIL}</li>
-                <li><b>EJE:</b> ${bill.oiEJE}</li>
-                <li><b>ADD:</b> ${bill.oiADD}</li>
-            </ul>
+=== === === === === ===
+Lente : ${bill.lens.name}
+Precio : $${longToPrice(bill.lens.price)}
+=== === === === === ===
+Montura : ${bill.frame.name}
+Precio : $${longToPrice(bill.frame.price)}
+=== === === === === ===
+Productos :
+${
+bill.products.joinToString("\n") { product ->
+    "- | ${product.quantity} | ${product.product.name}\n    - UND : $${longToPrice(product.product.price)}\n    - $${longToPrice(product.quantity * product.product.price)}"
+}
+}
+=== === === === === ===
+DP : ${bill.dp}
+Color : ${bill.color}
+=== === === === === ===
+TOTAL : $${longToPrice(bill.total)}
 
-            <h2>Productos</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${
-            bill.products.joinToString(separator = "") { product ->
-                """
-                            <tr>
-                                <td>${product.product.name}</td>
-                                <td>${product.quantity}</td>
-                                <td>${product.product.price}</td>
-                            </tr>
-                            """
-            }
-        }
-                </tbody>
-            </table>
+Abono : $${longToPrice(bill.abono)}
+Saldo : $${longToPrice(bill.saldo)}
 
-            <h2>Datos Adicionales</h2>
-            <ul>
-                <li><b>Color:</b> ${bill.color}</li>
-                <li><b>DP:</b> ${bill.dp}</li>
-            </ul>
 
-            <h2>Finanzas</h2>
-            <ul>
-                <li><b>Abono:</b> ${bill.abono}</li>
-                <li><b>Saldo:</b> ${bill.saldo}</li>
-                <li><b>Total:</b> ${bill.total}</li>
-            </ul>
-        </div>
-    </body>
-    </html>
+
+
+
+
+
+
+
+
 """.trimIndent()
 
+//        // refactorizar para usar las impresoras de windows
+//        val devicePath = "/dev/usb/lp0"
+//
+//        try {
+//            FileOutputStream(File(devicePath)).use { output ->
+//                output.write(textToPrint.toByteArray())
+//                output.flush()
+//            }
+//            println("Texto enviado correctamente.")
+//        } catch (e: Exception) {
+//            println("Error al enviar a la impresora: ${e.message}")
+//        }
+        val flavor = DocFlavor.STRING.TEXT_PLAIN
+        val printServices = PrintServiceLookup.lookupPrintServices(flavor , null)
 
-        val renderer = ITextRenderer()
-        renderer.setDocumentFromString(template)
-        renderer.layout()
-        FileOutputStream( File( FileUtil.pdfDir , outputName ) ).use {
-            renderer.createPDF(it)
-        }
+        val printService = printServices.firstOrNull()?: throw RuntimeException("No printer found")
+
+        val printJob = printService.createPrintJob()
+        val doc = SimpleDoc(textToPrint , flavor , null)
+
+        printJob.print(doc , null)
     }
 
     fun openPdf(bill: Bill) {
 
-        val pdfFile = File(FileUtil.pdfDir ,"${bill.id}.pdf" )
+        val pdfFile = File(FileUtil.pdfDir, "${bill.id}.pdf")
 
         val desktop = Desktop.getDesktop()
 
-        if ( pdfFile.exists() ) {
+        if (pdfFile.exists()) {
             //solo abrir
             desktop.open(pdfFile)
         } else {
@@ -278,14 +248,15 @@ class RegistersViewModel : ViewModel() {
 
     fun updateBill(bill: Bill) {
         val current = _billDB.value
-        val updatedBillDB = current.copy(bills =
-            current.bills.map {
-                if ( it.id == bill.id ) {
-                    bill
-                } else  {
-                    it
+        val updatedBillDB = current.copy(
+            bills =
+                current.bills.map {
+                    if (it.id == bill.id) {
+                        bill
+                    } else {
+                        it
+                    }
                 }
-            }
         )
         _billDB.value = updatedBillDB
         viewModelScope.launch {
