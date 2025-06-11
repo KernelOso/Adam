@@ -107,7 +107,13 @@ class BillsViewModel : ViewModel() {
             searchByDate
         }
 
-        return searchByName
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
+
+        val sortedBills = searchByDate.sortedByDescending {
+            LocalDateTime.parse(it.date, formatter)
+        }
+
+        return sortedBills
     }
 
     fun addBill(bill: Bill) {
