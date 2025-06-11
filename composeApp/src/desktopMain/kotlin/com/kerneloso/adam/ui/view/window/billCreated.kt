@@ -1,10 +1,6 @@
 package com.kerneloso.adam.ui.view.window
 
-import adam.composeapp.generated.resources.Res
-import adam.composeapp.generated.resources.sellScreen_formField_abono
-import adam.composeapp.generated.resources.sellersFormWindow_button_update
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.onClick
 import androidx.compose.material.Text
@@ -13,17 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import com.kerneloso.adam.domain.model.Bill
-import com.kerneloso.adam.domain.model.Seller
 import com.kerneloso.adam.ui.component.*
-import com.kerneloso.adam.ui.viewmodel.RegistersViewModel
-import com.kerneloso.adam.util.longToPrice
+import com.kerneloso.adam.ui.viewmodel.BillsViewModel
 import com.kerneloso.adam.util.resizeAndCenterWindow
-import org.jetbrains.compose.resources.stringResource
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -31,7 +23,7 @@ import org.jetbrains.compose.resources.stringResource
 fun billCreated(
     bill: Bill,
     onClose: () -> Unit,
-    viewmodel: RegistersViewModel
+    viewmodel: BillsViewModel
 ) {
     Window(
         onCloseRequest = { onClose() },
