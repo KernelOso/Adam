@@ -235,6 +235,14 @@ class BillsViewModel : ViewModel() {
                         <strong>Vendedor:</strong> ${bill.seller.name}
                       </div>
                     </div>
+                    
+                    <div class="titulo">Ojo Derecho</div>
+                    <div class="datos">
+                      ESF: ${bill.odESF} |
+                      CIL: ${bill.odCIL} |
+                      EJE: ${bill.odEJE} |
+                      ADD: ${bill.odADD}
+                    </div>
     
                     <div class="titulo">Ojo Izquierdo</div>
                     <div class="datos">
@@ -242,14 +250,6 @@ class BillsViewModel : ViewModel() {
                       CIL: ${bill.oiCIL} |
                       EJE: ${bill.oiEJE} |
                       ADD: ${bill.oiADD}
-                    </div>
-    
-                    <div class="titulo">Ojo Derecho</div>
-                    <div class="datos">
-                      ESF: ${bill.odESF} |
-                      CIL: ${bill.odCIL} |
-                      EJE: ${bill.odEJE} |
-                      ADD: ${bill.odADD}
                     </div>
     
                     <div class="titulo">Lente</div>
@@ -326,17 +326,18 @@ C.C : ${bill.clientId}
 === === === === === ===
 Vendendor : ${bill.seller.name}
 === === === === === ===
-Ojo Izquierdo :
-ESF : ${bill.oiESF}
-CIL : ${bill.oiCIL}
-EJE : ${bill.oiEJE}
-ADD : ${bill.oiADD}
- 
+
 Ojo Derecho :
 ESF : ${bill.odESF}
 CIL : ${bill.odCIL}
 EJE : ${bill.odEJE}
 ADD : ${bill.odADD}
+
+Ojo Izquierdo :
+ESF : ${bill.oiESF}
+CIL : ${bill.oiCIL}
+EJE : ${bill.oiEJE}
+ADD : ${bill.oiADD}
 
 === === === === === ===
 Lente : ${bill.lens.name}

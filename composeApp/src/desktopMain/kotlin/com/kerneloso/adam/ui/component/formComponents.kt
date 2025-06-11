@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenu
@@ -59,29 +61,6 @@ fun formTextField(
                 prefix()
             }
         },
-//        colors = TextFieldDefaults.colors(
-//
-//            unfocusedContainerColor = MaterialTheme.colorScheme.background,
-//            focusedContainerColor = MaterialTheme.colorScheme.background,
-//
-//            focusedLabelColor = MaterialTheme.colorScheme.onPrimary,
-//            unfocusedLabelColor = MaterialTheme.colorScheme.onPrimary,
-//
-//            focusedSupportingTextColor = MaterialTheme.colorScheme.background,
-//            unfocusedSupportingTextColor = MaterialTheme.colorScheme.background,
-//
-//            focusedIndicatorColor = MaterialTheme.colorScheme.secondary,
-//            unfocusedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
-//
-//            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
-//
-//            cursorColor = MaterialTheme.colorScheme.onPrimary,
-//
-//            selectionColors = TextSelectionColors(
-//                backgroundColor = MaterialTheme.colorScheme.primary,
-//                handleColor = MaterialTheme.colorScheme.primary,
-//            )
-//        ),
         singleLine = true,
         modifier = modifier
     )
@@ -236,7 +215,7 @@ fun <T : DatabaseItem> formDropdownMenu(
         DropdownMenu(
             expanded = isMenuExpanded,
             onDismissRequest = { isMenuExpanded = false },
-            modifier = Modifier.width(dropdownWidth)
+            modifier = Modifier.width(dropdownWidth).fillMaxHeight(0.5f)
         ) {
             TextField(
                 value = searchQuery,
@@ -303,7 +282,7 @@ fun  formDropdownMenuGetButton(
         DropdownMenu(
             expanded = isMenuExpanded,
             onDismissRequest = { isMenuExpanded = false },
-            modifier = Modifier.width(dropdownWidth)
+            modifier = Modifier.width(dropdownWidth).fillMaxHeight(0.5f)
         ) {
             TextField(
                 value = searchQuery,
@@ -488,9 +467,7 @@ fun formYearMenu(
         DropdownMenu(
             expanded = isMenuExpanded,
             onDismissRequest = { isMenuExpanded = false },
-            modifier = Modifier
-                .width(dropdownWidth)
-                .fillMaxHeight(0.5f)
+            modifier = Modifier.width(dropdownWidth).fillMaxHeight(0.5f)
         ) {
             options.forEach { year ->
                 DropdownMenuItem(
