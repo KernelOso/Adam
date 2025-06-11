@@ -10,11 +10,18 @@ fun resizeAndCenterWindow(
     with: Int,
     height : Int
 ){
-    window.size = Dimension(with , height)
-    val screenSize: Dimension = Toolkit.getDefaultToolkit().screenSize
 
-    window.setLocation(
-        ((screenSize.width / 2) - (with / 2)) ,
-        ((screenSize.height / 2) - (height / 2))
-    )
+    val isMaximized = (window.extendedState and java.awt.Frame.MAXIMIZED_BOTH) == java.awt.Frame.MAXIMIZED_BOTH
+
+    if (! isMaximized)
+    {
+        val screenSize: Dimension = Toolkit.getDefaultToolkit().screenSize
+
+        window.setLocation(
+            ((screenSize.width / 2) - (with / 2)) ,
+            ((screenSize.height / 2) - (height / 2))
+        )
+
+        window.size = Dimension(with , height)
+    }
 }
