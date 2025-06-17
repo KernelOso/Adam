@@ -21,6 +21,8 @@ import java.nio.charset.Charset
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import java.time.temporal.WeekFields
+import java.util.Locale
 import javax.print.Doc
 import javax.print.DocFlavor
 import javax.print.DocPrintJob
@@ -39,6 +41,37 @@ class BillsViewModel : ViewModel() {
     private fun loadBills() {
         viewModelScope.launch {
             _billDB.value = RegisterRepository.loadRegisters()
+        }
+    }
+
+    fun searchBillsByWeek(weekCode: String = ""): List<Bill> {
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
+        val weekFields = WeekFields.of(Locale.getDefault())
+
+        val filteredBills = if (weekCode.matches(Regex("^\\d{4}-W\\d{2}$"))) {
+            val (yearStr, weekStr) = weekCode.split("-W")
+            val targetYear = yearStr.toInt()
+            val targetWeek = weekStr.toInt()
+
+            _billDB.value.bills.filter { bill ->
+                try {
+                    val billDate = LocalDateTime.parse(bill.date, formatter)
+                    val billWeek = billDate.get(weekFields.weekOfWeekBasedYear())
+                    val billYear = billDate.get(weekFields.weekBasedYear())
+
+                    billYear == targetYear && billWeek == targetWeek
+                } catch (e: DateTimeParseException) {
+                    false
+                }
+            }
+        } else {
+            // Si no se reconoce el formato, no se filtra nada
+            println(weekCode)
+            emptyList()
+        }
+
+        return filteredBills.sortedByDescending {
+            LocalDateTime.parse(it.date, formatter)
         }
     }
 
@@ -109,7 +142,7 @@ class BillsViewModel : ViewModel() {
 
         val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
 
-        val sortedBills = searchByDate.sortedByDescending {
+        val sortedBills = searchByName.sortedByDescending {
             LocalDateTime.parse(it.date, formatter)
         }
 

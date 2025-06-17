@@ -3,6 +3,7 @@ package com.kerneloso.adam.ui.component
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -35,6 +37,9 @@ import com.kerneloso.adam.domain.model.DatabaseItem
 import com.kerneloso.adam.domain.model.Product
 import com.kerneloso.adam.util.longToPrice
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalAdjusters
+import java.time.temporal.WeekFields
 
 
 @Composable
@@ -379,6 +384,80 @@ fun  formDayMenu(
     }
 }
 
+@Composable
+fun formWeekMenu(
+    initialValue: String,
+    onWeekSelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var isMenuExpanded by remember { mutableStateOf(false) }
+    var dropdownWidth by remember { mutableStateOf(0.dp) }
+
+    // Generar las últimas 5 semanas
+    val weeks = remember { generateLast5Weeks() }
+
+    // Encontrar la semana seleccionada inicialmente
+    val selectedWeek = remember(initialValue) {
+        weeks.find { it.second == initialValue } ?: weeks.first()
+    }
+
+    Box(
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(10.dp))
+            .clickable { isMenuExpanded = true }
+            .onGloballyPositioned { layoutCoordinates ->
+                dropdownWidth = layoutCoordinates.size.width.dp
+            }
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = selectedWeek.first,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+
+        DropdownMenu(
+            expanded = isMenuExpanded,
+            onDismissRequest = { isMenuExpanded = false },
+            modifier = Modifier.width(dropdownWidth)
+        ) {
+            weeks.forEach { (range, isoWeek) ->
+                DropdownMenuItem(
+                    text = { Text(range) },
+                    onClick = {
+                        onWeekSelected(isoWeek)
+                        isMenuExpanded = false
+                    }
+                )
+            }
+        }
+    }
+}
+
+fun generateLast5Weeks(): List<Pair<String, String>> {
+    val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+    val today = LocalDate.now()
+    val currentMonday = today.with(TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY))
+
+    return (0 until 5).map { i ->
+        val startDate = currentMonday.minusWeeks(i.toLong())
+        val endDate = startDate.plusDays(6)
+
+        // Formatear rango de fechas
+        val dateRange = "${startDate.format(formatter)} -- ${endDate.format(formatter)}"
+
+        // Obtener semana ISO
+        val weekNumber = startDate.get(WeekFields.ISO.weekOfWeekBasedYear())
+        val year = startDate.get(WeekFields.ISO.weekBasedYear())
+        val isoWeek = "$year-W${weekNumber.toString().padStart(2, '0')}"
+
+        Pair(dateRange, isoWeek)
+    }.reversed() // Ordenar de más reciente a más antigua
+}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

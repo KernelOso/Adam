@@ -1,21 +1,19 @@
 package com.kerneloso.adam.ui.view.screen
 
 import adam.composeapp.generated.resources.Res
-import adam.composeapp.generated.resources.lensScreen_button_newLens
 import adam.composeapp.generated.resources.lensScreen_windowTitle
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.onClick
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,15 +24,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
 import com.kerneloso.adam.domain.model.Bill
 import com.kerneloso.adam.ui.ComposeWindowHolder
-import com.kerneloso.adam.ui.component.container
-import com.kerneloso.adam.ui.component.formTextField
+import com.kerneloso.adam.ui.component.formWeekMenu
 import com.kerneloso.adam.ui.component.obfuscateView
-import com.kerneloso.adam.ui.component.simpleButton
 import com.kerneloso.adam.ui.component.tableHeader
 import com.kerneloso.adam.ui.component.tableItem
 import com.kerneloso.adam.ui.component.viewTemplateWithNavigationBar
@@ -43,8 +40,12 @@ import com.kerneloso.adam.ui.viewmodel.BillsViewModel
 import com.kerneloso.adam.util.longToPrice
 import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.skia.Color
+import java.time.LocalDate
+import java.time.temporal.WeekFields
+import java.util.Locale
 
-class BillsScreen : Screen {
+class ResumeScreen : Screen {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
@@ -65,15 +66,17 @@ class BillsScreen : Screen {
 
         val viewModel = remember { (BillsViewModel()) }
 
-        val navigator = LocalNavigator.current
-
-        //Search Bar
-        var searchDate by remember { mutableStateOf("") }
-        var searchClientName by remember { mutableStateOf("") }
-        var searchBillId by remember { mutableStateOf("") }
+        var selectedWeek by remember { mutableStateOf(getCurrentWeekCode()) }
 
         //List of lens
-        val billList: List<Bill> = viewModel.searchBills(searchBillId , searchDate , searchClientName)
+        val billList: List<Bill> = viewModel.searchBillsByWeek(selectedWeek)
+
+        var totalGeneral = 0L
+        var abonoGeneral = 0L
+        if (billList.isNotEmpty()) {
+            totalGeneral = billList.sumOf { it.total }
+            abonoGeneral = billList.sumOf { it.abono }
+        }
 
         //View Obfuscated State
         var isViewObfuscated by remember { mutableStateOf(false) }
@@ -88,7 +91,7 @@ class BillsScreen : Screen {
 
             val (container) = createRefs()
 
-            container(
+            com.kerneloso.adam.ui.component.container(
                 shapeRadius = 6.dp,
                 backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                 borderColor = MaterialTheme.colorScheme.primaryContainer,
@@ -105,15 +108,8 @@ class BillsScreen : Screen {
                 val (crSearchBar, crList, crButton) = createRefs()
 
                 searchBar(
-                    searchIdValue = searchBillId,
-                    onSearchIdValue = { searchBillId = it },
-
-                    searchDateValue = searchDate,
-                    onSearchDateValue = { searchDate = it },
-
-                    searchClientNameValue = searchClientName,
-                    onSearchClientNameValue = { searchClientName = it },
-
+                    selectedWeek = selectedWeek,
+                    onSelectedWeek = { selectedWeek = it },
 
                     modifier = Modifier
                         .fillMaxWidth(0.9f)
@@ -127,7 +123,7 @@ class BillsScreen : Screen {
                 )
 
                 //ListContainer
-                container(
+                com.kerneloso.adam.ui.component.container(
                     shapeRadius = 0.dp,
                     borderColor = MaterialTheme.colorScheme.tertiary,
                     backgroundColor = MaterialTheme.colorScheme.background,
@@ -164,23 +160,42 @@ class BillsScreen : Screen {
                     }
                 }
 
-                simpleButton(
-                    text = "Resumen Semanal",
-                    backgroundColor = MaterialTheme.colorScheme.primary,
+                Row (
                     modifier = Modifier
-                        .fillMaxWidth(0.3f)
-                        .height(60.dp)
-                        .onClick {
-                            //navigator al resumen
-                            navigator?.push(ResumeScreen())
+                        //.background(MaterialTheme.colorScheme.primary)
+                        .height(80.dp)
+                        .fillMaxWidth(0.9f)
+                        .constrainAs(crButton){
+                        top.linkTo(crList.bottom)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                ) {
+
+                    Box(
+                        modifier = Modifier.fillMaxHeight().weight(0.5f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row {
+                            Text("Abono Semanal: ", fontWeight = FontWeight.Bold , fontSize = 20.sp)
+                            Text("$${longToPrice(abonoGeneral)}" , fontSize = 20.sp)
                         }
-                        .constrainAs(crButton) {
-                            top.linkTo(crList.bottom)
-                            bottom.linkTo(parent.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
+                    }
+
+                    Box(
+                        modifier = Modifier.fillMaxHeight().weight(0.5f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Row {
+                            Text("Total Semanal: ", fontWeight = FontWeight.Bold , fontSize = 20.sp)
+                            Text("$${longToPrice(totalGeneral)}" , fontSize = 20.sp)
                         }
-                )
+                    }
+
+                }
+
+
             }
         }
 
@@ -204,15 +219,8 @@ class BillsScreen : Screen {
 private fun searchBar(
     modifier: Modifier = Modifier,
 
-    searchIdValue: String = "",
-    onSearchIdValue: (String) -> Unit,
-
-
-    searchDateValue: String = "",
-    onSearchDateValue: (String) -> Unit,
-
-    searchClientNameValue: String = "",
-    onSearchClientNameValue: (String) -> Unit,
+    selectedWeek: String,
+    onSelectedWeek: (String) -> Unit,
 
     ) {
     Row(
@@ -221,43 +229,20 @@ private fun searchBar(
             .fillMaxWidth()
     ) {
 
-        formTextField(
-            value = searchIdValue,
-            onValueChange = { onSearchIdValue(it) },
-            label = "ID :",
-            modifier = Modifier
-                .weight(2f)
-                .height(60.dp)
-        )
-
-        Spacer(modifier=Modifier.width(20.dp))
-
-        formTextField(
-            value = searchDateValue,
-            onValueChange = { onSearchDateValue(it) },
-            label = "Fecha :",
-            placeholder = {
-                Text(
-                    text = "DD-MM-YYYY",
-                    style = MaterialTheme.typography.bodySmall
-                )
-            },
-            modifier = Modifier
-                .weight(2f)
-                .height(60.dp)
-        )
-
-        Spacer(modifier=Modifier.width(20.dp))
-
-        formTextField(
-            value = searchClientNameValue,
-            onValueChange = { onSearchClientNameValue(it) },
-            label = "Nombre del cliente :",
-            modifier = Modifier
-                .weight(6f)
-                .height(60.dp)
+        formWeekMenu(
+            initialValue = selectedWeek,
+            onWeekSelected = { onSelectedWeek(it) }
         )
     }
+}
+
+fun getCurrentWeekCode(): String {
+    val today = LocalDate.now()
+    val weekFields = WeekFields.of(Locale.getDefault())
+    val weekNumber = today.get(weekFields.weekOfWeekBasedYear())
+    val year = today.get(weekFields.weekBasedYear())
+
+    return String.format("%04d-W%02d", year, weekNumber)
 }
 
 @Composable
