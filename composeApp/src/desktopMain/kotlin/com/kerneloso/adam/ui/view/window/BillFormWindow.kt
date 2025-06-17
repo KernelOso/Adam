@@ -2,7 +2,6 @@ package com.kerneloso.adam.ui.view.window
 
 import adam.composeapp.generated.resources.*
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.onClick
 import androidx.compose.foundation.rememberScrollState
@@ -12,16 +11,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import com.kerneloso.adam.domain.model.Bill
-import com.kerneloso.adam.domain.model.Lens
 import com.kerneloso.adam.ui.component.*
-import com.kerneloso.adam.ui.viewmodel.LensViewModel
-import com.kerneloso.adam.ui.viewmodel.RegistersViewModel
+import com.kerneloso.adam.ui.viewmodel.BillsViewModel
 import com.kerneloso.adam.util.longToPrice
 import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
@@ -31,7 +27,7 @@ import org.jetbrains.compose.resources.stringResource
 fun billFormWindow(
     bill: Bill,
     onClose: () -> Unit,
-    viewmodel: RegistersViewModel
+    viewmodel: BillsViewModel
 ) {
     Window(
         onCloseRequest = { onClose() },

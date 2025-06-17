@@ -24,7 +24,6 @@ import com.kerneloso.adam.ui.component.*
 import com.kerneloso.adam.ui.view.window.billCreated
 import com.kerneloso.adam.ui.viewmodel.*
 import com.kerneloso.adam.util.longToPrice
-import com.kerneloso.adam.util.priceToLong
 import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
 import java.time.LocalDateTime
@@ -53,7 +52,7 @@ class SellScreen : Screen { // Screen () {}
         val navigator = LocalNavigator.current
 
         //viewModels
-        val viewModel = remember { RegistersViewModel() }
+        val viewModel = remember { BillsViewModel() }
         val sellersViewModel = remember { (SellersViewModel()) }
         val lensViewModel = remember { (LensViewModel()) }
         val frameViewModel = remember { (FramesViewModel()) }
@@ -1060,7 +1059,7 @@ class SellScreen : Screen { // Screen () {}
                                 showBillCreatedWindow = true
                                 print( "Hola!?" )
 
-                                viewModel.addRegister(
+                                viewModel.addBill(
                                     newBill
                                 )
                             }

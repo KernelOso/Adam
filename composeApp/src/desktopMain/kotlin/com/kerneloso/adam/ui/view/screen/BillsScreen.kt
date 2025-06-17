@@ -35,7 +35,7 @@ import com.kerneloso.adam.ui.component.tableHeader
 import com.kerneloso.adam.ui.component.tableItem
 import com.kerneloso.adam.ui.component.viewTemplateWithNavigationBar
 import com.kerneloso.adam.ui.view.window.billFormWindow
-import com.kerneloso.adam.ui.viewmodel.RegistersViewModel
+import com.kerneloso.adam.ui.viewmodel.BillsViewModel
 import com.kerneloso.adam.util.longToPrice
 import com.kerneloso.adam.util.resizeAndCenterWindow
 import org.jetbrains.compose.resources.stringResource
@@ -59,7 +59,7 @@ class BillsScreen : Screen {
         }
         window.title = stringResource(Res.string.lensScreen_windowTitle)
 
-        val viewModel = remember { (RegistersViewModel()) }
+        val viewModel = remember { (BillsViewModel()) }
 
 
         //Search Bar
@@ -68,7 +68,7 @@ class BillsScreen : Screen {
         var searchBillId by remember { mutableStateOf("") }
 
         //List of lens
-        val billList: List<Bill> = viewModel.searchRegisters(searchBillId , searchDate , searchClientName)
+        val billList: List<Bill> = viewModel.searchBills(searchBillId , searchDate , searchClientName)
 
         //View Obfuscated State
         var isViewObfuscated by remember { mutableStateOf(false) }

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kerneloso.adam.domain.model.Bill
 import com.kerneloso.adam.domain.model.BillDB
-import com.kerneloso.adam.domain.repository.LensRepository
 import com.kerneloso.adam.domain.repository.RegisterRepository
 import com.kerneloso.adam.io.FileUtil
 import com.kerneloso.adam.util.longToPrice
@@ -15,32 +14,35 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.xhtmlrenderer.pdf.ITextRenderer
 import java.awt.Desktop
+import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.nio.charset.Charset
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import javax.print.Doc
 import javax.print.DocFlavor
-import javax.print.PrintService
+import javax.print.DocPrintJob
 import javax.print.PrintServiceLookup
 import javax.print.SimpleDoc
 
-class RegistersViewModel : ViewModel() {
+class BillsViewModel : ViewModel() {
 
     private val _billDB = mutableStateOf(BillDB())
     val billDB: State<BillDB> get() = _billDB
 
     init {
-        loadRegisters()
+        loadBills()
     }
 
-    private fun loadRegisters() {
+    private fun loadBills() {
         viewModelScope.launch {
             _billDB.value = RegisterRepository.loadRegisters()
         }
     }
 
-    fun searchRegisters(id: String = "", date: String = "", clientName: String = ""): List<Bill> {
+    fun searchBills(id: String = "", date: String = "", clientName: String = ""): List<Bill> {
 
         val normalizedId = if (id.all { it.isDigit() }) id else ""
         val normalizedDate = date.trim()
@@ -105,10 +107,16 @@ class RegistersViewModel : ViewModel() {
             searchByDate
         }
 
-        return searchByName
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
+
+        val sortedBills = searchByDate.sortedByDescending {
+            LocalDateTime.parse(it.date, formatter)
+        }
+
+        return sortedBills
     }
 
-    fun addRegister(bill: Bill) {
+    fun addBill(bill: Bill) {
         val current = _billDB.value
         val updatedRegisterDB = current.copy(
             lastID = current.lastID + 1,
@@ -233,6 +241,14 @@ class RegistersViewModel : ViewModel() {
                         <strong>Vendedor:</strong> ${bill.seller.name}
                       </div>
                     </div>
+                    
+                    <div class="titulo">Ojo Derecho</div>
+                    <div class="datos">
+                      ESF: ${bill.odESF} |
+                      CIL: ${bill.odCIL} |
+                      EJE: ${bill.odEJE} |
+                      ADD: ${bill.odADD}
+                    </div>
     
                     <div class="titulo">Ojo Izquierdo</div>
                     <div class="datos">
@@ -240,14 +256,6 @@ class RegistersViewModel : ViewModel() {
                       CIL: ${bill.oiCIL} |
                       EJE: ${bill.oiEJE} |
                       ADD: ${bill.oiADD}
-                    </div>
-    
-                    <div class="titulo">Ojo Derecho</div>
-                    <div class="datos">
-                      ESF: ${bill.odESF} |
-                      CIL: ${bill.odCIL} |
-                      EJE: ${bill.odEJE} |
-                      ADD: ${bill.odADD}
                     </div>
     
                     <div class="titulo">Lente</div>
@@ -305,8 +313,7 @@ class RegistersViewModel : ViewModel() {
 
     fun printBill(bill: Bill) {
 
-        val textToPrint = """
-            
+        val textToPrint = """ 
 OPTICA MCA
 === === === === === ===
 Carrera 12 No. 50-10
@@ -325,17 +332,18 @@ C.C : ${bill.clientId}
 === === === === === ===
 Vendendor : ${bill.seller.name}
 === === === === === ===
-Ojo Izquierdo :
-ESF : ${bill.oiESF}
-CIL : ${bill.oiCIL}
-EJE : ${bill.oiEJE}
-ADD : ${bill.oiADD}
- 
+
 Ojo Derecho :
 ESF : ${bill.odESF}
 CIL : ${bill.odCIL}
 EJE : ${bill.odEJE}
 ADD : ${bill.odADD}
+
+Ojo Izquierdo :
+ESF : ${bill.oiESF}
+CIL : ${bill.oiCIL}
+EJE : ${bill.oiEJE}
+ADD : ${bill.oiADD}
 
 === === === === === ===
 Lente : ${bill.lens.name}
@@ -372,29 +380,28 @@ Saldo : $${longToPrice(bill.saldo)}
 
 
 
+
 """.trimIndent()
 
-//        // refactorizar para usar las impresoras de windows
-//        val devicePath = "/dev/usb/lp0"
-//
-//        try {
-//            FileOutputStream(File(devicePath)).use { output ->
-//                output.write(textToPrint.toByteArray())
-//                output.flush()
-//            }
-//            println("Texto enviado correctamente.")
-//        } catch (e: Exception) {
-//            println("Error al enviar a la impresora: ${e.message}")
-//        }
-        val flavor = DocFlavor.STRING.TEXT_PLAIN
-        val printServices = PrintServiceLookup.lookupPrintServices(flavor, null)
 
-        val printService = printServices.firstOrNull() ?: throw RuntimeException("No printer found")
+        try {
+            val bytes = textToPrint.toByteArray(Charset.forName("UTF-8"))
+            val inputStream = ByteArrayInputStream(bytes)
 
-        val printJob = printService.createPrintJob()
-        val doc = SimpleDoc(textToPrint, flavor, null)
+            val flavor = DocFlavor.INPUT_STREAM.AUTOSENSE
+            val doc: Doc = SimpleDoc(inputStream, flavor, null)
 
-        printJob.print(doc, null)
+            val printService = PrintServiceLookup.lookupDefaultPrintService()
+                ?: throw IllegalStateException("No default printer found.")
+
+            val job: DocPrintJob = printService.createPrintJob()
+            job.print(doc, null)
+
+            println("Impresión enviada exitosamente a: ${printService.name}")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
     }
 
     fun openPdf(bill: Bill) {
@@ -433,7 +440,7 @@ Saldo : $${longToPrice(bill.saldo)}
         }
     }
 
-    fun deleteRegister(bill: Bill) {
+    fun deleteBill(bill: Bill) {
         val current = _billDB.value
         val updatedRegisterDB = current.copy(
             bills = current.bills.filter { it.id != bill.id }
