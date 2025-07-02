@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import cafe.adriel.voyager.core.screen.Screen
@@ -475,6 +476,80 @@ class SellScreen : Screen { // Screen () {}
                     horizontalArrangement = Arrangement.spacedBy(horizontalSeparator),
                     verticalArrangement = Arrangement.spacedBy(verticalSeparator)
                 ) {
+
+                    //______ _       _     _     _____             _____       __
+                    //| ___ (_)     | |   | |   |  ___|           |_   _|     / _|
+                    //| |_/ /_  __ _| |__ | |_  | |__ _   _  ___    | | _ __ | |_ ___
+                    //|    /| |/ _` | '_ \| __| |  __| | | |/ _ \   | || '_ \|  _/ _ \
+                    //| |\ \| | (_| | | | | |_  | |__| |_| |  __/  _| || | | | || (_) |
+                    //\_| \_|_|\__, |_| |_|\__| \____/\__, |\___|  \___/_| |_|_| \___/
+                    //          __/ |                  __/ |
+                    //         |___/                  |___/
+                    container(
+                        shapeRadius = 6.dp,
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                        borderColor = MaterialTheme.colorScheme.primaryContainer,
+                        modifier = Modifier
+                            .width(containerField),
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            Spacer(modifier = Modifier.height(20.dp))
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            Text(stringResource(Res.string.sellScreen_formTitle_OD) )
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            Spacer(modifier = Modifier.height(20.dp))
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            formTextField(
+                                value = odESF,
+                                onValueChange = { odESF = it },
+                                label = stringResource(Res.string.sellScreen_formField_ESF),
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .height(80.dp)
+                            )
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            Spacer(modifier = Modifier.height(20.dp))
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            formTextField(
+                                value = odCIL,
+                                onValueChange = { odCIL = it },
+                                label = stringResource(Res.string.sellScreen_formField_CIL),
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .height(80.dp)
+                            )
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            Spacer(modifier = Modifier.height(20.dp))
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            formTextField(
+                                value = odEJE,
+                                onValueChange = { odEJE = it },
+                                label = stringResource(Res.string.sellScreen_formField_EJE),
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .height(80.dp)
+                            )
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            Spacer(modifier = Modifier.height(20.dp))
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            formTextField(
+                                value = odADD,
+                                onValueChange = { odADD = it },
+                                label = stringResource(Res.string.sellScreen_formField_ADD),
+                                modifier = Modifier
+                                    .fillMaxWidth(0.9f)
+                                    .height(80.dp)
+                            )
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            Spacer(modifier = Modifier.height(20.dp))
+                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                        }
+                    }
+
                     // _           __ _     _____             _____       __
                     //| |         / _| |   |  ___|           |_   _|     / _|
                     //| |     ___| |_| |_  | |__ _   _  ___    | | _ __ | |_ ___
@@ -548,78 +623,7 @@ class SellScreen : Screen { // Screen () {}
                         }
                     }
 
-                    //______ _       _     _     _____             _____       __
-                    //| ___ (_)     | |   | |   |  ___|           |_   _|     / _|
-                    //| |_/ /_  __ _| |__ | |_  | |__ _   _  ___    | | _ __ | |_ ___
-                    //|    /| |/ _` | '_ \| __| |  __| | | |/ _ \   | || '_ \|  _/ _ \
-                    //| |\ \| | (_| | | | | |_  | |__| |_| |  __/  _| || | | | || (_) |
-                    //\_| \_|_|\__, |_| |_|\__| \____/\__, |\___|  \___/_| |_|_| \___/
-                    //          __/ |                  __/ |
-                    //         |___/                  |___/
-                    container(
-                        shapeRadius = 6.dp,
-                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
-                        borderColor = MaterialTheme.colorScheme.primaryContainer,
-                        modifier = Modifier
-                            .width(containerField),
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Spacer(modifier = Modifier.height(20.dp))
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Text(stringResource(Res.string.sellScreen_formTitle_OD))
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Spacer(modifier = Modifier.height(20.dp))
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            formTextField(
-                                value = odESF,
-                                onValueChange = { odESF = it },
-                                label = stringResource(Res.string.sellScreen_formField_ESF),
-                                modifier = Modifier
-                                    .fillMaxWidth(0.9f)
-                                    .height(80.dp)
-                            )
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Spacer(modifier = Modifier.height(20.dp))
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            formTextField(
-                                value = odCIL,
-                                onValueChange = { odCIL = it },
-                                label = stringResource(Res.string.sellScreen_formField_CIL),
-                                modifier = Modifier
-                                    .fillMaxWidth(0.9f)
-                                    .height(80.dp)
-                            )
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Spacer(modifier = Modifier.height(20.dp))
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            formTextField(
-                                value = odEJE,
-                                onValueChange = { odEJE = it },
-                                label = stringResource(Res.string.sellScreen_formField_EJE),
-                                modifier = Modifier
-                                    .fillMaxWidth(0.9f)
-                                    .height(80.dp)
-                            )
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Spacer(modifier = Modifier.height(20.dp))
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            formTextField(
-                                value = odADD,
-                                onValueChange = { odADD = it },
-                                label = stringResource(Res.string.sellScreen_formField_ADD),
-                                modifier = Modifier
-                                    .fillMaxWidth(0.9f)
-                                    .height(80.dp)
-                            )
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Spacer(modifier = Modifier.height(20.dp))
-                            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                        }
-                    }
+
                 }
                 //=================================================================================
                 Spacer(modifier = Modifier.height(verticalSeparator))
