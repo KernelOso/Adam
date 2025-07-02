@@ -346,76 +346,72 @@ class BillsViewModel : ViewModel() {
 
     fun printBill(bill: Bill) {
 
-        val textToPrint = """ 
-OPTICA MCA
-=== === === === === ===
-Carrera 12 No. 50-10
+        // --- Funciones de ayuda para formatear el texto ---
+        val receiptWidth = 42
+        fun centerText(text: String): String {
+            val padding = (receiptWidth - text.length) / 2
+            return " ".repeat(padding) + text
+        }
 
-Tel : 302 297 1601
-Tel : 321 776 1886
+        fun createHeader(title: String): String {
+            return "\n" + centerText(title) + "\n" + "-".repeat(receiptWidth)
+        }
 
-IG / FB @optica_mca
-=== === === === === ===
-Fecha : ${bill.date}
-Factura #${bill.id}
-=== === === === === ===
-Cliente : ${bill.clientName}
-Cel : ${bill.clientNumber}
-C.C : ${bill.clientId}
-=== === === === === ===
-Vendendor : ${bill.seller.name}
-=== === === === === ===
+        // --- Construcción del String para la factura ---
+        val textToPrint = """
+${centerText("ÓPTICA MCA")}
 
-Ojo Derecho :
-ESF : ${bill.odESF}
-CIL : ${bill.odCIL}
-EJE : ${bill.odEJE}
-ADD : ${bill.odADD}
-
-Ojo Izquierdo :
-ESF : ${bill.oiESF}
-CIL : ${bill.oiCIL}
-EJE : ${bill.oiEJE}
-ADD : ${bill.oiADD}
-
-=== === === === === ===
-Lente : ${bill.lens.name}
-Precio : $${longToPrice(bill.lens.price)}
-=== === === === === ===
-Montura : ${bill.frame.name}
-Precio : $${longToPrice(bill.frame.price)}
-=== === === === === ===
-Productos :
+${centerText("Carrera 12 No. 50-10")}
+${centerText("Tel: 302 297 1601 - 321 776 1886")}
+${centerText("IG / FB @optica_mca")}
+==========================================
+Factura: ${bill.id.toString().padStart(16)} Fecha: ${bill.date}
+Cliente: ${bill.clientName}
+C.C: ${bill.clientId.toString().padEnd(18)} Cel: ${bill.clientNumber}
+Vendedor: ${bill.seller.name}
+------------------------------------------
+           PRESCRIPCIÓN
+------------------------------------------
+      ESF      CIL      EJE      ADD
+O.D.  ${bill.odESF.padEnd(8)}${bill.odCIL.padEnd(9)}${bill.odEJE.padEnd(9)}${bill.odADD}
+O.I.  ${bill.oiESF.padEnd(8)}${bill.oiCIL.padEnd(9)}${bill.oiEJE.padEnd(9)}${bill.oiADD}
+------------------------------------------
+DP: ${bill.dp}
+Color: ${bill.color}
+${createHeader("DETALLES DE LA COMPRA")}
 ${
-            bill.products.joinToString("\n") { product ->
-                "- | ${product.quantity} | ${product.product.name}\n    - UND : $${longToPrice(product.product.price)}\n    - $${
-                    longToPrice(
-                        product.quantity * product.product.price
-                    )
-                }"
+            // Lente
+            "Lente: ${bill.lens.name}\n" +
+                    " ".repeat(receiptWidth - longToPrice(bill.lens.price).length - 1) + "$" + longToPrice(bill.lens.price)
+        }
+${
+            // Montura
+            "\nMontura: ${bill.frame.name}\n" +
+                    " ".repeat(receiptWidth - longToPrice(bill.frame.price).length - 1) + "$" + longToPrice(bill.frame.price)
+        }
+${
+            // Otros productos, si existen
+            if (bill.products.isNotEmpty()) {
+                "\nOtros Productos:\n" +
+                        bill.products.joinToString("\n") { product ->
+                            val productName = "${product.quantity}x ${product.product.name}"
+                            val price = longToPrice(product.quantity * product.product.price)
+                            productName + " ".repeat(receiptWidth - productName.length - price.length - 1) + "$" + price
+                        }
+            } else {
+                ""
             }
         }
-=== === === === === ===
-DP : ${bill.dp}
-Color : ${bill.color}
-=== === === === === ===
-TOTAL : $${longToPrice(bill.total)}
+==========================================
+${"SUBTOTAL:".padStart(30)} ${longToPrice(bill.total).padStart(11)}
+${"ABONO:".padStart(30)} ${longToPrice(bill.abono).padStart(11)}
+${"SALDO PENDIENTE:".padStart(30)} ${longToPrice(bill.saldo).padStart(11)}
+==========================================
 
-Abono : $${longToPrice(bill.abono)}
-Saldo : $${longToPrice(bill.saldo)}
+${centerText("¡Gracias por su compra!")}
 
-
-
-
-
-
-
-
-
-
-
+.
 """.trimIndent()
-
 
         try {
             val bytes = textToPrint.toByteArray(Charset.forName("UTF-8"))
@@ -434,7 +430,6 @@ Saldo : $${longToPrice(bill.saldo)}
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
 
     fun openPdf(bill: Bill) {
